@@ -7,5 +7,5 @@ public class Demon : Resource {
     [Export] public string Difficulty = "[DIFFICULTY]";
     [Export] public int Reward = 999;
     [Export] public string Weaknesses = "[WEAKNESSES]";
-    [Export] public int SealSlots = 2;
+    [Export] public readonly int SealSlots = 2;
 }

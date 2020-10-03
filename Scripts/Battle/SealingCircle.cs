@@ -14,10 +14,9 @@ public class SealingCircle : Node2D {
 		Vector2 CenterToSlot = GetNode<Position2D> ("FirstSealSlot").Position - GetNode<Position2D> ("Center").Position;
 		for (byte i = 0; i < slotCount; i++) {
 			var slot = GD.Load<PackedScene> (sealSlotPath).Instance ().GetNode<SealSlot> ("./");
-			slot.Position = CenterPosition + CenterToSlot;
+			slot.RectPosition = CenterPosition + CenterToSlot;
 			slotList.Add (slot);
 			AddChild (slot);
-			GD.Print ("Printing one poop");
 			CenterToSlot = CenterToSlot.Rotated (2 * Mathf.Pi / slotCount);
 		}
 	}
