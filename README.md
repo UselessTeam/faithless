@@ -1,18 +1,6 @@
-# Godot Template
-This is a template to quickly start making games with the game engine [Godot](https://godotengine.org/) in the C# language.
+# Faithless
 
-I ([@Swynfel](https://github.com/Swynfel)) plan on using it to avoid waisting time making a clean repository during game-jams.
-
-This repository uses the ["Unlicense" License](LICENSE), so feel free to use it or take it as inspiration, it comes with no string attached.
-
-### Features
-- **README.md**
-- **.gitignore** for
-  - Godot
-  - VSCode
-  - Krita
-  - Piskel
-- Auto-formatting with `omnisharp.json`
+This is Useless Team's attempt at making a game for the [Ludum Dare](https://ldjam.com/) 47.
 
 ## Downloading the repository
 
