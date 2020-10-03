@@ -8,6 +8,7 @@ public class BattleScene : Node2D {
     [Export] PackedScene cardVisualPacked;
 
     public Control MyHand { get { return GetNode<Control>("Hand"); } }
+    public SealingCircle MySealCircle { get { return GetNode<SealingCircle>("SealingCircle"); } }
     static BattleScene instance;
     public static BattleScene Instance {
         get {
@@ -16,9 +17,11 @@ public class BattleScene : Node2D {
         }
     }
 
-    List<CardId> Deck = new List<CardId>() { CardId.BasicEarth, CardId.BasicFire, CardId.BasicMetal, CardId.BasicWater, CardId.BasicWood };
-    List<CardId> Hand = new List<CardId>();
-    List<CardId> Discard = new List<CardId>();
+    public static List<CardId> Deck = new List<CardId>() { CardId.BasicEarth, CardId.BasicFire, CardId.BasicMetal, CardId.BasicWater, CardId.BasicWood };
+    public static List<CardId> Hand = new List<CardId>();
+    public static List<CardId> Discard = new List<CardId>();
+
+    public static List<Element> SealSlots;
 
     const byte MAX_CHI = 5;
     const byte MAX_HEALTH = 3;
@@ -28,13 +31,15 @@ public class BattleScene : Node2D {
     byte Health;
 
     public enum State { PlayerTurn, CardSelected, EnemyTurn }
-    State currentState;
+    State currentState = State.EnemyTurn;
     byte selectedCard;
 
     public override void _Ready () {
         instance = this;
-        GetNode<SealingCircle>("SealingCircle").ShowSlots(currentDemon.SealSlots);
+        MySealCircle.InitializeSlots(currentDemon.SealSlots);
         Health = MAX_HEALTH;
+        SealSlots = Enumerable.Repeat(Element.None, currentDemon.SealSlots).ToList(); ;
+
         StartPlayerTurn();
     }
 
@@ -77,6 +82,11 @@ public class BattleScene : Node2D {
         currentState = State.EnemyTurn;
     }
 
+    //////////////////
+    ////////  Display
+    ///////////////
+    //////////
+
     void UpdateHand () {
         for (byte i = 0 ; i < MyHand.GetChildCount() ; i++) MyHand.GetChild(i).QueueFree();
         for (byte i = 0 ; i < Hand.Count ; i++) {
@@ -86,7 +96,6 @@ public class BattleScene : Node2D {
             MyHand.AddChild(makeCard);
         }
     }
-
 
     /////////////////
     ////////  Input Management
@@ -101,7 +110,7 @@ public class BattleScene : Node2D {
     }
 
     public void ClickOnSealSlot (byte id) {
-        //TODO use the card
+        Card.List[Hand[selectedCard]].Use(id);
     }
 
     ///////////////////
@@ -109,7 +118,10 @@ public class BattleScene : Node2D {
     ////////////////
     ///////
 
-    public void AddSeal (Element element, byte location) { //TODO
+    public void AddSeal (Element element, byte location) {
+        SealSlots[location] = element;
+        // TODO, apply effects
+        MySealCircle.UpdateSeals();
     }
 
 
