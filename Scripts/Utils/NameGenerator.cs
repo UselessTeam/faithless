@@ -30,7 +30,7 @@ namespace Utils {
         "y", "ae", "aa", "ea", "ie", "ao"
     };
 
-        public static string RandomName() {
+        public static string RandomName () {
             while (true) {
                 string s = RandomUncheckedString();
                 if (s.Length >= 3 && s.Length <= 12) {
@@ -40,7 +40,7 @@ namespace Utils {
             }
         }
 
-        private static string RandomUncheckedString() {
+        private static string RandomUncheckedString () {
             float x = (float) RNG.rng.NextDouble();
             if (x < 0.10) {
                 return PREFIX.Random() + VOWEL.Random();
@@ -69,7 +69,7 @@ namespace Utils {
             return PREFIX.Random() + VOWEL.Random() + MIDDLE.Random() + VOWEL.Random() + MIDDLE.Random() + VOWEL.Random() + SUFFIX.Random();
         }
 
-        private static string[] Merge(params string[][] lists) {
+        private static string[] Merge (params string[][] lists) {
             IEnumerable<string> l = lists[0];
             foreach (string[] other in lists.Skip(1)) {
                 l = l.Concat(other);

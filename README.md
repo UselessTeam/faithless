@@ -15,7 +15,7 @@ git lfs clone git@github.com:Swynfel/template.git
 
 To build and run the project, you will need:
 - [Godot 3.2.3 - Mono version](https://godotengine.org/download)
-- [.NET Core 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
+- [.NET Core 3.1](https://docs.microsoft.com/en-us/dotnet/core/install/)
 
 ### Godot
 Start by installing [Godot 3.2.3 - Mono version](https://godotengine.org/download) directly on the official website.
@@ -23,14 +23,14 @@ Start by installing [Godot 3.2.3 - Mono version](https://godotengine.org/downloa
 Make sure you take the **Mono** version, and the correct 64-bit / 32-bit depending on your architecture.
 
 ### .Net Core
-Although Godot mentions installing *MSBuild*, for this project it is recommended to install the [.NET Core 5.0 SDK](https://dotnet.microsoft.com/download/dotnet/5.0) on microsoft's website.
+Although Godot mentions installing *MSBuild*, for this project it is recommended to install the [.NET Core 3.1 SDK](https://docs.microsoft.com/en-us/dotnet/core/install/) on microsoft's website.
 
-At the time of writing this, there is no stable version, so we are using `v5.0.0-rc.1`.
-
-You should be able to call the following command with no error, and see a line mentioning the `v5.*` sdk appear.
+You should be able to call the following command with no error, and see a line mentioning the `v3.1.*` sdk appear.
 ```
 dotnet --list-sdks
 ```
+
+We tried to use the `.Net Core 5.0` version, but there were many issues with, so we downgraded it.
 
 ## Build and Run
 Open the Godot editor, and select the project.

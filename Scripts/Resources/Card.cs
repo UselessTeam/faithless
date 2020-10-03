@@ -19,12 +19,12 @@ public static class CardIdExtensions {
 public enum Element { None, Fire, Water, Wood, Earth, Metal }
 public class Card : Resource {
     // [Export] readonly ushort Id = ushort.MaxValue;
-    [Export] public string Name { get; init; } = "Unamed";
-    [Export] public string Kanji { get; init; } = "無";
-    [Export] public Element Element { get; init; } = Element.None;
-    [Export] public byte Cost { get; init; } = byte.MaxValue;
-    [Export] public string Description { get; init; } = "This is an empty card";
-    [Export] public Action<byte> Use { get; init; } = (byte id) => { GD.Print("This card does nothing"); };
+    [Export] public string Name = "Unamed";
+    [Export] public string Kanji = "無";
+    [Export] public Element Element = Element.None;
+    [Export] public byte Cost = byte.MaxValue;
+    [Export] public string Description = "This is an empty card";
+    [Export] public Action<byte> Use = (byte id) => { GD.Print("This card does nothing"); };
     public Texture Texture => CardTextures.Instance.GetTexture(Element);
 
     private Card () { }

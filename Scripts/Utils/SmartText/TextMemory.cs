@@ -12,33 +12,33 @@ namespace Utils {
         public const string BBCODE = "[rem][url={1}]{0}[/url][/rem]";
 
         public struct MetaTag {
-            public char group { get; init; }
-            public string key { get; init; }
-            public string Box(string s) {
+            public char group;
+            public string key;
+            public string Box (string s) {
                 return string.Format(BBCODE, s, this);
             }
 
-            public override string ToString() {
+            public override string ToString () {
                 return group + key.ToString();
             }
         }
 
-        public static MetaTag Parse(string s) {
+        public static MetaTag Parse (string s) {
             return new MetaTag() {
                 group = s[0],
                 key = s.Substring(1)
             };
         }
 
-        public Resource Remember(MetaTag metaTag) {
+        public Resource Remember (MetaTag metaTag) {
             return savedResources[Encoding.DecodeInt(metaTag.key)];
         }
 
-        public T Remember<T>(MetaTag metaTag) where T : Resource {
+        public T Remember<T> (MetaTag metaTag) where T : Resource {
             return (T) Remember(metaTag);
         }
 
-        public MetaTag Tag(Resource resource, char groupOverride = RESOURCE_CHAR) {
+        public MetaTag Tag (Resource resource, char groupOverride = RESOURCE_CHAR) {
             int index = savedResources.IndexOf(resource);
             if (index == -1) {
                 index = savedResources.Count;
@@ -50,7 +50,7 @@ namespace Utils {
             };
         }
 
-        public MetaTag Tag(string value, char groupOverride = STRING_CHAR) {
+        public MetaTag Tag (string value, char groupOverride = STRING_CHAR) {
             return new MetaTag {
                 group = groupOverride,
                 key = value,
