@@ -16,6 +16,7 @@ animations = [ {
 
 [node name="BattelScene" type="Node2D"]
 script = ExtResource( 2 )
+cardVisualPacked = ExtResource( 5 )
 
 [node name="SealingCircle" type="Node2D" parent="."]
 script = ExtResource( 4 )
@@ -37,19 +38,24 @@ position = Vector2( 469.077, 205.568 )
 position = Vector2( 465.108, 343.672 )
 
 [node name="Hand" type="HBoxContainer" parent="."]
-margin_left = 30.0
-margin_top = 356.0
-margin_right = 940.0
-margin_bottom = 558.0
+margin_left = 271.409
+margin_top = 419.028
+margin_right = 1181.41
+margin_bottom = 621.028
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CardVisual" parent="Hand" instance=ExtResource( 5 )]
-margin_right = 10.0
+margin_right = 100.0
 margin_bottom = 202.0
 
 [node name="CardVisual2" parent="Hand" instance=ExtResource( 5 )]
-margin_left = 14.0
-margin_right = 24.0
+margin_left = 104.0
+margin_right = 204.0
+margin_bottom = 202.0
+
+[node name="CardVisual3" parent="Hand" instance=ExtResource( 5 )]
+margin_left = 208.0
+margin_right = 308.0
 margin_bottom = 202.0

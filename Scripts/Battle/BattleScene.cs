@@ -5,6 +5,9 @@ using Godot;
 
 public class BattleScene : Node2D {
     [Export] Demon currentDemon = new Demon();
+    [Export] PackedScene cardVisualPacked;
+
+    public Control MyHand { get { return GetNode<Control>("Hand"); } }
 
     List<CardId> Deck = new List<CardId>() { CardId.BasicEarth, CardId.BasicFire, CardId.BasicMetal, CardId.BasicWater, CardId.BasicWood };
     List<CardId> Hand = new List<CardId>();
@@ -34,6 +37,7 @@ public class BattleScene : Node2D {
             Hand.Add(Deck[0]);
             Deck.RemoveAt(0);
         }
+        UpdateHand();
     }
 
     void ShuffleDeck () {
@@ -50,8 +54,25 @@ public class BattleScene : Node2D {
             Discard.Add(Hand[0]);
             Hand.RemoveAt(0);
         }
+        UpdateHand();
     }
 
-    void UpdateHand () { }
+    void UpdateHand () {
+        for (byte i = 0 ; i < MyHand.GetChildCount() ; i++) MyHand.GetChild(i).QueueFree();
+        for (byte i = 0 ; i < Hand.Count ; i++) {
+            var makeCard = (CardVisual) cardVisualPacked.Instance();
+            makeCard.ShowCard(Hand[i]);
+            MyHand.AddChild(makeCard);
+        }
+    }
+
+
+    /////////////////
+    ////////  Input Management
+    ////////////////
+    //////
+
+    public void ClickOnCard (int id) { }
+    public void ClickOnSealSlot (int id) { }
 
 }
