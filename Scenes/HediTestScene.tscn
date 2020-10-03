@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/demon.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Battle/BattleScene.cs" type="Script" id=2]
 [ext_resource path="res://Assets/sealingCircle.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Battle/SealingCircle.cs" type="Script" id=4]
-[ext_resource path="res://Assets/sealSlot.png" type="Texture" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -19,7 +18,7 @@ script = ExtResource( 2 )
 
 [node name="SealingCircle" type="Node2D" parent="."]
 script = ExtResource( 4 )
-SealSlot = ExtResource( 5 )
+sealSlotPath = "res://Nodes/SealSlot.tscn"
 
 [node name="CircleDisplay" type="Sprite" parent="SealingCircle"]
 position = Vector2( 475.398, 207.247 )
