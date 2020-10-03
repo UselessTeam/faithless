@@ -1,12 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Nodes/GUI/Tables/WantedTable.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/GUI/Panels/HuntPanel.cs" type="Script" id=2]
 
 [node name="Hunt" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -23,8 +25,8 @@ size_flags_vertical = 3
 scroll_vertical_enabled = false
 
 [node name="HBox" type="HBoxContainer" parent="VBox/ScrollContainer"]
-margin_right = 338.0
+margin_right = 360.0
 margin_bottom = 480.0
 
 [node name="Wanted" parent="VBox/ScrollContainer/HBox" instance=ExtResource( 1 )]
-margin_right = 338.0
+margin_right = 360.0
