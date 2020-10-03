@@ -3,7 +3,6 @@ using Godot;
 
 public class CardVisual : MarginContainer {
     [Signal] public delegate void OnClick (byte id);
-    public byte id;
 
     [Export] NodePath backgroundPath;
     [Export] NodePath namePath;
@@ -16,7 +15,6 @@ public class CardVisual : MarginContainer {
         backgroundField = GetNode<TextureRect>(backgroundPath);
         nameField = GetNode<Label>(namePath);
         kanjiField = GetNode<Label>(kanjiPath);
-        Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnCard));
     }
 
     public void ShowCard (Card card) {
@@ -27,7 +25,8 @@ public class CardVisual : MarginContainer {
     }
 
     public override void _GuiInput (InputEvent _event) {
-        if (_event is InputEventMouseButton)
-            EmitSignal(nameof(OnClick), id);
+        if (_event is InputEventMouseButton) {
+            EmitSignal(nameof(OnClick), GetIndex());
+        }
     }
 }

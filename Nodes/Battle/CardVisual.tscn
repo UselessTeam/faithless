@@ -22,6 +22,7 @@ kanjiPath = NodePath("Holder/Kanji")
 margin_right = 180.0
 margin_bottom = 400.0
 rect_min_size = Vector2( 180, 400 )
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {

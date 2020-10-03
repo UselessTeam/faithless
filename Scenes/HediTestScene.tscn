@@ -45,3 +45,58 @@ margin_bottom = 621.028
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="StatsDisplay" type="Control" parent="."]
+margin_left = 728.0
+margin_top = 259.0
+margin_right = 728.0
+margin_bottom = 259.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chi" type="Label" parent="StatsDisplay"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Chi :
+"
+
+[node name="ChiValue" type="Label" parent="StatsDisplay"]
+margin_left = 38.5
+margin_top = 0.5
+margin_right = 78.5
+margin_bottom = 31.5
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hp" type="Label" parent="StatsDisplay"]
+margin_top = 22.0
+margin_right = 40.0
+margin_bottom = 53.0
+text = "Hp :
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HpValue" type="Label" parent="StatsDisplay"]
+margin_left = 40.0
+margin_top = 25.0
+margin_right = 80.0
+margin_bottom = 56.0
+text = "1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EndTurn" type="Button" parent="."]
+margin_left = 731.492
+margin_top = 325.701
+margin_right = 743.492
+margin_bottom = 345.701
+text = "End Turn"
+__meta__ = {
+"_edit_use_anchors_": false
+}

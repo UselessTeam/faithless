@@ -23,19 +23,26 @@ public class BattleScene : Node2D {
 
     public static List<Element> SealSlots;
 
+    Label ChiValue { get { return GetNode<Label>("StatsDisplay/ChiValue"); } }
+    Label HpValue { get { return GetNode<Label>("StatsDisplay/HpValue"); } }
+
     const byte MAX_CHI = 5;
     const byte MAX_HEALTH = 3;
     const byte CARDS_PER_TURN = 4;
 
-    byte Chi;
-    byte Health;
+    short chi;
+    short health;
+    public short Chi { get { return chi; } set { chi = value; ChiValue.Text = value.ToString(); } }
+    public short Health { get { return health; } set { health = value; HpValue.Text = value.ToString(); } }
 
     public enum State { PlayerTurn, CardSelected, EnemyTurn }
     State currentState = State.EnemyTurn;
-    byte selectedCard;
+    byte selectedCard = byte.MaxValue;
 
     public override void _Ready () {
         instance = this;
+        GetNode<Button>("EndTurn").Connect("button_down", this, nameof(EndPlayerTurn));
+
         MySealCircle.InitializeSlots(currentDemon.SealSlots);
         Health = MAX_HEALTH;
         SealSlots = Enumerable.Repeat(Element.None, currentDemon.SealSlots).ToList(); ;
@@ -80,6 +87,10 @@ public class BattleScene : Node2D {
         }
         UpdateHand();
         currentState = State.EnemyTurn;
+
+        //TODO Enemi shoud do stuff
+
+        StartPlayerTurn();
     }
 
     //////////////////
@@ -91,7 +102,7 @@ public class BattleScene : Node2D {
         for (byte i = 0 ; i < MyHand.GetChildCount() ; i++) MyHand.GetChild(i).QueueFree();
         for (byte i = 0 ; i < Hand.Count ; i++) {
             var makeCard = (CardVisual) cardVisualPacked.Instance();
-            makeCard.id = i;
+            makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(ClickOnCard));
             MyHand.AddChild(makeCard);
             makeCard.ShowCard(Hand[i].Data());
         }
@@ -103,14 +114,42 @@ public class BattleScene : Node2D {
     //////
 
     public void ClickOnCard (byte id) {
+        // Unselect previous card
+        if (selectedCard < byte.MaxValue)
+            MyHand.GetChild<CanvasItem>(selectedCard).Modulate = new Color(1, 1, 1, 1);
+
+        if (Hand[id].Data().Cost > Chi) {
+            GD.Print("Not enough Chi");
+            // TODO : Not enough chi
+            return;
+        }
+        // Logic selection
         selectedCard = id;
         currentState = State.CardSelected;
         GD.Print("Card Selected : " + Hand[id].ToString());
+
+        // Display selection
+        // MyHand.GetChild<CanvasItem>(selectedCard).Modulate = new Color(1, 1, 0.6f, 0.9f);
         //TODO Show description and highlight seals
+
     }
 
     public void ClickOnSealSlot (byte id) {
+        if (currentState != State.CardSelected) return;
+
+        //Use the card
+        Chi -= Hand[selectedCard].Data().Cost;
+        if (Chi < 0) GD.PrintErr("NegativeChi");
         Hand[selectedCard].Data().Use(id);
+
+        // Discard the Card
+        MyHand.GetChild<CanvasItem>(selectedCard).QueueFree();
+        Discard.Add(Hand[selectedCard]);
+        Hand.RemoveAt(selectedCard);
+        selectedCard = byte.MaxValue;
+
+        //Switch State
+        currentState = State.PlayerTurn;
     }
 
     ///////////////////
