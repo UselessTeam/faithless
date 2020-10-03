@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Shaders/circle.shader" type="Shader" id=1]
+[ext_resource path="res://Assets/Sprites/Circle.png" type="Texture" id=2]
+
+[sub_resource type="OpenSimplexNoise" id=2]
+
+[sub_resource type="NoiseTexture" id=3]
+noise = SubResource( 2 )
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/color_0 = Color( 1, 0.0352941, 0.0352941, 1 )
+shader_param/color_1 = Color( 0.0509804, 0.109804, 0.988235, 1 )
+shader_param/color_2 = Color( 0.592157, 1, 0, 1 )
+shader_param/color_3 = Color( 0, 1, 0.556863, 1 )
+shader_param/color_4 = null
+shader_param/color_5 = null
+shader_param/color_6 = null
+shader_param/color_7 = null
+shader_param/N = 4
+shader_param/NOISE_PATTERN = SubResource( 3 )
+
+[node name="Circle" type="TextureRect"]
+material = SubResource( 1 )
+anchor_left = 0.00413853
+anchor_top = 0.00706299
+anchor_right = 1.00414
+anchor_bottom = 1.00706
+margin_left = 468.283
+margin_top = -4.23792
+margin_right = 468.283
+margin_bottom = 419.762
+texture = ExtResource( 2 )
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
