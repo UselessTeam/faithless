@@ -1,0 +1,35 @@
+[gd_scene format=2]
+
+[node name="DeckPanel" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Deck" type="ScrollContainer" parent="VBox/HBox"]
+margin_right = 720.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Grid" type="GridContainer" parent="VBox/HBox/Deck"]
+
+[node name="Inspect" type="MarginContainer" parent="VBox/HBox"]
+margin_left = 724.0
+margin_right = 1024.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 300, 0 )
