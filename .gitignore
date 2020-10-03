@@ -11,5 +11,10 @@ mono_crash.*.json
 # VSCode
 .vscode/
 
+# Krita
+*.png~
+*.jpg~
+*.kra~
+
 # Builds
 Builds/
