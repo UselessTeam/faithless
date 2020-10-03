@@ -10,6 +10,7 @@
 margin_right = 354.0
 margin_bottom = 480.0
 rect_min_size = Vector2( 360, 480 )
+focus_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource( 1 )
 script = ExtResource( 5 )
@@ -20,16 +21,19 @@ namePath = NodePath("Content/VBox/Name")
 difficultyPath = NodePath("Content/VBox/Details/Grid/Difficulty")
 weaknessPath = NodePath("Content/VBox/Details/Grid/Weakness")
 rewardPath = NodePath("Content/VBox/Details/Grid/Reward")
+huntPath = NodePath("Content/VBox/Hunt")
 
 [node name="Background" type="TextureRect" parent="."]
 margin_right = 360.0
 margin_bottom = 480.0
+mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true
 
 [node name="Content" type="MarginContainer" parent="."]
 margin_right = 360.0
 margin_bottom = 480.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 20
@@ -42,6 +46,7 @@ margin_left = 20.0
 margin_top = 24.0
 margin_right = 340.0
 margin_bottom = 456.0
+mouse_filter = 2
 
 [node name="Name" type="Label" parent="Content/VBox"]
 margin_right = 320.0
@@ -55,12 +60,14 @@ autowrap = true
 margin_top = 120.0
 margin_right = 320.0
 margin_bottom = 252.0
+mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="Details" type="MarginContainer" parent="Content/VBox"]
 margin_top = 256.0
 margin_right = 320.0
 margin_bottom = 381.0
+mouse_filter = 2
 custom_constants/margin_right = 18
 custom_constants/margin_left = 14
 
@@ -68,6 +75,7 @@ custom_constants/margin_left = 14
 margin_left = 14.0
 margin_right = 302.0
 margin_bottom = 125.0
+mouse_filter = 2
 columns = 2
 
 [node name="DifficultyLabel" type="Label" parent="Content/VBox/Details/Grid"]
