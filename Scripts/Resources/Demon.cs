@@ -3,5 +3,5 @@ using System.Collections.Generic;
 using Godot;
 
 public class Demon : Resource {
-    [Export] int sealSlots = 2;
+    [Export] public readonly int sealSlots = 2;
 }

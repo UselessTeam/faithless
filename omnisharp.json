@@ -4,7 +4,7 @@
         "UseTabs": false,
         "TabSize": 4,
         "IndentationSize": 4,
-        "SpacingAfterMethodDeclarationName": false,
+        "SpacingAfterMethodDeclarationName": true,
         "SpaceWithinMethodDeclarationParenthesis": false,
         "SpaceBetweenEmptyMethodDeclarationParentheses": false,
         "SpaceAfterMethodCallName": false,

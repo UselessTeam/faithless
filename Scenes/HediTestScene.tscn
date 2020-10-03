@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/demon.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Battle/BattleScene.cs" type="Script" id=2]
 [ext_resource path="res://Assets/sealingCircle.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Battle/SealingCircle.cs" type="Script" id=4]
+[ext_resource path="res://Nodes/Battle/CardVisual.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -18,15 +19,15 @@ script = ExtResource( 2 )
 
 [node name="SealingCircle" type="Node2D" parent="."]
 script = ExtResource( 4 )
-sealSlotPath = "res://Nodes/SealSlot.tscn"
+sealSlotPath = "res://Nodes/Battle/SealSlot.tscn"
 
 [node name="CircleDisplay" type="Sprite" parent="SealingCircle"]
 position = Vector2( 475.398, 207.247 )
 texture = ExtResource( 3 )
 
 [node name="Demon" type="AnimatedSprite" parent="SealingCircle"]
-position = Vector2( 469.864, 176.866 )
-scale = Vector2( 0.199721, 0.216126 )
+position = Vector2( 473.435, 192.343 )
+scale = Vector2( 0.553167, 0.525756 )
 frames = SubResource( 1 )
 
 [node name="Center" type="Position2D" parent="SealingCircle"]
@@ -34,3 +35,21 @@ position = Vector2( 469.077, 205.568 )
 
 [node name="FirstSealSlot" type="Position2D" parent="SealingCircle"]
 position = Vector2( 465.108, 343.672 )
+
+[node name="Hand" type="HBoxContainer" parent="."]
+margin_left = 30.0
+margin_top = 356.0
+margin_right = 940.0
+margin_bottom = 558.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CardVisual" parent="Hand" instance=ExtResource( 5 )]
+margin_right = 10.0
+margin_bottom = 202.0
+
+[node name="CardVisual2" parent="Hand" instance=ExtResource( 5 )]
+margin_left = 14.0
+margin_right = 24.0
+margin_bottom = 202.0

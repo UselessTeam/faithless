@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/wood.png-5644a46ff2f5a24d6ebbaf579af6e32b.stex"
+path="res://.import/card_wood.png-f2f210d9614269a1a834e609760908cb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/wood.png"
-dest_files=[ "res://.import/wood.png-5644a46ff2f5a24d6ebbaf579af6e32b.stex" ]
+source_file="res://Assets/Sprites/Talismans/card_wood.png"
+dest_files=[ "res://.import/card_wood.png-f2f210d9614269a1a834e609760908cb.stex" ]
 
 [params]
 

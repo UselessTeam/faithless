@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/earth.png-418cc5baad68a5969c247f8afe5bbdcf.stex"
+path="res://.import/card_earth.png-2c847c04bf61af399a10ae8c22c60d32.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/earth.png"
-dest_files=[ "res://.import/earth.png-418cc5baad68a5969c247f8afe5bbdcf.stex" ]
+source_file="res://Assets/Sprites/Talismans/card_earth.png"
+dest_files=[ "res://.import/card_earth.png-2c847c04bf61af399a10ae8c22c60d32.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/steal.png-a51eba39f7c93870f3051f256bb422ca.stex"
+path="res://.import/card_water.png-655f5267af424a2a9b9815870c91782f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/steal.png"
-dest_files=[ "res://.import/steal.png-a51eba39f7c93870f3051f256bb422ca.stex" ]
+source_file="res://Assets/Sprites/Talismans/card_water.png"
+dest_files=[ "res://.import/card_water.png-655f5267af424a2a9b9815870c91782f.stex" ]
 
 [params]
 

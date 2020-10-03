@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/sealSlot.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Battle/SealSlot.cs" type="Script" id=2]
+
+[node name="SealSlot" type="Control"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )

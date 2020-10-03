@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/water.png-53a6dcecea988d67b96c05d30db55ba1.stex"
+path="res://.import/card_fire.png-dbdba3e9d600da659325f9c6b60c1db9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/water.png"
-dest_files=[ "res://.import/water.png-53a6dcecea988d67b96c05d30db55ba1.stex" ]
+source_file="res://Assets/Sprites/Talismans/card_fire.png"
+dest_files=[ "res://.import/card_fire.png-dbdba3e9d600da659325f9c6b60c1db9.stex" ]
 
 [params]
 
