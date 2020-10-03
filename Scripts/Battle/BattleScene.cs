@@ -92,8 +92,8 @@ public class BattleScene : Node2D {
         for (byte i = 0 ; i < Hand.Count ; i++) {
             var makeCard = (CardVisual) cardVisualPacked.Instance();
             makeCard.id = i;
-            makeCard.ShowCard(Hand[i].CardType());
             MyHand.AddChild(makeCard);
+            makeCard.ShowCard(Hand[i].Data());
         }
     }
 
@@ -110,7 +110,7 @@ public class BattleScene : Node2D {
     }
 
     public void ClickOnSealSlot (byte id) {
-        Card.List[Hand[selectedCard]].Use(id);
+        Hand[selectedCard].Data().Use(id);
     }
 
     ///////////////////

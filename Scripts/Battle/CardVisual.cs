@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-public class CardVisual : Control {
+public class CardVisual : MarginContainer {
     [Signal] public delegate void OnClick (byte id);
     public byte id;
 
@@ -17,7 +17,6 @@ public class CardVisual : Control {
         nameField = GetNode<Label>(namePath);
         kanjiField = GetNode<Label>(kanjiPath);
         Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnCard));
-        ShowCard(Card.Find(0));
     }
 
     public void ShowCard (Card card) {

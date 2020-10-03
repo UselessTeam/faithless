@@ -11,7 +11,7 @@ public enum CardId {
 }
 
 public static class CardIdExtensions {
-    public static Card CardType (this CardId id) {
+    public static Card Data (this CardId id) {
         return Card.Find(id);
     }
 }
