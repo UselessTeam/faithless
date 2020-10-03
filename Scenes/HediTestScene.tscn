@@ -45,17 +45,3 @@ margin_bottom = 621.028
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CardVisual" parent="Hand" instance=ExtResource( 5 )]
-margin_right = 100.0
-margin_bottom = 202.0
-
-[node name="CardVisual2" parent="Hand" instance=ExtResource( 5 )]
-margin_left = 104.0
-margin_right = 204.0
-margin_bottom = 202.0
-
-[node name="CardVisual3" parent="Hand" instance=ExtResource( 5 )]
-margin_left = 208.0
-margin_right = 308.0
-margin_bottom = 202.0

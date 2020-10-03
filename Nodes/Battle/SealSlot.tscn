@@ -9,5 +9,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite" type="TextureRect" parent="."]
+margin_left = -32.8434
+margin_top = -31.7839
+margin_right = 33.1566
+margin_bottom = 30.2161
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

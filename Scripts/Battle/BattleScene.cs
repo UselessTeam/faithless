@@ -8,6 +8,13 @@ public class BattleScene : Node2D {
     [Export] PackedScene cardVisualPacked;
 
     public Control MyHand { get { return GetNode<Control>("Hand"); } }
+    static BattleScene instance;
+    public static BattleScene Instance {
+        get {
+            if (instance == null) GD.PrintErr("Battle Scene is null");
+            return instance;
+        }
+    }
 
     List<CardId> Deck = new List<CardId>() { CardId.BasicEarth, CardId.BasicFire, CardId.BasicMetal, CardId.BasicWater, CardId.BasicWood };
     List<CardId> Hand = new List<CardId>();
@@ -20,11 +27,22 @@ public class BattleScene : Node2D {
     byte Chi;
     byte Health;
 
+    public enum State { PlayerTurn, CardSelected, EnemyTurn }
+    State currentState;
+    byte selectedCard;
+
     public override void _Ready () {
+        instance = this;
         GetNode<SealingCircle>("SealingCircle").ShowSlots(currentDemon.SealSlots);
         Health = MAX_HEALTH;
         StartPlayerTurn();
     }
+
+
+    ///////////////////
+    //////  Cards Management
+    ////////////////
+    ///////
 
     void DrawCards (byte count) {
         for (byte i = 0 ; i < count ; i++) {
@@ -47,6 +65,7 @@ public class BattleScene : Node2D {
     void StartPlayerTurn () {
         Chi = MAX_CHI;
         DrawCards(CARDS_PER_TURN);
+        currentState = State.PlayerTurn;
     }
 
     void EndPlayerTurn () {
@@ -55,12 +74,14 @@ public class BattleScene : Node2D {
             Hand.RemoveAt(0);
         }
         UpdateHand();
+        currentState = State.EnemyTurn;
     }
 
     void UpdateHand () {
         for (byte i = 0 ; i < MyHand.GetChildCount() ; i++) MyHand.GetChild(i).QueueFree();
         for (byte i = 0 ; i < Hand.Count ; i++) {
             var makeCard = (CardVisual) cardVisualPacked.Instance();
+            makeCard.id = i;
             makeCard.ShowCard(Hand[i]);
             MyHand.AddChild(makeCard);
         }
@@ -72,7 +93,24 @@ public class BattleScene : Node2D {
     ////////////////
     //////
 
-    public void ClickOnCard (int id) { }
-    public void ClickOnSealSlot (int id) { }
+    public void ClickOnCard (byte id) {
+        selectedCard = id;
+        currentState = State.CardSelected;
+        GD.Print("Card Selected : " + Hand[id].ToString());
+        //TODO Show description and highlight seals
+    }
+
+    public void ClickOnSealSlot (byte id) {
+        //TODO use the card
+    }
+
+    ///////////////////
+    //////  Battle Effects
+    ////////////////
+    ///////
+
+    public void AddSeal (Element element, byte location) { //TODO
+    }
+
 
 }
