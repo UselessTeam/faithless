@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Nodes/GUI/Thoughts/ThoughtText.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/GUI/Thoughts/ThoughtPopup.cs" type="Script" id=2]
+
+[node name="ThoughtPopup" type="Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ThoughtText" parent="." instance=ExtResource( 1 )]
+anchor_left = 0.2
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.8

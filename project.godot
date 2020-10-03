@@ -22,3 +22,4 @@ config/icon="res://icon.png"
 [autoload]
 
 CardTextureHolder="*res://Nodes/Battle/CardTextureHolder.tscn"
+ThoughtPopup="*res://Nodes/GUI/Thoughts/ThoughtPopup.tscn"
