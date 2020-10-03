@@ -17,11 +17,15 @@ public class CardTextures : Node {
         instance = this;
     }
 
-    public Texture GetTexture (CardId card) {
-        return (card == CardId.BasicFire) ? FireTexture :
-        (card == CardId.BasicWater) ? WaterTexture :
-        (card == CardId.BasicEarth) ? EarthTexture :
-        (card == CardId.BasicWood) ? WoodTexture :
-        (card == CardId.BasicMetal) ? MetalTexture : null;
+    public Texture GetTexture (Element element) {
+        return element switch
+        {
+            Element.Fire => FireTexture,
+            Element.Water => WaterTexture,
+            Element.Wood => WoodTexture,
+            Element.Earth => EarthTexture,
+            Element.Metal => MetalTexture,
+            _ => ColorlessTexture,
+        };
     }
 }

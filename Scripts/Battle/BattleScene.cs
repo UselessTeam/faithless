@@ -82,7 +82,7 @@ public class BattleScene : Node2D {
         for (byte i = 0 ; i < Hand.Count ; i++) {
             var makeCard = (CardVisual) cardVisualPacked.Instance();
             makeCard.id = i;
-            makeCard.ShowCard(Hand[i]);
+            makeCard.ShowCard(Hand[i].CardType());
             MyHand.AddChild(makeCard);
         }
     }

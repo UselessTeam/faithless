@@ -14,6 +14,9 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+backgroundPath = NodePath("Holder/Background")
+namePath = NodePath("Holder/Name")
+kanjiPath = NodePath("Holder/Kanji")
 
 [node name="Holder" type="Control" parent="."]
 margin_right = 180.0
