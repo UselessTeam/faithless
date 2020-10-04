@@ -5,18 +5,22 @@ using Utils;
 
 public class DeckPanel : MarginContainer {
     [Export] NodePath gridPath;
+    [Export] NodePath gridContainerPath;
     [Export] NodePath inspectPath;
     [Export] NodePath banishPath;
     [Export] NodePath pricePath;
     GridContainer gridField;
+    Control gridContainerField;
     SmartText inspectField;
     Button banishField;
     SmartText priceField;
     public override void _Ready () {
         gridField = GetNode<GridContainer>(gridPath);
+        gridContainerField = GetNode<Control>(gridContainerPath);
         inspectField = GetNode<SmartText>(inspectPath);
         banishField = GetNode<Button>(banishPath);
         priceField = GetNode<SmartText>(pricePath);
+        GetTree().Connect("screen_resized", this, nameof(AdjustGrid));
         ShowDeck();
     }
 
@@ -50,6 +54,7 @@ public class DeckPanel : MarginContainer {
 
     const float CARD_WIDTH = 180f;
     private void AdjustGrid () {
-        gridField.Columns = (int) (gridField.RectSize.x / CARD_WIDTH);
+        gridField.Columns = Math.Max(1, (int) (gridContainerField.RectSize.x / CARD_WIDTH));
+        gridField.Update();
     }
 }

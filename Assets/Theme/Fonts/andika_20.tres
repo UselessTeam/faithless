@@ -4,6 +4,8 @@
 
 [resource]
 size = 20
+outline_size = 3
+outline_color = Color( 0, 0, 0, 0.74902 )
 use_filter = true
 extra_spacing_top = -2
 extra_spacing_bottom = -2
