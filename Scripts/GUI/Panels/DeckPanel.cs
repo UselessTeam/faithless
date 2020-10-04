@@ -17,6 +17,7 @@ public class DeckPanel : MarginContainer {
         inspectField = GetNode<SmartText>(inspectPath);
         banishField = GetNode<Button>(banishPath);
         priceField = GetNode<SmartText>(pricePath);
+        ShowDeck();
     }
 
     public void ShowDeck () {
@@ -25,20 +26,21 @@ public class DeckPanel : MarginContainer {
         int index = 0;
         foreach (CardId id in GameData.Instance.Deck) {
             CardVisual visual = CardVisual.Instance();
-            visual.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), index.InArray());
             gridField.AddChild(visual);
+            GD.Print($"card {id}");
+            visual.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard));
             visual.ShowCard(id.Data());
             index++;
         }
     }
 
-    private void CloseCard () {
+    public void CloseCard () {
         inspectField.Hide();
         banishField.Disabled = true;
         priceField.BbcodeText = $"[center]Banish[/center]";
     }
 
-    private void OpenCard (int index) {
+    public void OpenCard (int index) {
         Card card = GameData.Instance.Deck[index].Data();
         inspectField.Text = card.Description;
         inspectField.Show();

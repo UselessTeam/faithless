@@ -13,6 +13,7 @@
 [node name="DeckPanel" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 theme = ExtResource( 4 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -38,6 +39,7 @@ size_flags_vertical = 3
 [node name="Deck" type="ScrollContainer" parent="VBox/HBox"]
 margin_right = 720.0
 margin_bottom = 600.0
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
@@ -82,6 +84,7 @@ margin_left = 724.0
 margin_right = 1024.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 300, 0 )
+mouse_filter = 2
 
 [node name="VBox" type="VBoxContainer" parent="VBox/HBox/Inspect"]
 margin_right = 300.0
@@ -108,6 +111,7 @@ rect_min_size = Vector2( 0, 42 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 4.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/normal = SubResource( 2 )
