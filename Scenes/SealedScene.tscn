@@ -1,0 +1,163 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Nodes/Battle/CardVisual.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Theme/Fonts/shojumaru_42.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Fonts/shojumaru/shojumaru-regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/Sprites/GUI/mon_icon.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=5]
+[ext_resource path="res://Nodes/GUI/Thoughts/ThoughtText.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scripts/GUI/Panels/SealedScene.cs" type="Script" id=7]
+[ext_resource path="res://Scripts/GUI/ScaleContainer.cs" type="Script" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 72
+use_filter = true
+extra_spacing_top = -6
+extra_spacing_bottom = -6
+font_data = ExtResource( 3 )
+
+[node name="SealedScene" type="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_rotation = 0.0058071
+color = Color( 0.756863, 0.756863, 0.756863, 0.247059 )
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+moneyPath = NodePath("Container/Control/HBox/Money")
+cardPath = NodePath("Container/Control/CardVisual")
+descriptionPath = NodePath("Container/Control/ThoughtText/Margin/Text")
+buttonPath = NodePath("Container/Control/Continue")
+
+[node name="Container" type="Container" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -23.9999
+rect_min_size = Vector2( 1000, 600 )
+theme = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ThoughtText" parent="Container/Control" instance=ExtResource( 6 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 114.877
+margin_top = 23.0
+margin_right = 482.877
+margin_bottom = 270.0
+
+[node name="ShadowContainer" parent="Container/Control/ThoughtText" index="0"]
+margin_right = 368.0
+margin_bottom = 247.0
+
+[node name="Margin" parent="Container/Control/ThoughtText" index="1"]
+margin_right = 368.0
+margin_bottom = 247.0
+custom_constants/margin_left = 54
+
+[node name="Text" parent="Container/Control/ThoughtText/Margin" index="0"]
+margin_left = 54.0
+margin_right = 344.0
+margin_bottom = 223.0
+
+[node name="CardVisual" parent="Container/Control" instance=ExtResource( 1 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 7.46521
+margin_top = -130.969
+margin_right = 187.465
+margin_bottom = 269.031
+rect_rotation = 6.0
+mouse_filter = 2
+backgroundPath = NodePath("../../../../SealedScene/Container/Control/CardVisual/Holder/Background")
+namePath = NodePath("../../../../SealedScene/Container/Control/CardVisual/Holder/Name")
+kanjiPath = NodePath("../../../../SealedScene/Container/Control/CardVisual/Holder/Kanji")
+
+[node name="SEALED" type="Label" parent="Container/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -333.0
+margin_top = -273.0
+margin_right = 335.0
+margin_bottom = -141.0
+custom_fonts/font = ExtResource( 2 )
+text = "Sealed"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="Container/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -466.0
+margin_top = -61.0
+margin_right = -73.0
+margin_bottom = 34.0
+rect_rotation = -2.88523
+alignment = 1
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Money" type="Label" parent="Container/Control/HBox"]
+margin_left = 62.0
+margin_top = 1.0
+margin_right = 255.0
+margin_bottom = 94.0
+custom_fonts/font = SubResource( 1 )
+text = "+100"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="Container/Control/HBox"]
+margin_left = 259.0
+margin_right = 331.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 72, 72 )
+
+[node name="TextureRect" type="TextureRect" parent="Container/Control/HBox/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 4 )
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Continue" type="Button" parent="Container/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -354.574
+margin_top = 125.603
+margin_right = -206.574
+margin_bottom = 189.603
+text = "Continue "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[editable path="Container/Control/ThoughtText"]

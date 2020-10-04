@@ -95,7 +95,7 @@ public class SealingCircle : Node2D {
     bool AttackOn (byte i) {
         if (BattleScene.SealSlots[i] == Element.None) {
             // TODO cool attack effect
-            BattleScene.Health -= 1;
+            BattleScene.Instance.Health -= 1;
             return true;
         }
         if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true; //Cool Staggered effect

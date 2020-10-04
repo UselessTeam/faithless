@@ -54,11 +54,13 @@ public class BattleScene : MarginContainer {
     short chi;
     short health;
     public static short Chi { get { return Instance.chi; } set { Instance.chi = value; Instance.chiField.Text = value.ToString(); } }
-    public static short Health {
+    public short Health {
         get { return Instance.health; }
         set {
             Instance.health = value; Instance.hpField.Text = value.ToString();
-            if (Health <= 0) GD.Print("TODO: Die");
+            if (Health <= 0) {
+                LostScene.Loose(GetTree());
+            }
         }
     }
 
@@ -71,7 +73,7 @@ public class BattleScene : MarginContainer {
 
     public override void _Ready () {
         instance = this;
-        Deck = GameData.Instance.Deck;
+        Deck = new List<CardId>(GameData.Instance.Deck);
 
         thought = GetNode<SmartText>(thoughtPath);
         thoughtBubble = GetNode<Control>(thoughtBubblePath);
@@ -300,8 +302,9 @@ public class BattleScene : MarginContainer {
             task = SealCircleField.AppearSeal(location);
         else task = SealCircleField.ReplaceSeal(location);
 
-        if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition())
-            GD.Print("TODO: Win!");
+        if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
+            SealedScene.Win(GetTree());
+        }
 
         await task;
 

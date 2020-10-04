@@ -35,7 +35,15 @@ public class Card : Resource {
         }
         return all;
     }
+    private static List<CardId> GenerateAllSpecial () {
+        List<CardId> all = new List<CardId>();
+        for (int i = 6 ; i < (int) CardId.TOTAL ; i++) {
+            all.Add((CardId) i);
+        }
+        return all;
+    }
     public static List<CardId> All { get; } = GenerateAll();
+    public static List<CardId> AllSpecial { get; } = GenerateAllSpecial();
 
     /*** Fields ***/
     public CardId Id = CardId.None;
