@@ -11,11 +11,8 @@ uniform vec4 color_6 : hint_color;
 uniform vec4 color_7 : hint_color;
 uniform int N;
 
-const float DISPLACEMENT = 100.f;
-const float SPEED = 0.8f;
-const float GLOW_RAD = 20f;
-
 const float R = 0.75f;
+const float SPEED = 4f;
 
 const float TWO_PI = 6.28318530718;
 const float HALF_PI = 1.5707963267949;
@@ -38,11 +35,8 @@ vec4 color_get(int id) {
 
 float index_at(float theta) {
     float frac = (theta - HALF_PI) / TWO_PI;
-    while(frac < 0f) {
+    if(frac < 0f) {
         frac += 1f;
-    }
-    while(frac >= 1f) {
-        frac -= 1f;
     }
     return frac * float(N);
 }
@@ -58,17 +52,12 @@ vec4 color_at(float theta) {
     return (1f - frac) * color_get(i) + frac * color_get(j);
 }
 
-vec4 displaced(float x, float y, vec2 d, vec2 _uv, sampler2D t) {
-    vec2 displacement = vec2(d.x * x, d.y * y);
-    vec2 uv = _uv + displacement;
-    if (uv.x < 0f || uv.y < 0f || uv.x > 1f || uv.y > 1f) {
-        return vec4(0f);
-    }
-    return texture(t, uv) / 4f;
-}
-
-float intensity_at_rand(float value) {
-    return texture(NOISE_PATTERN, vec2(0.5f + 0.5f * cos(value), 0.5f + 0.5f * sin(value))).x;
+float intensity_at_rand(float value, float t) {
+    return 0f;
+    // return 0.2f * sin(2f * value + 1.22f * sin(t))
+    //      + 0.2f* sin(3f * value + 1.33f * sin(1.2f * t))
+    //      + 0.3f* sin(5f * value + 1.55f * sin(1.3f * t))
+    //      + 0.3f* sin(7f * value + 1.77f * sin(1.5f * t));
 }
 
 float intensity_at_theta(float theta) {
@@ -88,14 +77,6 @@ float ray_d(float r) {
     return p;
 }
 
-vec4 glow(sampler2D _texture, vec2 uv) {
-    return texture(_texture, uv);
-}
-
-vec2 card(float r, float theta) {
-    return vec2(0.5f * r * cos(theta) + 0.5f, 0.5f * r * sin(theta) + 0.5f);
-}
-
 void fragment() {
     float x = 2f * (UV.x - 0.5f);
     float y = 2f * (UV.y - 0.5f);
@@ -110,26 +91,19 @@ void fragment() {
         }
         float abs_intensity = intensity_at_theta(theta);
         float thick_intensity = 0.7f + 0.3f * intensity_seal(theta);
-        float rand_intensity = 0.1f +
-             + 0.4f * intensity_at_rand(SPEED * TIME)
-             + 0.35f * intensity_at_rand(theta + SPEED * TIME)
-             + 0.35f * intensity_at_rand(theta - SPEED * TIME);
+        float rand_intensity = 1f +
+             + 0.2f * intensity_at_rand(SPEED * TIME, TIME)
+             + 0.15f * intensity_at_rand(theta + SPEED * TIME, TIME)
+             + 0.15f * intensity_at_rand(theta - SPEED * TIME, TIME);
         float intensity = abs_intensity * thick_intensity * rand_intensity;
-        float d = (1f - 30f * ray_d(r));
-        float dd = d * (0.8f + 0.2f * thick_intensity) * abs_intensity;
+        float dd = (1f - 30f * ray_d(r)) * (0.8f + 0.2f * thick_intensity) * abs_intensity;
         intensity += dd;
-        float off = intensity;
-        r = r + 0.01f * off;
-        vec2 uv = card(r, theta);
         vec4 color = color_at(theta);
         if (0.1f * intensity + dd >= 1.05f) {
             color.a = 1f;
             color.rgb *= 1.2f;
-        } else if (intensity <= 0.2f) {
-            color = vec4(0);
         } else {
-            color = color_at(theta);
-            color.a = 0.4f * intensity + 0.05f;
+            color.a = max(0, 0.4f * intensity + 0.05f);
         }
         COLOR = color;
     }

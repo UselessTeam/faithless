@@ -8,9 +8,6 @@ const float OFF = 10f;
 vec4 displaced(float x, float y, vec2 _uv, sampler2D t) {
     vec2 displacement = vec2(x, y);
     vec2 uv = _uv + displacement;
-    if (uv.x < 0f || uv.y < 0f || uv.x > 1f || uv.y > 1f) {
-        return vec4(0f);
-    }
     return texture(t, uv) / 4f;
 }
 
