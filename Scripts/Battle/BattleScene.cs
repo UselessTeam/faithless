@@ -15,11 +15,27 @@ public class BattleScene : MarginContainer {
         }
     }
 
-    [Export] Demon currentDemon = new Demon() { SealSlots = 6 };
-    [Export] PackedScene cardVisualPacked;
+    /*** Nodes ***/
+    [Export] NodePath endTurnPath;
+    [Export] NodePath chiPath;
+    [Export] NodePath hpPath;
+    [Export] NodePath deckPath;
+    [Export] NodePath discardPath;
+    [Export] NodePath handPath;
+    [Export] NodePath deleteHandPath;
+    [Export] NodePath sealingCirclePath;
 
-    public Control MyHand { get { return GetNode<Control>("Hand"); } }
-    public SealingCircle MySealCircle { get { return GetNode<SealingCircle>("SealingCircle"); } }
+    Label chiField;
+    Label hpField;
+    Label deckField;
+    Label discardField;
+    public Control HandField;
+    public Control DeleteHandField;
+    public SealingCircle SealCircleField;
+
+
+    /*** Others ***/
+    [Export] Demon currentDemon = new Demon() { SealSlots = 6 };
 
     public static List<CardId> Deck;
 
@@ -28,22 +44,17 @@ public class BattleScene : MarginContainer {
 
     public static List<Element> SealSlots;
 
-    Label ChiValue { get { return GetNode<Label>("StatsDisplay/ChiValue"); } }
-    Label HpValue { get { return GetNode<Label>("StatsDisplay/HpValue"); } }
-    Label DeckValue { get { return GetNode<Label>("StatsDisplay/DeckValue"); } }
-    Label DiscardValue { get { return GetNode<Label>("StatsDisplay/DiscardValue"); } }
-
     const byte MAX_CHI = 5;
     const byte MAX_HEALTH = 3;
     const byte CARDS_PER_TURN = 4;
 
     short chi;
     short health;
-    public static short Chi { get { return Instance.chi; } set { Instance.chi = value; Instance.ChiValue.Text = value.ToString(); } }
+    public static short Chi { get { return Instance.chi; } set { Instance.chi = value; Instance.chiField.Text = value.ToString(); } }
     public static short Health {
         get { return Instance.health; }
         set {
-            Instance.health = value; Instance.HpValue.Text = value.ToString();
+            Instance.health = value; Instance.hpField.Text = value.ToString();
             if (Health <= 0) GD.Print("TODO: Die");
         }
     }
@@ -59,13 +70,22 @@ public class BattleScene : MarginContainer {
         instance = this;
         Deck = GameData.Instance.Deck;
 
-        GetNode<Button>("EndTurn").Connect("button_down", this, nameof(EndPlayerTurn));
+        chiField = GetNode<Label>(chiPath);
+        hpField = GetNode<Label>(hpPath);
+        deckField = GetNode<Label>(deckPath);
+        discardField = GetNode<Label>(discardPath);
 
-        MySealCircle.InitializeSlots(currentDemon.SealSlots);
+        HandField = GetNode<Control>(handPath);
+        DeleteHandField = GetNode<Control>(deleteHandPath);
+        SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
+
+        GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
+
+        SealCircleField.InitializeSlots(currentDemon.SealSlots);
         Health = MAX_HEALTH;
         SealSlots = Enumerable.Repeat(Element.None, currentDemon.SealSlots).ToList(); ;
 
-        MySealCircle.PlanNextDemonTurn(); // This function will start the player's turn once it's done
+        SealCircleField.PlanNextDemonTurn(); // This function will start the player's turn once it's done
     }
 
     ///////////////////
@@ -87,23 +107,23 @@ public class BattleScene : MarginContainer {
 
             var makeCard = CardVisual.Instance();
             makeCard.Connect(nameof(CardVisual.OnClick), Instance, nameof(ClickOnCard));
-            Instance.MyHand.AddChild(makeCard);
+            Instance.HandField.AddChild(makeCard);
             makeCard.Modulate = new Color(1, 1, 1, 0);
             makeCard.ShowCard(addCard.Data());
             makeCard.MoveFrom(new Vector2(1000, 0));
-            await Instance.ToSignal(Instance.MyHand.GetChild<CardVisual>(Instance.MyHand.GetChildCount() - 1).MyTween, "tween_completed");
+            await Instance.ToSignal(Instance.HandField.GetChild<CardVisual>(Instance.HandField.GetChildCount() - 1).MyTween, "tween_completed");
         }
-        Instance.MyHand.Hide();
-        Instance.MyHand.Show();
+        Instance.HandField.Hide();
+        Instance.HandField.Show();
     }
 
     public static async void DiscardCard (byte index) {
-        var toDiscard = Instance.MyHand.GetChild<CardVisual>(index);
+        var toDiscard = Instance.HandField.GetChild<CardVisual>(index);
         toDiscard.IsDisabled = true;
         Discard.Add(Hand[index]);
         Hand.RemoveAt(index);
-        Instance.MyHand.RemoveChild(toDiscard);
-        Instance.GetNode("ToDeleteHand").AddChild(toDiscard);
+        Instance.HandField.RemoveChild(toDiscard);
+        Instance.DeleteHandField.AddChild(toDiscard);
 
         toDiscard.Disappear();
         await Instance.ToSignal(toDiscard.MyTween, "tween_completed");
@@ -129,7 +149,7 @@ public class BattleScene : MarginContainer {
         }
         currentState = State.EnemyTurn;
         await EndTurnEffects();
-        MySealCircle.PlayDemonTurn();
+        SealCircleField.PlayDemonTurn();
     }
 
     //////////////////
@@ -138,19 +158,19 @@ public class BattleScene : MarginContainer {
     //////////
 
     void DisplayHand () {
-        MyHand.QueueFreeChildren();
+        HandField.QueueFreeChildren();
         for (byte i = 0 ; i < Hand.Count ; i++) {
             var makeCard = CardVisual.Instance();
             makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(ClickOnCard));
-            MyHand.AddChild(makeCard);
+            HandField.AddChild(makeCard);
             makeCard.ShowCard(Hand[i].Data());
         }
         DisplayDeckAndDiscard();
     }
 
     void DisplayDeckAndDiscard () {
-        DeckValue.Text = Deck.Count.ToString();
-        DiscardValue.Text = Discard.Count.ToString();
+        deckField.Text = Deck.Count.ToString();
+        discardField.Text = Discard.Count.ToString();
     }
 
     //////////////////////
@@ -161,7 +181,7 @@ public class BattleScene : MarginContainer {
     public void ClickOnCard (byte id) {
         // Unselect previous card
         if (selectedCard < byte.MaxValue)
-            MyHand.GetChild<CanvasItem>(selectedCard).Modulate = new Color(1, 1, 1, 1);
+            HandField.GetChild<CanvasItem>(selectedCard).Modulate = new Color(1, 1, 1, 1);
 
         if (Hand[id].Data().Cost > Chi) {
             GD.Print("Not enough Chi");
@@ -244,7 +264,7 @@ public class BattleScene : MarginContainer {
         if (!SealSlots.Contains(Element.None) && currentDemon.CheckWinCondition())
             GD.Print("TODO: Win!");
 
-        MySealCircle.DisplaySeals();
+        SealCircleField.DisplaySeals();
     }
 
     async public Task StartTurnEffects () {
@@ -254,7 +274,7 @@ public class BattleScene : MarginContainer {
                 || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) {// If there is a fire after or before
                     Chi += 1;
                     SealSlots[i] = Element.Fire;
-                    MySealCircle.DisplaySeals();
+                    SealCircleField.DisplaySeals();
                 }
             }
         }

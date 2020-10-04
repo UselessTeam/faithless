@@ -44,6 +44,14 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+endTurnPath = NodePath("Holder/Bottom/HBox/VBoxContainer/EndTurn")
+chiPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/ChiValue")
+hpPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/HpValue")
+deckPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/DiscardValue")
+discardPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/DeckValue")
+handPath = NodePath("Holder/Bottom/HBox/Control/Hand")
+deleteHandPath = NodePath("Holder/Bottom/HBox/Control/ToDeleteHand")
+sealingCirclePath = NodePath("Holder/Top/Center/Ping/SealingCircle")
 
 [node name="Holder" type="Control" parent="."]
 margin_right = 1024.0
@@ -98,7 +106,7 @@ position = Vector2( 0, 140 )
 [node name="Demon" type="AnimatedSprite" parent="Holder/Top/Center/Ping"]
 scale = Vector2( 0.178569, 0.180013 )
 frames = SubResource( 5 )
-frame = 6
+frame = 4
 playing = true
 
 [node name="Bottom" type="MarginContainer" parent="Holder"]

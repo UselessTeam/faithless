@@ -107,7 +107,7 @@ public class SealingCircle : Node2D {
 
         isStaggered = false;
         DisplayActionPlan();
-        GetParent<BattleScene>().StartPlayerTurn();
+        BattleScene.Instance.StartPlayerTurn();
     }
 
 
