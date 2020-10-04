@@ -59,7 +59,7 @@ public class BattleScene : MarginContainer {
         }
     }
 
-    public enum State { PlayerTurn, CardSelected, EnemyTurn }
+    public enum State { PlayerTurn, CardSelected, SomethingHappening, EnemyTurn }
     State currentState = State.EnemyTurn;
     byte selectedCard = byte.MaxValue;
 
@@ -106,7 +106,7 @@ public class BattleScene : MarginContainer {
             Deck.RemoveAt(0);
 
             var makeCard = CardVisual.Instance();
-            makeCard.Connect(nameof(CardVisual.OnClick), Instance, nameof(ClickOnCard));
+            makeCard.Connect(nameof(CardVisual.OnClick), Instance, nameof(SelectCard));
             Instance.HandField.AddChild(makeCard);
             makeCard.Modulate = new Color(1, 1, 1, 0);
             makeCard.ShowCard(addCard.Data());
@@ -117,7 +117,7 @@ public class BattleScene : MarginContainer {
         Instance.HandField.Show();
     }
 
-    public static async void DiscardCard (byte index) {
+    public static async Task DiscardCard (byte index) {
         var toDiscard = Instance.HandField.GetChild<CardVisual>(index);
         toDiscard.IsDisabled = true;
         Discard.Add(Hand[index]);
@@ -144,9 +144,11 @@ public class BattleScene : MarginContainer {
 
     async void EndPlayerTurn () {
         if (currentState == State.EnemyTurn) return;
+        Task task = null;
         while (Hand.Count > 0) {
-            DiscardCard(0);
+            task = DiscardCard(0);
         }
+        if (task != null) await task;
         currentState = State.EnemyTurn;
         await EndTurnEffects();
         await SealCircleField.PlayDemonTurn();
@@ -157,16 +159,16 @@ public class BattleScene : MarginContainer {
     ///////////////
     //////////
 
-    void DisplayHand () {
-        HandField.QueueFreeChildren();
-        for (byte i = 0 ; i < Hand.Count ; i++) {
-            var makeCard = CardVisual.Instance();
-            makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(ClickOnCard));
-            HandField.AddChild(makeCard);
-            makeCard.ShowCard(Hand[i].Data());
-        }
-        DisplayDeckAndDiscard();
-    }
+    // void DisplayHand () {
+    //     HandField.QueueFreeChildren();
+    //     for (byte i = 0 ; i < Hand.Count ; i++) {
+    //         var makeCard = CardVisual.Instance();
+    //         makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard));
+    //         HandField.AddChild(makeCard);
+    //         makeCard.ShowCard(Hand[i].Data());
+    //     }
+    //     DisplayDeckAndDiscard();
+    // }
 
     void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count.ToString();
@@ -178,15 +180,16 @@ public class BattleScene : MarginContainer {
     ////////////////
     //////
 
-    public void ClickOnCard (byte id) {
+    public void SelectCard (byte id) {
+        if (currentState == State.SomethingHappening)
+            return;
+
         // Unselect previous card
         if (selectedCard < byte.MaxValue)
-            HandField.GetChild<CanvasItem>(selectedCard).Modulate = new Color(1, 1, 1, 1);
+            DeselectCard();
 
         if (Hand[id].Data().Cost > Chi) {
-            GD.Print("Not enough Chi");
-            // TODO : Not enough chi
-            return;
+            GD.Print("Not enough Chi"); //Might be usefull?
         }
         // Logic selection
         selectedCard = id;
@@ -194,25 +197,32 @@ public class BattleScene : MarginContainer {
         GD.Print("Card Selected : " + Hand[id].ToString());
 
         // Display selection
-        // MyHand.GetChild<CanvasItem>(selectedCard).Modulate = new Color(1, 1, 0.6f, 0.9f);
-        //TODO Show description and highlight seals
+        //TODO Show description and highlight Card
 
     }
 
-    public void ClickOnSealSlot (byte id) {
+    async public void ClickOnSealSlot (byte id) {
         if (currentState != State.CardSelected) return;
+        currentState = State.SomethingHappening;
 
         //Use the card
-        Chi -= Hand[selectedCard].Data().Cost;
-        if (Chi < 0) GD.PrintErr("NegativeChi");
-        Hand[selectedCard].Data().Use(id);
+        if (Chi >= Hand[selectedCard].Data().Cost
+        && Card.CheckPlayable(Hand[selectedCard], SealSlots[id])) { //Check if we can play the card
+            await Hand[selectedCard].Data().Use(id);
 
-        // Discard the Card
-        DiscardCard(selectedCard);
+            // Discard the Card
+            await DiscardCard(selectedCard);
+        }
 
-        //Switch State
+        DeselectCard();
+        currentState = State.PlayerTurn;
+    }
+
+    public void DeselectCard () {
         selectedCard = byte.MaxValue;
         currentState = State.PlayerTurn;
+        GD.Print("Card Deselect");
+        //TODO
     }
 
     ///////////////////
@@ -238,12 +248,8 @@ public class BattleScene : MarginContainer {
         var OldElement = SealSlots[location];
         SealSlots[location] = element;
         Task task;
-        if (OldElement == Element.None)
-            task = SealCircleField.AppearSeal(location);
-        else task = SealCircleField.ReplaceSeal(location);
 
-
-        if (element == Element.Earth && SealSlots.Contains(Element.None)) {
+        if (element == Element.Earth && SealSlots.Contains(Element.None)) { //Earth related movement
             int moveLocation = location;
             var moveElement = OldElement;
             if (moveElement == Element.None) {
@@ -263,6 +269,9 @@ public class BattleScene : MarginContainer {
             }
         }
 
+        if (OldElement == Element.None)
+            task = SealCircleField.AppearSeal(location);
+        else task = SealCircleField.ReplaceSeal(location);
 
         if (!SealSlots.Contains(Element.None) && currentDemon.CheckWinCondition())
             GD.Print("TODO: Win!");
@@ -297,7 +306,7 @@ public class BattleScene : MarginContainer {
             if (SealSlots[i] == Element.Wood) {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water
                 || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) {// If there is a water after or before
-                    // TODO: show a cute water effect on the wood
+                                                                                             // TODO: show a cute water effect on the wood
                     await DrawCards(1);
                 }
             }

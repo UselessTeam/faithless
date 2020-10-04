@@ -34,6 +34,11 @@ public class Card : Resource {
     public Func<byte, Task> Use = (byte id) => { GD.PrintErr("This card does nothing"); return null; };
     public Texture Texture => CardTextures.Instance.GetTexture(Element);
 
+    // Requirement
+    public Element RequiredElement = Element.None;
+    public bool RequireEmpty = false;
+    public bool RequireFull = false;
+
     private Card () { }
     // private Card (Element element, byte cost, string description, Action<byte> use) { this.Element = element; this.Cost = cost; this.Description = description; this.Use = use; }
 
@@ -147,6 +152,16 @@ public class Card : Resource {
     // Confusion,
     public static Card Find (CardId id) {
         return list[id];
+    }
+    public static bool CheckPlayable (CardId id, Element currentElement) {
+        Card card = Find(id);
+        if (card.RequiredElement != Element.None && card.RequiredElement != currentElement)
+            return false;
+        if (card.RequireEmpty && currentElement != Element.None)
+            return false;
+        if (card.RequireFull && currentElement == Element.None)
+            return false;
+        return true;
     }
 }
 
