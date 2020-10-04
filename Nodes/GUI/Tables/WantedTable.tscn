@@ -1,25 +1,27 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=1]
 [ext_resource path="res://Assets/Theme/Fonts/shojumaru_42.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Assets/Sprites/GUI/temporary_background.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/Background/wanted_poster.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Theme/Fonts/shojumaru_32.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Scripts/GUI/Tables/WantedTable.cs" type="Script" id=5]
 [ext_resource path="res://Assets/Fonts/kaushan-script/KaushanScript-Regular.otf" type="DynamicFontData" id=6]
+[ext_resource path="res://Assets/Sprites/Oni/kasaobake.png" type="Texture" id=7]
+[ext_resource path="res://Scripts/GUI/ScaleContainer.cs" type="Script" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="StyleBoxEmpty" id=2]
 
-[sub_resource type="StyleBoxEmpty" id=3]
-
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=3]
 size = 22
 use_filter = true
 extra_spacing_top = -1
 extra_spacing_bottom = -1
 font_data = ExtResource( 6 )
 
-[sub_resource type="Theme" id=1]
-default_font = SubResource( 4 )
+[sub_resource type="Theme" id=4]
+default_font = SubResource( 3 )
 RichTextLabel/colors/default_color = Color( 0, 0, 0, 1 )
 RichTextLabel/colors/font_color_selected = Color( 0.49, 0.49, 0.49, 1 )
 RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 0 )
@@ -35,8 +37,8 @@ RichTextLabel/fonts/bold_italics_font = null
 RichTextLabel/fonts/italics_font = null
 RichTextLabel/fonts/mono_font = null
 RichTextLabel/fonts/normal_font = null
-RichTextLabel/styles/focus = SubResource( 2 )
-RichTextLabel/styles/normal = SubResource( 3 )
+RichTextLabel/styles/focus = SubResource( 1 )
+RichTextLabel/styles/normal = SubResource( 2 )
 
 [node name="WantedTable" type="MarginContainer"]
 margin_right = 354.0
@@ -61,6 +63,7 @@ margin_bottom = 480.0
 mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true
+stretch_mode = 1
 
 [node name="Content" type="MarginContainer" parent="."]
 margin_right = 360.0
@@ -88,15 +91,40 @@ text = "Kasa Obake"
 align = 1
 autowrap = true
 
-[node name="Image" type="TextureRect" parent="Content/VBox"]
+[node name="Middle" type="Control" parent="Content/VBox"]
 margin_top = 120.0
 margin_right = 320.0
-margin_bottom = 252.0
+margin_bottom = 293.0
 mouse_filter = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Container" type="Container" parent="Content/VBox/Middle"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -20.0
+margin_bottom = 40.0
+mouse_filter = 2
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="Content/VBox/Middle/Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 700, 700 )
+rect_scale = Vector2( 0.2, 0.2 )
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 7 )
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Details" type="MarginContainer" parent="Content/VBox"]
-margin_top = 256.0
+margin_top = 297.0
 margin_right = 320.0
 margin_bottom = 381.0
 mouse_filter = 2
@@ -106,65 +134,67 @@ custom_constants/margin_left = 14
 [node name="Grid" type="GridContainer" parent="Content/VBox/Details"]
 margin_left = 14.0
 margin_right = 302.0
-margin_bottom = 125.0
+margin_bottom = 84.0
 mouse_filter = 2
+custom_constants/vseparation = 0
 columns = 2
 
 [node name="DifficultyLabel" type="Label" parent="Content/VBox/Details/Grid"]
 margin_right = 142.0
-margin_bottom = 39.0
+margin_bottom = 42.0
 size_flags_horizontal = 3
 text = "Difficulty"
 
 [node name="Difficulty" type="Label" parent="Content/VBox/Details/Grid"]
 margin_left = 146.0
 margin_right = 288.0
-margin_bottom = 39.0
+margin_bottom = 42.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "Easy"
 align = 2
 
 [node name="WeaknessLabel" type="Label" parent="Content/VBox/Details/Grid"]
-margin_top = 43.0
+visible = false
+margin_top = 42.0
 margin_right = 142.0
-margin_bottom = 82.0
+margin_bottom = 84.0
 size_flags_horizontal = 3
 text = "Weakness"
 
 [node name="Weakness" type="Label" parent="Content/VBox/Details/Grid"]
-margin_left = 146.0
-margin_top = 43.0
-margin_right = 288.0
-margin_bottom = 82.0
+visible = false
+margin_top = 42.0
+margin_right = 142.0
+margin_bottom = 84.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "Fire & Metal"
 align = 2
 
 [node name="RewardLabel" type="Label" parent="Content/VBox/Details/Grid"]
-margin_top = 86.0
+margin_top = 42.0
 margin_right = 142.0
-margin_bottom = 125.0
+margin_bottom = 84.0
 size_flags_horizontal = 3
 text = "Reward"
 
 [node name="MarginContainer" type="MarginContainer" parent="Content/VBox/Details/Grid"]
 margin_left = 146.0
-margin_top = 86.0
+margin_top = 42.0
 margin_right = 288.0
-margin_bottom = 125.0
+margin_bottom = 84.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 3
 
 [node name="Reward" type="RichTextLabel" parent="Content/VBox/Details/Grid/MarginContainer"]
 margin_top = 3.0
 margin_right = 134.0
-margin_bottom = 39.0
+margin_bottom = 42.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
-theme = SubResource( 1 )
+theme = SubResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[right]1000[/right] "
 text = "1000 "
