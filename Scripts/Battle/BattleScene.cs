@@ -102,7 +102,7 @@ public class BattleScene : Node2D {
     void UpdateHand () {
         for (byte i = 0 ; i < MyHand.GetChildCount() ; i++) MyHand.GetChild(i).QueueFree();
         for (byte i = 0 ; i < Hand.Count ; i++) {
-            var makeCard = (CardVisual) cardVisualPacked.Instance();
+            var makeCard = CardVisual.Instance();
             makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(ClickOnCard));
             MyHand.AddChild(makeCard);
             makeCard.ShowCard(Hand[i].Data());

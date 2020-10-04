@@ -11,6 +11,10 @@ public class CardVisual : MarginContainer {
     Label nameField;
     Label kanjiField;
 
+    public static CardVisual Instance () {
+        return (CardVisual) ResourceLoader.Load<PackedScene>("res://Nodes/Battle/CardVisual.tscn").Instance();
+    }
+
     public override void _Ready () {
         backgroundField = GetNode<TextureRect>(backgroundPath);
         nameField = GetNode<Label>(namePath);
