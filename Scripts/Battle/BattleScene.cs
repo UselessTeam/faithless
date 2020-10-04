@@ -174,7 +174,6 @@ public class BattleScene : Node2D {
 
     public void AddSeal (Element element, byte location) {
         SealSlots[location] = element;
-        GD.Print("Added element ", SealSlots[location].ToString());
         // TODO, apply effects
         MySealCircle.DisplaySeals();
     }

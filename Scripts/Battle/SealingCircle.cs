@@ -42,7 +42,6 @@ public class SealingCircle : Node2D {
 
     public void DisplaySeals () {
         byte i = 0;
-        GD.Print("PrintingSLots");
         foreach (var slot in BattleScene.SealSlots) {
             SealSlotDisplays.GetChild<SealSlot>(i).ShowSlot(slot);
             i++;
@@ -52,9 +51,10 @@ public class SealingCircle : Node2D {
         ArrowDisplays.QueueFreeChildren();
         for (byte i = 0 ; i < SlotCount ; i++) {
             if (actionPlan[i] != DemonAction.None) {
-                var arrow = GD.Load<PackedScene>(arrowPath).Instance().GetNode<Node2D>("./");
+                var arrow = GD.Load<PackedScene>(arrowPath).Instance().GetNode<IntentArrow>("./");
                 arrow.GlobalPosition = CenterPosition + CenterToSlot / 2;
                 arrow.Rotate(2 * Mathf.Pi * i / SlotCount);
+                arrow.ShowArrow(actionPlan[i]);
                 ArrowDisplays.AddChild(arrow);
             }
             CenterToSlot = CenterToSlot.Rotated(2 * Mathf.Pi / SlotCount);
@@ -70,8 +70,6 @@ public class SealingCircle : Node2D {
     public void PlayDemonTurn () {
         byte i = 0;
         foreach (var action in actionPlan) {
-            GD.Print(action.ToString());
-
             switch (action) {
                 case DemonAction.Attack:
                 case DemonAction.AttackPierce:

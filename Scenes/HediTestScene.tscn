@@ -27,10 +27,10 @@ region = Rect2( 2016, 0, 672, 679 )
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 3 ), SubResource( 2 ), SubResource( 5 ) ],
 "loop": true,
 "name": "default",
-"speed": 5.0
+"speed": 7.0
 } ]
 
 [node name="BattelScene" type="Node2D"]
@@ -50,6 +50,8 @@ texture = ExtResource( 3 )
 position = Vector2( 469.192, 185.272 )
 scale = Vector2( 0.178569, 0.180013 )
 frames = SubResource( 1 )
+frame = 4
+playing = true
 
 [node name="Center" type="Position2D" parent="SealingCircle"]
 position = Vector2( 469.077, 205.568 )

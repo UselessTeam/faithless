@@ -24,7 +24,7 @@ public class Card : Resource {
     public Element Element = Element.None;
     public byte Cost = byte.MaxValue;
     public string Description = "This is an empty card";
-    public Action<byte> Use = (byte id) => { GD.Print("This card does nothing"); };
+    public Action<byte> Use = (byte id) => { GD.PrintErr("This card does nothing"); };
     public Texture Texture => CardTextures.Instance.GetTexture(Element);
 
     private Card () { }
