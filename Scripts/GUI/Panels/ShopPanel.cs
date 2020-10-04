@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using Utils;
 
@@ -49,7 +50,8 @@ public class ShopPanel : ScaleContainer {
     public void Init () {
         bubbleText.Text = WELCOME_MESSAGES.Random();
         buyButton.Hide();
-        Load(CardId.BasicMetal, CardId.BasicEarth, CardId.BasicFire);
+        List<CardId> all = new List<CardId>(Card.All);
+        Load(all.PopRandom(), all.PopRandom(), all.PopRandom());
     }
 
     private readonly string[] AGAIN_MESSAGES = new string[] {

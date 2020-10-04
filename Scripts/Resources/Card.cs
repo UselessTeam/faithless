@@ -15,6 +15,7 @@ public enum CardId {
     Harvest,
     Flood,
     Forge,
+    TOTAL, // Leave at the end
 }
 
 public static class CardIdExtensions {
@@ -26,7 +27,15 @@ public static class CardIdExtensions {
 public enum Element { None, Fire, Water, Wood, Earth, Metal }
 public class Card : Resource {
     // [Export] readonly ushort Id = ushort.MaxValue;
-    public string Name = "UnamCardId.BasicEarth, CardId.BasicFire, CardId.BasicMetal, CardId.BasicWater, CardId.BasicWooded";
+    private static List<CardId> GenerateAll () {
+        List<CardId> all = new List<CardId>();
+        for (int i = 1 ; i < (int) CardId.TOTAL ; i++) {
+            all.Add((CardId) i);
+        }
+        return all;
+    }
+    public static List<CardId> All { get; } = GenerateAll();
+    public string Name = "Unamed";
     public string Kanji = "無";
     public Element Element = Element.None;
     public byte Cost = byte.MaxValue;
@@ -91,7 +100,7 @@ public class Card : Resource {
             {CardId.Drought,
                 new Card {
                 Name = "Drought",
-                Kanji = "金",
+                Kanji = "旱",
                 Element = Element.Fire,
                 Cost = 1,
                 Description = "Remove all Water Seals and gain 2 Chi for each one discarded\nReplace all Wood Seals by Earth Seals",
@@ -105,7 +114,7 @@ public class Card : Resource {
             {CardId.Harvest,
                 new Card {
                 Name = "Harvest",
-                Kanji = "金",
+                Kanji = "穫",
                 Element = Element.Wood,
                 Cost = 2,
                 Description = "Draw one card for each Wood Seal on the sealing circle",
@@ -118,7 +127,7 @@ public class Card : Resource {
             {CardId.Forge,
                 new Card {
                 Name = "Forge",
-                Kanji = "金",
+                Kanji = "鍛",
                 Element = Element.Wood,
                 Cost = 1,
                 Description = "Remove one Metal Seal. The next card you play will be free",
@@ -135,7 +144,7 @@ public class Card : Resource {
             {CardId.Flood,
                 new Card {
                 Name = "Flood",
-                Kanji = "金",
+                Kanji = "洪",
                 Element = Element.Water,
                 Cost = 1,
                 Description = "Replace half of the seals on the sealing circle by Water Seals",

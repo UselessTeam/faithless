@@ -97,10 +97,10 @@ __meta__ = {
 [node name="Card" parent="Objects/RightCardHolder" instance=ExtResource( 2 )]
 
 [node name="ItemHolder" type="MarginContainer" parent="Objects"]
-margin_left = 189.737
-margin_top = 199.063
-margin_right = 237.737
-margin_bottom = 247.063
+margin_left = 206.219
+margin_top = 190.073
+margin_right = 254.219
+margin_bottom = 238.073
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -112,31 +112,30 @@ margin_bottom = 48.0
 texture = ExtResource( 3 )
 
 [node name="Speech" type="MarginContainer" parent="Objects"]
-margin_left = 10.0
 margin_top = 256.0
-margin_right = 329.0
-margin_bottom = 407.0
+margin_right = 351.0
+margin_bottom = 549.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="VBox" type="VBoxContainer" parent="Objects/Speech"]
-margin_right = 319.0
-margin_bottom = 151.0
+margin_right = 351.0
+margin_bottom = 293.0
 
 [node name="Text" parent="Objects/Speech/VBox" instance=ExtResource( 5 )]
-margin_right = 319.0
-margin_bottom = 105.0
+margin_right = 351.0
+margin_bottom = 247.0
 bbcode_text = "Hello, what do you want to buy?"
 text = "Hello, what do you want to buy?"
 
 [node name="Buy" parent="Objects/Speech/VBox" instance=ExtResource( 7 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 109.0
-margin_right = 319.0
-margin_bottom = 151.0
+margin_top = 251.0
+margin_right = 351.0
+margin_bottom = 293.0
 
 [node name="Wheel" type="Control" parent="."]
 anchor_right = 2.0
