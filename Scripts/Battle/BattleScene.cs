@@ -73,12 +73,12 @@ public class BattleScene : Node2D {
     ////////////////
     ///////
 
-    async Task DrawCards (byte count) {
+    public static async Task DrawCards (byte count) {
         for (byte i = 0 ; i < count ; i++) {
             if (Deck.Count == 0) {
                 Deck = Discard;
                 Discard = new List<CardId>();
-                ShuffleDeck();
+                Instance.ShuffleDeck();
             }
             if (Deck.Count == 0) GD.PrintErr("No more cards to draw");
             var addCard = Deck[0];
@@ -86,29 +86,29 @@ public class BattleScene : Node2D {
             Deck.RemoveAt(0);
 
             var makeCard = CardVisual.Instance();
-            makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(ClickOnCard));
-            MyHand.AddChild(makeCard);
+            makeCard.Connect(nameof(CardVisual.OnClick), Instance, nameof(ClickOnCard));
+            Instance.MyHand.AddChild(makeCard);
             makeCard.Modulate = new Color(1, 1, 1, 0);
             makeCard.ShowCard(addCard.Data());
             makeCard.MoveFrom(new Vector2(1000, 0));
-            await ToSignal(MyHand.GetChild<CardVisual>(MyHand.GetChildCount() - 1).MyTween, "tween_completed");
+            await Instance.ToSignal(Instance.MyHand.GetChild<CardVisual>(Instance.MyHand.GetChildCount() - 1).MyTween, "tween_completed");
         }
-        MyHand.Hide();
-        MyHand.Show();
+        Instance.MyHand.Hide();
+        Instance.MyHand.Show();
     }
 
-    async void DiscardCard (byte index) {
-        var toDiscard = MyHand.GetChild<CardVisual>(index);
+    public static async void DiscardCard (byte index) {
+        var toDiscard = Instance.MyHand.GetChild<CardVisual>(index);
         toDiscard.IsDisabled = true;
         Discard.Add(Hand[index]);
         Hand.RemoveAt(index);
-        MyHand.RemoveChild(toDiscard);
-        GetNode("ToDeleteHand").AddChild(toDiscard);
+        Instance.MyHand.RemoveChild(toDiscard);
+        Instance.GetNode("ToDeleteHand").AddChild(toDiscard);
 
         toDiscard.Disappear();
-        await ToSignal(toDiscard.MyTween, "tween_completed");
+        await Instance.ToSignal(toDiscard.MyTween, "tween_completed");
         toDiscard.QueueFree();
-        DisplayDeckAndDiscard();
+        Instance.DisplayDeckAndDiscard();
     }
 
     void ShuffleDeck () {
@@ -200,7 +200,15 @@ public class BattleScene : Node2D {
     ////////////////
     ///////
 
-    public async void AddSeal (Element element, byte location) {
+    public async Task RemoveSeal (byte location) {
+        SealSlots[location] = Element.None;
+    }
+
+    public async Task SwitchSeal (Element element, byte location) {
+        SealSlots[location] = element;
+    }
+
+    public async Task AddSeal (Element element, byte location) {
         if (element == Element.Water && SealSlots[location] == Element.Fire)
             Health += 1;
 
