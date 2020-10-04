@@ -36,7 +36,6 @@ public class SealSlot : Control {
         MyTween.Start();
     }
     public void MoveTo (Vector2 position) {
-        GD.Print("Position ", position);
         MyTween.InterpolateProperty(GetNode<TextureRect>("Sprite"), "rect_position", RectPosition, position, 0.5f);
         MyTween.Start();
     }

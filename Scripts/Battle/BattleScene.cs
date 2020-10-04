@@ -120,7 +120,6 @@ public class BattleScene : Node2D {
         if (currentState == State.EnemyTurn) return;
         while (Hand.Count > 0) {
             DiscardCard(0);
-            GD.Print(Hand.Count);
         }
         currentState = State.EnemyTurn;
         await EndTurnEffects();

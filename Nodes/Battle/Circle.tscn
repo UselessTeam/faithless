@@ -10,15 +10,15 @@ noise = SubResource( 2 )
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
-shader_param/color_0 = Color( 1, 0.0352941, 0.0352941, 1 )
-shader_param/color_1 = Color( 0.0509804, 0.109804, 0.988235, 1 )
-shader_param/color_2 = Color( 0.592157, 1, 0, 1 )
-shader_param/color_3 = Color( 0, 1, 0.556863, 1 )
+shader_param/color_0 = Color( 1, 0, 0, 1 )
+shader_param/color_1 = Color( 0.898039, 1, 0, 1 )
+shader_param/color_2 = Color( 0, 0.564706, 0.941176, 1 )
+shader_param/color_3 = null
 shader_param/color_4 = null
 shader_param/color_5 = null
 shader_param/color_6 = null
 shader_param/color_7 = null
-shader_param/N = 4
+shader_param/N = 3
 shader_param/NOISE_PATTERN = SubResource( 3 )
 
 [node name="Circle" type="TextureRect"]

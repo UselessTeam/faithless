@@ -50,7 +50,7 @@ texture = ExtResource( 3 )
 position = Vector2( 466.673, 207.95 )
 scale = Vector2( 0.178569, 0.180013 )
 frames = SubResource( 5 )
-frame = 2
+frame = 4
 playing = true
 
 [node name="Center" type="Position2D" parent="SealingCircle"]
