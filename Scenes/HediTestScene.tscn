@@ -19,6 +19,7 @@ script = ExtResource( 2 )
 [node name="SealingCircle" type="Node2D" parent="."]
 script = ExtResource( 4 )
 sealSlotPath = "res://Nodes/Battle/SealSlot.tscn"
+arrowPath = "res://Nodes/Battle/IntentArrow.tscn"
 
 [node name="CircleDisplay" type="Sprite" parent="SealingCircle"]
 position = Vector2( 475.398, 207.247 )
@@ -35,11 +36,15 @@ position = Vector2( 469.077, 205.568 )
 [node name="FirstSealSlot" type="Position2D" parent="SealingCircle"]
 position = Vector2( 465.108, 343.672 )
 
+[node name="SealSlotDisplays" type="Node2D" parent="SealingCircle"]
+
+[node name="ArrowDisplays" type="Node2D" parent="SealingCircle"]
+
 [node name="Hand" type="HBoxContainer" parent="."]
-margin_left = 271.409
-margin_top = 419.028
-margin_right = 1181.41
-margin_bottom = 621.028
+margin_left = 136.597
+margin_top = 411.468
+margin_right = 1046.6
+margin_bottom = 613.468
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -88,6 +93,34 @@ text = "1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Discard" type="Label" parent="StatsDisplay"]
+margin_left = -680.357
+margin_top = 191.508
+margin_right = -628.357
+margin_bottom = 205.508
+text = "Discard :"
+
+[node name="DiscardValue" type="Label" parent="StatsDisplay"]
+margin_left = -617.361
+margin_top = 192.768
+margin_right = -565.361
+margin_bottom = 206.768
+text = "0"
+
+[node name="Deck" type="Label" parent="StatsDisplay"]
+margin_left = 154.97
+margin_top = 183.948
+margin_right = 210.97
+margin_bottom = 197.948
+text = "Deck :"
+
+[node name="DeckValue" type="Label" parent="StatsDisplay"]
+margin_left = 201.587
+margin_top = 185.208
+margin_right = 253.587
+margin_bottom = 199.208
+text = "0"
 
 [node name="EndTurn" type="Button" parent="."]
 margin_left = 731.492

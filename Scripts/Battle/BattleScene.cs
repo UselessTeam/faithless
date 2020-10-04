@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Utils;
 
 public class BattleScene : Node2D {
-    [Export] Demon currentDemon = new Demon();
 
-    public Control MyHand { get { return GetNode<Control>("Hand"); } }
-    public SealingCircle MySealCircle { get { return GetNode<SealingCircle>("SealingCircle"); } }
     static BattleScene instance;
     public static BattleScene Instance {
         get {
@@ -16,7 +14,14 @@ public class BattleScene : Node2D {
         }
     }
 
+    [Export] Demon currentDemon = new Demon() { SealSlots = 6 };
+    [Export] PackedScene cardVisualPacked;
+
+    public Control MyHand { get { return GetNode<Control>("Hand"); } }
+    public SealingCircle MySealCircle { get { return GetNode<SealingCircle>("SealingCircle"); } }
+
     public static List<CardId> Deck;
+
     public static List<CardId> Hand = new List<CardId>();
     public static List<CardId> Discard = new List<CardId>();
 
@@ -24,6 +29,8 @@ public class BattleScene : Node2D {
 
     Label ChiValue { get { return GetNode<Label>("StatsDisplay/ChiValue"); } }
     Label HpValue { get { return GetNode<Label>("StatsDisplay/HpValue"); } }
+    Label DeckValue { get { return GetNode<Label>("StatsDisplay/DeckValue"); } }
+    Label DiscardValue { get { return GetNode<Label>("StatsDisplay/DiscardValue"); } }
 
     const byte MAX_CHI = 5;
     const byte MAX_HEALTH = 3;
@@ -38,6 +45,9 @@ public class BattleScene : Node2D {
     State currentState = State.EnemyTurn;
     byte selectedCard = byte.MaxValue;
 
+    /////Initialization
+    ///
+
     public override void _Ready () {
         instance = this;
         Deck = GameData.Instance.Deck;
@@ -48,9 +58,8 @@ public class BattleScene : Node2D {
         Health = MAX_HEALTH;
         SealSlots = Enumerable.Repeat(Element.None, currentDemon.SealSlots).ToList(); ;
 
-        StartPlayerTurn();
+        MySealCircle.PlanNextDemonTurn(); // This function will start the player's turn once it's done
     }
-
 
     ///////////////////
     //////  Cards Management
@@ -68,7 +77,7 @@ public class BattleScene : Node2D {
             Hand.Add(Deck[0]);
             Deck.RemoveAt(0);
         }
-        UpdateHand();
+        DisplayHand();
     }
 
     void ShuffleDeck () {
@@ -76,7 +85,7 @@ public class BattleScene : Node2D {
         GD.Print("AFger shuffle : ", Deck.Count);
     }
 
-    void StartPlayerTurn () {
+    public void StartPlayerTurn () {
         Chi = MAX_CHI;
         DrawCards(CARDS_PER_TURN);
         currentState = State.PlayerTurn;
@@ -87,12 +96,10 @@ public class BattleScene : Node2D {
             Discard.Add(Hand[i]);
         }
         Hand = new List<CardId>();
-        UpdateHand();
+        DisplayHand();
         currentState = State.EnemyTurn;
 
-        //TODO Enemi shoud do stuff
-
-        StartPlayerTurn();
+        MySealCircle.PlanNextDemonTurn();
     }
 
     //////////////////
@@ -100,14 +107,20 @@ public class BattleScene : Node2D {
     ///////////////
     //////////
 
-    void UpdateHand () {
-        for (byte i = 0 ; i < MyHand.GetChildCount() ; i++) MyHand.GetChild(i).QueueFree();
+    void DisplayHand () {
+        MyHand.QueueFreeChildren();
         for (byte i = 0 ; i < Hand.Count ; i++) {
             var makeCard = CardVisual.Instance();
             makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(ClickOnCard));
             MyHand.AddChild(makeCard);
             makeCard.ShowCard(Hand[i].Data());
         }
+        DisplayDeckAndDiscard();
+    }
+
+    void DisplayDeckAndDiscard () {
+        DeckValue.Text = Deck.Count.ToString();
+        DiscardValue.Text = Discard.Count.ToString();
     }
 
     /////////////////
@@ -148,9 +161,10 @@ public class BattleScene : Node2D {
         MyHand.GetChild<CanvasItem>(selectedCard).QueueFree();
         Discard.Add(Hand[selectedCard]);
         Hand.RemoveAt(selectedCard);
-        selectedCard = byte.MaxValue;
+        DisplayDeckAndDiscard();
 
         //Switch State
+        selectedCard = byte.MaxValue;
         currentState = State.PlayerTurn;
     }
 
@@ -162,7 +176,7 @@ public class BattleScene : Node2D {
     public void AddSeal (Element element, byte location) {
         SealSlots[location] = element;
         // TODO, apply effects
-        MySealCircle.UpdateSeals();
+        MySealCircle.DisplaySeals();
     }
 
 
