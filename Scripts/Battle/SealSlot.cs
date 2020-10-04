@@ -10,9 +10,10 @@ public class SealSlot : Control {
         Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnSealSlot));
     }
     public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
+    public TextureRect MySprite { get { return GetNode<TextureRect>("Sprite"); } }
 
     public void ShowSlot (Element element) {
-        var texture = GetNode<TextureRect>("Sprite").Texture as AtlasTexture;
+        var texture = MySprite.Texture as AtlasTexture;
         var region = texture.Region;
         region.Position = element switch
         {
@@ -28,11 +29,11 @@ public class SealSlot : Control {
     }
 
     public void Disappear () {
-        MyTween.InterpolateProperty(this, "modulate:a", 1, 0, 0.5f);
+        MyTween.InterpolateProperty(MySprite, "modulate:a", 1, 0, 0.5f);
         MyTween.Start();
     }
     public void Appear () {
-        MyTween.InterpolateProperty(this, "modulate:a", 0, 1, 0.5f);
+        MyTween.InterpolateProperty(MySprite, "modulate:a", 0, 1, 0.5f);
         MyTween.Start();
     }
     public void MoveTo (Vector2 position) {

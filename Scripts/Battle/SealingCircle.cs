@@ -41,8 +41,22 @@ public class SealingCircle : Node2D {
         }
     }
 
-    public void AddSeal () { }
-    public void RemoveSeal () { }
+    async public Task AppearSeal (byte index) {
+        var currentSeal = SealSlotDisplays.GetChild<SealSlot>(index);
+        currentSeal.ShowSlot(BattleScene.SealSlots[index]);
+        currentSeal.Appear();
+        await ToSignal(currentSeal.MyTween, "tween_completed");
+    }
+    async public Task DisappearSeal (byte index) {
+        var currentSeal = SealSlotDisplays.GetChild<SealSlot>(index);
+        currentSeal.Disappear();
+        await ToSignal(currentSeal.MyTween, "tween_completed");
+    }
+    async public Task ReplaceSeal (byte index) {
+        await DisappearSeal(index);
+        await AppearSeal(index);
+    }
+    async public Task MoveSeal (byte index, byte indexTo) { }
 
     public void DisplaySeals () {
         byte i = 0;
@@ -71,30 +85,36 @@ public class SealingCircle : Node2D {
     /////////////
     ///////
 
+    bool AttackOn (byte i) {
+        if (BattleScene.SealSlots[i] == Element.None) {
+            // TODO cool attack effect
+            BattleScene.Health -= 1;
+            return true;
+        }
+        if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true; //Cool Staggered effect
+        return false;
+
+    }
+
     public async Task PlayDemonTurn () {
         byte i = 0;
         foreach (var action in actionPlan) {
             switch (action) {
                 case DemonAction.Attack:
                 case DemonAction.AttackPierce:
-                    if (BattleScene.SealSlots[i] == Element.None)
-                        BattleScene.Health -= 1;
-                    if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true;
-                    break;
-                case DemonAction.Remove:
-                    BattleScene.SealSlots[i] = Element.None;
+                    AttackOn(i);
                     break;
                 case DemonAction.AttackOrRemove:
-                    if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true;
-                    if (BattleScene.SealSlots[i] == Element.None)
-                        BattleScene.Health -= 1;
-                    else
-                        BattleScene.SealSlots[i] = Element.None;
+                    if (!AttackOn(i))
+                        await BattleScene.Instance.RemoveSeal(i);
+                    break;
+                case DemonAction.Remove:
+                    await BattleScene.Instance.RemoveSeal(i);
                     break;
             }
             i++;
         }
-        DisplaySeals();
+        DisplaySeals(); // Sanity check
         PlanNextDemonTurn();
     }
 

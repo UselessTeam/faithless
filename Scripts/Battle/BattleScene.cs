@@ -149,7 +149,7 @@ public class BattleScene : MarginContainer {
         }
         currentState = State.EnemyTurn;
         await EndTurnEffects();
-        SealCircleField.PlayDemonTurn();
+        await SealCircleField.PlayDemonTurn();
     }
 
     //////////////////
@@ -222,27 +222,32 @@ public class BattleScene : MarginContainer {
 
     public async Task RemoveSeal (byte location) {
         SealSlots[location] = Element.None;
+        await SealCircleField.DisappearSeal(location);
     }
 
     public async Task SwitchSeal (Element element, byte location) {
+        bool isEmpty = SealSlots[location] == Element.None;
         SealSlots[location] = element;
+        if (isEmpty)
+            await SealCircleField.AppearSeal(location);
+        else
+            await SealCircleField.ReplaceSeal(location);
     }
 
     public async Task AddSeal (Element element, byte location) {
-        if (element == Element.Water && SealSlots[location] == Element.Fire)
-            Health += 1;
+        var OldElement = SealSlots[location];
+        SealSlots[location] = element;
+        Task task;
+        if (OldElement == Element.None)
+            task = SealCircleField.AppearSeal(location);
+        else task = SealCircleField.ReplaceSeal(location);
 
-        if (element == Element.Fire && SealSlots[location] == Element.Wood)
-            Chi += 1;
-
-        if (element == Element.Wood && SealSlots[location] == Element.Water)
-            DrawCards(1);
 
         if (element == Element.Earth && SealSlots.Contains(Element.None)) {
             int moveLocation = location;
-            var moveElement = SealSlots[location];
+            var moveElement = OldElement;
             if (moveElement == Element.None) {
-                SealSlots[location] = Element.Earth;
+                OldElement = Element.Earth;
                 moveLocation = (moveLocation + 1) % SealSlots.Count;
                 moveElement = SealSlots[moveLocation];
                 if (!SealSlots.Contains(Element.None))
@@ -259,12 +264,19 @@ public class BattleScene : MarginContainer {
         }
 
 
-        SealSlots[location] = element;
-
         if (!SealSlots.Contains(Element.None) && currentDemon.CheckWinCondition())
             GD.Print("TODO: Win!");
 
-        SealCircleField.DisplaySeals();
+        await task;
+
+        if (element == Element.Water && OldElement == Element.Fire)
+            Health += 1;
+        if (element == Element.Fire && OldElement == Element.Wood)
+            Chi += 1;
+        if (element == Element.Wood && OldElement == Element.Water)
+            await DrawCards(1);
+
+        SealCircleField.DisplaySeals(); // Sanity check, just in case
     }
 
     async public Task StartTurnEffects () {
@@ -273,8 +285,9 @@ public class BattleScene : MarginContainer {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire
                 || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) {// If there is a fire after or before
                     Chi += 1;
-                    SealSlots[i] = Element.Fire;
-                    SealCircleField.DisplaySeals();
+
+                    await SwitchSeal(Element.Fire, (byte) i);
+                    SealCircleField.DisplaySeals(); //Sanity check
                 }
             }
         }
@@ -284,7 +297,8 @@ public class BattleScene : MarginContainer {
             if (SealSlots[i] == Element.Wood) {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water
                 || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) {// If there is a water after or before
-                    DrawCards(1);
+                    // TODO: show a cute water effect on the wood
+                    await DrawCards(1);
                 }
             }
         }

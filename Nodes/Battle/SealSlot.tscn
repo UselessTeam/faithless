@@ -1,9 +1,15 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Sprites/Talismans/seals.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Battle/SealSlot.cs" type="Script" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
+resource_local_to_scene = true
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 400, 600, 200, 200 )
+
+[sub_resource type="AtlasTexture" id=2]
 resource_local_to_scene = true
 flags = 4
 atlas = ExtResource( 1 )
@@ -15,7 +21,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="TextureRect" parent="."]
+[node name="BackSprite" type="TextureRect" parent="."]
 anchor_right = 0.3
 anchor_bottom = 0.3
 margin_left = -40.4086
@@ -23,6 +29,20 @@ margin_top = -40.9699
 margin_right = 39.5914
 margin_bottom = 39.0301
 texture = SubResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="TextureRect" parent="."]
+anchor_right = 0.3
+anchor_bottom = 0.3
+margin_left = -40.4086
+margin_top = -40.9699
+margin_right = 39.5914
+margin_bottom = 39.0301
+texture = SubResource( 2 )
 expand = true
 stretch_mode = 6
 __meta__ = {
