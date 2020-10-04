@@ -67,7 +67,7 @@ public class BattleScene : Node2D {
     ////////////////
     ///////
 
-    async void DrawCards (byte count) {
+    async Task DrawCards (byte count) {
         for (byte i = 0 ; i < count ; i++) {
             if (Deck.Count == 0) {
                 Deck = Discard;
@@ -75,19 +75,33 @@ public class BattleScene : Node2D {
                 ShuffleDeck();
             }
             if (Deck.Count == 0) GD.PrintErr("No more cards to draw");
-            Hand.Add(Deck[0]);
+            var addCard = Deck[0];
+            Hand.Add(addCard);
             Deck.RemoveAt(0);
+
+            var makeCard = CardVisual.Instance();
+            makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(ClickOnCard));
+            MyHand.AddChild(makeCard);
+            makeCard.Modulate = new Color(1, 1, 1, 0);
+            makeCard.ShowCard(addCard.Data());
+            makeCard.MoveFrom(new Vector2(1000, 0));
+            await ToSignal(MyHand.GetChild<CardVisual>(MyHand.GetChildCount() - 1).MyTween, "tween_completed");
         }
-        DisplayHand();
+        MyHand.Hide();
+        MyHand.Show();
     }
 
-    async Task DiscardCard (byte index) {
+    async void DiscardCard (byte index) {
+        var toDiscard = MyHand.GetChild<CardVisual>(index);
+        toDiscard.IsDisabled = true;
         Discard.Add(Hand[index]);
         Hand.RemoveAt(index);
-        var toDiscard = MyHand.GetChild<CardVisual>(index);
+        MyHand.RemoveChild(toDiscard);
+        GetNode("ToDeleteHand").AddChild(toDiscard);
+
         toDiscard.Disappear();
-        await ToSignal(MyHand.GetChild<CardVisual>(index).MyTween, "tween_completed");
-        MyHand.GetChild<CardVisual>(index).QueueFree();
+        await ToSignal(toDiscard.MyTween, "tween_completed");
+        toDiscard.QueueFree();
         DisplayDeckAndDiscard();
     }
 
@@ -97,16 +111,16 @@ public class BattleScene : Node2D {
 
     async public void StartPlayerTurn () {
         Chi = MAX_CHI;
-        DrawCards(CARDS_PER_TURN);
+        await DrawCards(CARDS_PER_TURN);
         await StartTurnEffects();
         currentState = State.PlayerTurn;
     }
 
     async void EndPlayerTurn () {
         if (currentState == State.EnemyTurn) return;
-        Task task;
         while (Hand.Count > 0) {
-            task = DiscardCard(0);
+            DiscardCard(0);
+            GD.Print(Hand.Count);
         }
         currentState = State.EnemyTurn;
         await EndTurnEffects();
@@ -134,7 +148,7 @@ public class BattleScene : Node2D {
         DiscardValue.Text = Discard.Count.ToString();
     }
 
-    /////////////////
+    //////////////////////
     ////////  Input Management
     ////////////////
     //////
@@ -184,6 +198,12 @@ public class BattleScene : Node2D {
     public async void AddSeal (Element element, byte location) {
         if (element == Element.Water && SealSlots[location] == Element.Fire)
             Health += 1;
+
+        if (element == Element.Fire && SealSlots[location] == Element.Wood)
+            Chi += 1;
+
+        if (element == Element.Wood && SealSlots[location] == Element.Water)
+            DrawCards(1);
 
         if (element == Element.Earth && SealSlots.Contains(Element.None)) {
             int moveLocation = location;

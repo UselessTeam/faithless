@@ -41,6 +41,9 @@ public class SealingCircle : Node2D {
         }
     }
 
+    public void AddSeal () { }
+    public void RemoveSeal () { }
+
     public void DisplaySeals () {
         byte i = 0;
         foreach (var slot in BattleScene.SealSlots) {

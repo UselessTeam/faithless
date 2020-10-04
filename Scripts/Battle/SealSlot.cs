@@ -9,6 +9,7 @@ public class SealSlot : Control {
     public override void _Ready () {
         Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnSealSlot));
     }
+    public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
 
     public void ShowSlot (Element element) {
         var texture = GetNode<TextureRect>("Sprite").Texture as AtlasTexture;
@@ -25,6 +26,21 @@ public class SealSlot : Control {
         texture.Region = region;
         Show();
     }
+
+    public void Disappear () {
+        MyTween.InterpolateProperty(this, "modulate:a", 1, 0, 0.5f);
+        MyTween.Start();
+    }
+    public void Appear () {
+        MyTween.InterpolateProperty(this, "modulate:a", 0, 1, 0.5f);
+        MyTween.Start();
+    }
+    public void MoveTo (Vector2 position) {
+        GD.Print("Position ", position);
+        MyTween.InterpolateProperty(GetNode<TextureRect>("Sprite"), "rect_position", RectPosition, position, 0.5f);
+        MyTween.Start();
+    }
+
 
     public override void _GuiInput (InputEvent _event) {
         if (_event is InputEventMouseButton)

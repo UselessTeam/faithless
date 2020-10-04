@@ -27,10 +27,10 @@ region = Rect2( 2016, 0, 672, 679 )
 
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 2 ), SubResource( 1 ), SubResource( 4 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 2 ), SubResource( 4 ), SubResource( 1 ), SubResource( 1 ) ],
 "loop": true,
 "name": "default",
-"speed": 7.0
+"speed": 5.0
 } ]
 
 [node name="BattelScene" type="Node2D"]
@@ -49,8 +49,8 @@ texture = ExtResource( 3 )
 [node name="Demon" type="AnimatedSprite" parent="SealingCircle"]
 position = Vector2( 466.673, 207.95 )
 scale = Vector2( 0.178569, 0.180013 )
-frames = SubResource( 1 )
-frame = 5
+frames = SubResource( 5 )
+frame = 2
 playing = true
 
 [node name="Center" type="Position2D" parent="SealingCircle"]
@@ -62,6 +62,15 @@ position = Vector2( 465.108, 343.672 )
 [node name="SealSlotDisplays" type="Node2D" parent="SealingCircle"]
 
 [node name="ArrowDisplays" type="Node2D" parent="SealingCircle"]
+
+[node name="ToDeleteHand" type="HBoxContainer" parent="."]
+margin_left = 136.597
+margin_top = 411.468
+margin_right = 1046.6
+margin_bottom = 613.468
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Hand" type="HBoxContainer" parent="."]
 margin_left = 136.597
