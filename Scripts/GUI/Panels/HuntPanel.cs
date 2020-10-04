@@ -9,8 +9,12 @@ public class HuntPanel : MarginContainer {
 
     public override void _Ready () {
         containerField = GetNode<Control>(containerPath);
+        LoadRandomDemons();
+    }
+
+    private void LoadRandomDemons () {
         Load(new List<Demon> {
-            new Demon(), new Demon(), new Demon(), new Demon(), new Demon()
+            new Demon(), new Demon()
         });
     }
 

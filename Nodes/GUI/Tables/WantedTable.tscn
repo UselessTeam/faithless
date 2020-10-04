@@ -41,9 +41,9 @@ RichTextLabel/styles/focus = SubResource( 1 )
 RichTextLabel/styles/normal = SubResource( 2 )
 
 [node name="WantedTable" type="MarginContainer"]
-margin_right = 354.0
-margin_bottom = 480.0
-rect_min_size = Vector2( 360, 480 )
+margin_right = 315.0
+margin_bottom = 420.0
+rect_min_size = Vector2( 315, 420 )
 focus_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource( 1 )
@@ -58,16 +58,16 @@ rewardPath = NodePath("Content/VBox/Details/Grid/MarginContainer/Reward")
 huntPath = NodePath("Content/VBox/Hunt")
 
 [node name="Background" type="TextureRect" parent="."]
-margin_right = 360.0
-margin_bottom = 480.0
+margin_right = 315.0
+margin_bottom = 420.0
 mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 1
 
 [node name="Content" type="MarginContainer" parent="."]
-margin_right = 360.0
-margin_bottom = 480.0
+margin_right = 315.0
+margin_bottom = 420.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -79,22 +79,23 @@ custom_constants/margin_bottom = 24
 [node name="VBox" type="VBoxContainer" parent="Content"]
 margin_left = 20.0
 margin_top = 24.0
-margin_right = 340.0
-margin_bottom = 456.0
+margin_right = 295.0
+margin_bottom = 396.0
 mouse_filter = 2
+custom_constants/separation = -2
 
 [node name="Name" type="Label" parent="Content/VBox"]
-margin_right = 320.0
-margin_bottom = 116.0
+margin_right = 275.0
+margin_bottom = 100.0
 custom_fonts/font = ExtResource( 2 )
 text = "Kasa Obake"
 align = 1
 autowrap = true
 
 [node name="Middle" type="Control" parent="Content/VBox"]
-margin_top = 120.0
-margin_right = 320.0
-margin_bottom = 293.0
+margin_top = 98.0
+margin_right = 275.0
+margin_bottom = 249.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -124,30 +125,30 @@ __meta__ = {
 }
 
 [node name="Details" type="MarginContainer" parent="Content/VBox"]
-margin_top = 297.0
-margin_right = 320.0
-margin_bottom = 381.0
+margin_top = 247.0
+margin_right = 275.0
+margin_bottom = 327.0
 mouse_filter = 2
 custom_constants/margin_right = 18
 custom_constants/margin_left = 14
 
 [node name="Grid" type="GridContainer" parent="Content/VBox/Details"]
 margin_left = 14.0
-margin_right = 302.0
-margin_bottom = 84.0
+margin_right = 257.0
+margin_bottom = 80.0
 mouse_filter = 2
-custom_constants/vseparation = 0
+custom_constants/vseparation = -4
 columns = 2
 
 [node name="DifficultyLabel" type="Label" parent="Content/VBox/Details/Grid"]
-margin_right = 142.0
+margin_right = 119.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 text = "Difficulty"
 
 [node name="Difficulty" type="Label" parent="Content/VBox/Details/Grid"]
-margin_left = 146.0
-margin_right = 288.0
+margin_left = 123.0
+margin_right = 242.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
@@ -173,23 +174,23 @@ text = "Fire & Metal"
 align = 2
 
 [node name="RewardLabel" type="Label" parent="Content/VBox/Details/Grid"]
-margin_top = 42.0
-margin_right = 142.0
-margin_bottom = 84.0
+margin_top = 38.0
+margin_right = 119.0
+margin_bottom = 80.0
 size_flags_horizontal = 3
 text = "Reward"
 
 [node name="MarginContainer" type="MarginContainer" parent="Content/VBox/Details/Grid"]
-margin_left = 146.0
-margin_top = 42.0
-margin_right = 288.0
-margin_bottom = 84.0
+margin_left = 123.0
+margin_top = 38.0
+margin_right = 242.0
+margin_bottom = 80.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 3
 
 [node name="Reward" type="RichTextLabel" parent="Content/VBox/Details/Grid/MarginContainer"]
 margin_top = 3.0
-margin_right = 134.0
+margin_right = 111.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -201,9 +202,9 @@ text = "1000 "
 scroll_active = false
 
 [node name="Hunt" type="Label" parent="Content/VBox"]
-margin_top = 385.0
-margin_right = 320.0
-margin_bottom = 432.0
+margin_top = 325.0
+margin_right = 275.0
+margin_bottom = 372.0
 custom_fonts/font = ExtResource( 4 )
 text = "Hunt"
 align = 1

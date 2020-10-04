@@ -9,6 +9,10 @@ anchor_bottom = 1.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -16,22 +20,29 @@ __meta__ = {
 containerPath = NodePath("VBox/ScrollContainer/HBox")
 
 [node name="VBox" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 1008.0
+margin_bottom = 584.0
 mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 992.0
+margin_bottom = 568.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_vertical_enabled = false
 
 [node name="HBox" type="HBoxContainer" parent="VBox/ScrollContainer"]
-margin_right = 360.0
-margin_bottom = 480.0
+margin_left = 316.0
+margin_top = 44.0
+margin_right = 676.0
+margin_bottom = 524.0
 mouse_filter = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_constants/separation = 16
 
 [node name="Wanted" parent="VBox/ScrollContainer/HBox" instance=ExtResource( 1 )]
 margin_right = 360.0
