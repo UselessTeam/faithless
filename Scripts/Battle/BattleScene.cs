@@ -40,7 +40,13 @@ public class BattleScene : Node2D {
     short chi;
     short health;
     public static short Chi { get { return Instance.chi; } set { Instance.chi = value; Instance.ChiValue.Text = value.ToString(); } }
-    public static short Health { get { return Instance.health; } set { Instance.health = value; Instance.HpValue.Text = value.ToString(); } }
+    public static short Health {
+        get { return Instance.health; }
+        set {
+            Instance.health = value; Instance.HpValue.Text = value.ToString();
+            if (Health <= 0) GD.Print("TODO: Die");
+        }
+    }
 
     public enum State { PlayerTurn, CardSelected, EnemyTurn }
     State currentState = State.EnemyTurn;
@@ -213,7 +219,8 @@ public class BattleScene : Node2D {
                 moveElement = SealSlots[moveLocation];
                 if (!SealSlots.Contains(Element.None))
                     moveElement = Element.None;
-                SealSlots[moveLocation] = Element.None;
+                else
+                    SealSlots[moveLocation] = Element.None;
             }
             while (moveElement != Element.None) {
                 moveLocation = (moveLocation + 1) % SealSlots.Count;
@@ -223,7 +230,12 @@ public class BattleScene : Node2D {
             }
         }
 
+
         SealSlots[location] = element;
+
+        if (!SealSlots.Contains(Element.None) && currentDemon.CheckWinCondition())
+            GD.Print("TODO: Win!");
+
         MySealCircle.DisplaySeals();
     }
 

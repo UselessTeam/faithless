@@ -8,4 +8,8 @@ public class Demon : Resource {
     [Export] public int Reward = 999;
     [Export] public string Weaknesses = "[WEAKNESSES]";
     [Export] public int SealSlots = 2;
+
+    public bool CheckWinCondition () {
+        return true;
+    }
 }
