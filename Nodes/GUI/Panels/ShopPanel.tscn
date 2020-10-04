@@ -16,6 +16,11 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+leftCardPath = NodePath("Objects/LeftCardHolder/Card")
+rightCardPath = NodePath("Objects/RightCardHolder/Card")
+itemPath = NodePath("Objects/ItemHolder/Item")
+bubblePath = NodePath("Objects/Speech/VBox/Text")
+buyButtonPath = NodePath("Objects/Speech/VBox/Buy")
 
 [node name="Image" type="TextureRect" parent="."]
 anchor_right = 2.0
@@ -52,6 +57,19 @@ __meta__ = {
 
 [node name="Card" parent="Objects/LeftCardHolder" instance=ExtResource( 2 )]
 
+[node name="RightCardHolder" type="MarginContainer" parent="Objects"]
+margin_left = 808.942
+margin_top = 195.088
+margin_right = 988.942
+margin_bottom = 595.088
+rect_rotation = -1.0
+rect_scale = Vector2( 0.66, 0.66 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Card" parent="Objects/RightCardHolder" instance=ExtResource( 2 )]
+
 [node name="ItemHolder" type="MarginContainer" parent="Objects"]
 margin_left = 242.178
 margin_top = 176.588
@@ -66,19 +84,6 @@ __meta__ = {
 margin_right = 48.0
 margin_bottom = 48.0
 texture = ExtResource( 3 )
-
-[node name="RightCardHolder" type="MarginContainer" parent="Objects"]
-margin_left = 808.942
-margin_top = 195.088
-margin_right = 988.942
-margin_bottom = 595.088
-rect_rotation = -1.0
-rect_scale = Vector2( 0.66, 0.66 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Card" parent="Objects/RightCardHolder" instance=ExtResource( 2 )]
 
 [node name="Speech" type="MarginContainer" parent="Objects"]
 margin_left = 25.0

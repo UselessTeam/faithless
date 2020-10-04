@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 
 public enum CardId {
+    None,
     BasicFire,
     BasicWater,
     BasicWood,
@@ -32,6 +33,7 @@ public class Card : Resource {
 
     private static Dictionary<CardId, Card> list =
         new Dictionary<CardId, Card> {
+            {CardId.None, null},
             {CardId.BasicFire,
             new Card {
                 Name = "Fire Seal",

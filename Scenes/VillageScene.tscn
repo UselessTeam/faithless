@@ -106,7 +106,6 @@ margin_right = -5.0
 margin_bottom = -5.0
 inspectPath = NodePath("../../../../Panel/VBox/Board/Deck/VBox/HBox/Inspect/VBox/Text")
 banishPath = NodePath("../../../../Panel/VBox/Board/Deck/VBox/HBox/Inspect/VBox/Banish")
-pricePath = NodePath("../../../../Panel/VBox/Board/Deck/VBox/HBox/Inspect/VBox/Banish/Price")
 
 [node name="Shop" parent="Panel/VBox/Board" instance=ExtResource( 10 )]
 visible = false
