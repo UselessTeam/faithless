@@ -5,7 +5,6 @@ using Godot;
 
 public class BattleScene : Node2D {
     [Export] Demon currentDemon = new Demon();
-    [Export] PackedScene cardVisualPacked;
 
     public Control MyHand { get { return GetNode<Control>("Hand"); } }
     public SealingCircle MySealCircle { get { return GetNode<SealingCircle>("SealingCircle"); } }
@@ -17,7 +16,7 @@ public class BattleScene : Node2D {
         }
     }
 
-    public static List<CardId> Deck = new List<CardId>() { CardId.BasicEarth, CardId.BasicFire, CardId.BasicMetal, CardId.BasicWater, CardId.BasicWood };
+    public static List<CardId> Deck;
     public static List<CardId> Hand = new List<CardId>();
     public static List<CardId> Discard = new List<CardId>();
 
@@ -41,6 +40,7 @@ public class BattleScene : Node2D {
 
     public override void _Ready () {
         instance = this;
+        Deck = Game.Instance.Deck;
         GetNode<Button>("EndTurn").Connect("button_down", this, nameof(EndPlayerTurn));
 
         MySealCircle.InitializeSlots(currentDemon.SealSlots);
