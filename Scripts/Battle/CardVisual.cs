@@ -29,7 +29,7 @@ public class CardVisual : MarginContainer {
     }
 
     public override void _GuiInput (InputEvent _event) {
-        if (_event is InputEventMouseButton) {
+        if (_event is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == (int) ButtonList.Left && mouseEvent.Pressed) {
             EmitSignal(nameof(OnClick), GetIndex());
         }
     }

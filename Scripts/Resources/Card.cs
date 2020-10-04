@@ -57,7 +57,7 @@ public class Card : Resource {
                 Element = Element.Wood,
                 Cost = 2,
                 Description = "Place one Wood Seal",
-                Use = (useLocation) => { BattleScene.Instance.AddSeal(Element.Wood, useLocation); }
+                Use = (useLocation) => { BattleScene.Instance.AddSeal(Element.Wood, useLocation);  }
             }},
             {CardId.BasicEarth,
             new Card {

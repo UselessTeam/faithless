@@ -38,8 +38,8 @@ public class BattleScene : Node2D {
 
     short chi;
     short health;
-    public short Chi { get { return chi; } set { chi = value; ChiValue.Text = value.ToString(); } }
-    public short Health { get { return health; } set { health = value; HpValue.Text = value.ToString(); } }
+    public static short Chi { get { return Instance.chi; } set { Instance.chi = value; Instance.ChiValue.Text = value.ToString(); } }
+    public static short Health { get { return Instance.health; } set { Instance.health = value; Instance.HpValue.Text = value.ToString(); } }
 
     public enum State { PlayerTurn, CardSelected, EnemyTurn }
     State currentState = State.EnemyTurn;
@@ -82,7 +82,6 @@ public class BattleScene : Node2D {
 
     void ShuffleDeck () {
         Deck = Utils.RNG.RandomOrder(Deck).ToList();
-        GD.Print("AFger shuffle : ", Deck.Count);
     }
 
     public void StartPlayerTurn () {
@@ -99,7 +98,7 @@ public class BattleScene : Node2D {
         DisplayHand();
         currentState = State.EnemyTurn;
 
-        MySealCircle.PlanNextDemonTurn();
+        MySealCircle.PlayDemonTurn();
     }
 
     //////////////////
@@ -175,6 +174,7 @@ public class BattleScene : Node2D {
 
     public void AddSeal (Element element, byte location) {
         SealSlots[location] = element;
+        GD.Print("Added element ", SealSlots[location].ToString());
         // TODO, apply effects
         MySealCircle.DisplaySeals();
     }
