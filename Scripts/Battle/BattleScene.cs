@@ -72,6 +72,7 @@ public class BattleScene : Node2D {
 
     void ShuffleDeck () {
         Deck = Utils.RNG.RandomOrder(Deck).ToList();
+        GD.Print("AFger shuffle : ", Deck.Count);
     }
 
     void StartPlayerTurn () {
@@ -82,9 +83,9 @@ public class BattleScene : Node2D {
 
     void EndPlayerTurn () {
         for (byte i = 0 ; i < Hand.Count ; i++) {
-            Discard.Add(Hand[0]);
-            Hand.RemoveAt(0);
+            Discard.Add(Hand[i]);
         }
+        Hand = new List<CardId>();
         UpdateHand();
         currentState = State.EnemyTurn;
 

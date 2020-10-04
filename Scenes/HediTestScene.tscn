@@ -14,7 +14,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="BattelScene" type="Node2D"]
+[node name="BatteScene" type="Node2D"]
 script = ExtResource( 2 )
 cardVisualPacked = ExtResource( 5 )
 
