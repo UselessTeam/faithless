@@ -1,13 +1,14 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/Sprites/Oni/hitotsumekozo.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Battle/BattleScene.cs" type="Script" id=2]
-[ext_resource path="res://Nodes/GUI/Thoughts/CombatThoughts.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=3]
 [ext_resource path="res://Scripts/Battle/SealingCircle.cs" type="Script" id=4]
-[ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=5]
-[ext_resource path="res://Scripts/GUI/ScaleContainer.cs" type="Script" id=6]
+[ext_resource path="res://Scripts/GUI/ScaleContainer.cs" type="Script" id=5]
+[ext_resource path="res://Scripts/Battle/RayCircle.cs" type="Script" id=6]
 [ext_resource path="res://Nodes/Battle/Circle.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Scripts/Battle/RayCircle.cs" type="Script" id=8]
+[ext_resource path="res://Nodes/GUI/Thoughts/CombatThoughts.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scripts/GUI/Panels/HandContainer.cs" type="Script" id=9]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -40,7 +41,7 @@ animations = [ {
 [node name="BattelScene" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 5 )
+theme = ExtResource( 3 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -50,8 +51,8 @@ chiPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/ChiValue")
 hpPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/HpValue")
 deckPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/DiscardValue")
 discardPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/DeckValue")
-handPath = NodePath("Holder/Bottom/HBox/Control/Hand")
-deleteHandPath = NodePath("Holder/Bottom/HBox/Control/ToDeleteHand")
+handPath = NodePath("Holder/Bottom/HBox/HandContainer/Hand")
+deleteHandPath = NodePath("Holder/Bottom/HBox/HandContainer/ToDeleteHand")
 sealingCirclePath = NodePath("Holder/Top/Center/Ping/SealingCircle")
 
 [node name="Holder" type="Control" parent="."]
@@ -65,7 +66,7 @@ anchor_right = 1.0
 anchor_bottom = 0.6
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 6 )
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -83,7 +84,7 @@ margin_top = 10.0
 margin_right = 712.0
 margin_bottom = 410.0
 rect_min_size = Vector2( 400, 400 )
-script = ExtResource( 8 )
+script = ExtResource( 6 )
 
 [node name="Ping" type="Control" parent="Holder/Top/Center"]
 margin_left = 512.0
@@ -109,7 +110,7 @@ position = Vector2( 0, 151 )
 [node name="Demon" type="AnimatedSprite" parent="Holder/Top/Center/Ping"]
 scale = Vector2( 0.178569, 0.180013 )
 frames = SubResource( 5 )
-frame = 6
+frame = 1
 playing = true
 
 [node name="Bottom" type="MarginContainer" parent="Holder"]
@@ -133,53 +134,81 @@ margin_top = 8.0
 margin_right = 1016.0
 margin_bottom = 252.0
 
-[node name="CombatThoughts" parent="Holder/Bottom/HBox" instance=ExtResource( 3 )]
+[node name="CombatThoughts" parent="Holder/Bottom/HBox" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 266.0
+margin_right = 210.0
 margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
 
 [node name="ThoughtText" parent="Holder/Bottom/HBox/CombatThoughts" index="0"]
-margin_right = 250.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 202.0
+margin_bottom = 236.0
+
+[node name="ShadowContainer" parent="Holder/Bottom/HBox/CombatThoughts/ThoughtText" index="0"]
+margin_right = 194.0
 margin_bottom = 228.0
 
-[node name="Control" type="Control" parent="Holder/Bottom/HBox"]
-margin_left = 270.0
-margin_right = 803.0
+[node name="Margin" parent="Holder/Bottom/HBox/CombatThoughts/ThoughtText" index="1"]
+margin_right = 194.0
+margin_bottom = 228.0
+custom_constants/margin_right = 12
+custom_constants/margin_top = 12
+custom_constants/margin_left = 12
+custom_constants/margin_bottom = 12
+
+[node name="Text" parent="Holder/Bottom/HBox/CombatThoughts/ThoughtText/Margin" index="0"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 182.0
+margin_bottom = 216.0
+
+[node name="HandContainer" type="Container" parent="Holder/Bottom/HBox"]
+margin_left = 214.0
+margin_right = 846.0
 margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
+size_flags_stretch_ratio = 3.0
+script = ExtResource( 9 )
+minWidth = 800
 
-[node name="ToDeleteHand" type="HBoxContainer" parent="Holder/Bottom/HBox/Control"]
+[node name="ToDeleteHand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer"]
 margin_left = 4.0
 margin_right = 457.0
 margin_bottom = 300.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Hand" type="HBoxContainer" parent="Holder/Bottom/HBox/Control"]
+[node name="Hand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer"]
 margin_left = 4.0
 margin_right = 4.0
 margin_bottom = 300.0
+custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Holder/Bottom/HBox"]
-margin_left = 807.0
+margin_left = 850.0
 margin_right = 1008.0
 margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.75
 
 [node name="EndTurn" type="Button" parent="Holder/Bottom/HBox/VBoxContainer"]
-margin_right = 201.0
+margin_right = 158.0
 margin_bottom = 42.0
 text = "End Turn"
 __meta__ = {
@@ -188,12 +217,13 @@ __meta__ = {
 
 [node name="Grid" type="GridContainer" parent="Holder/Bottom/HBox/VBoxContainer"]
 margin_top = 46.0
-margin_right = 201.0
+margin_right = 158.0
 margin_bottom = 226.0
+mouse_filter = 2
 columns = 2
 
 [node name="Chi" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_right = 174.0
+margin_right = 131.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 text = "Chi :"
@@ -202,8 +232,8 @@ __meta__ = {
 }
 
 [node name="ChiValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_left = 178.0
-margin_right = 201.0
+margin_left = 135.0
+margin_right = 158.0
 margin_bottom = 42.0
 text = "0"
 __meta__ = {
@@ -212,7 +242,7 @@ __meta__ = {
 
 [node name="Hp" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
 margin_top = 46.0
-margin_right = 174.0
+margin_right = 131.0
 margin_bottom = 88.0
 text = "Hp :"
 __meta__ = {
@@ -220,9 +250,9 @@ __meta__ = {
 }
 
 [node name="HpValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_left = 178.0
+margin_left = 135.0
 margin_top = 46.0
-margin_right = 201.0
+margin_right = 158.0
 margin_bottom = 88.0
 text = "1"
 __meta__ = {
@@ -231,28 +261,30 @@ __meta__ = {
 
 [node name="Discard" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
 margin_top = 92.0
-margin_right = 174.0
+margin_right = 131.0
 margin_bottom = 134.0
 text = "Discard :"
 
 [node name="DiscardValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_left = 178.0
+margin_left = 135.0
 margin_top = 92.0
-margin_right = 201.0
+margin_right = 158.0
 margin_bottom = 134.0
 text = "0"
 
 [node name="Deck" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
 margin_top = 138.0
-margin_right = 174.0
+margin_right = 131.0
 margin_bottom = 180.0
 text = "Deck :"
 
 [node name="DeckValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_left = 178.0
+margin_left = 135.0
 margin_top = 138.0
-margin_right = 201.0
+margin_right = 158.0
 margin_bottom = 180.0
 text = "0"
 
 [editable path="Holder/Bottom/HBox/CombatThoughts"]
+
+[editable path="Holder/Bottom/HBox/CombatThoughts/ThoughtText"]
