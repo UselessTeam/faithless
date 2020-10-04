@@ -61,7 +61,7 @@ size_flags_vertical = 3
 
 [node name="Top" type="Container" parent="Holder"]
 anchor_right = 1.0
-anchor_bottom = 0.7
+anchor_bottom = 0.6
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 6 )
@@ -106,14 +106,13 @@ position = Vector2( 0, 140 )
 [node name="Demon" type="AnimatedSprite" parent="Holder/Top/Center/Ping"]
 scale = Vector2( 0.178569, 0.180013 )
 frames = SubResource( 5 )
-frame = 4
 playing = true
 
 [node name="Bottom" type="MarginContainer" parent="Holder"]
-anchor_top = 0.7
+anchor_top = 0.6
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -120.0
+margin_top = -20.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 8
@@ -128,24 +127,24 @@ __meta__ = {
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 1016.0
-margin_bottom = 292.0
+margin_bottom = 252.0
 
 [node name="CombatThoughts" parent="Holder/Bottom/HBox" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 266.0
-margin_bottom = 284.0
+margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ThoughtText" parent="Holder/Bottom/HBox/CombatThoughts" index="0"]
 margin_right = 250.0
-margin_bottom = 268.0
+margin_bottom = 228.0
 
 [node name="Control" type="Control" parent="Holder/Bottom/HBox"]
 margin_left = 270.0
 margin_right = 803.0
-margin_bottom = 284.0
+margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
@@ -171,7 +170,7 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="Holder/Bottom/HBox"]
 margin_left = 807.0
 margin_right = 1008.0
-margin_bottom = 284.0
+margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.75
 

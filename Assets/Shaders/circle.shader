@@ -15,7 +15,7 @@ const float DISPLACEMENT = 100.f;
 const float SPEED = 0.8f;
 const float GLOW_RAD = 20f;
 
-const float R = 0.7f;
+const float R = 0.75f;
 
 const float TWO_PI = 6.28318530718;
 const float HALF_PI = 1.5707963267949;
@@ -100,7 +100,7 @@ void fragment() {
     float x = 2f * (UV.x - 0.5f);
     float y = 2f * (UV.y - 0.5f);
     float r = x * x + y * y;
-    if (r <= 0.1f || r >= 2f) {
+    if (r <= 0.3f || r >= 1.5f) {
         COLOR = vec4(0f);
     } else {
         r = sqrt(r);
@@ -112,8 +112,8 @@ void fragment() {
         float thick_intensity = 0.7f + 0.3f * intensity_seal(theta);
         float rand_intensity = 0.1f +
              + 0.4f * intensity_at_rand(SPEED * TIME)
-             + 0.25f * intensity_at_rand(theta + SPEED * TIME)
-             + 0.25f * intensity_at_rand(theta - SPEED * TIME);
+             + 0.35f * intensity_at_rand(theta + SPEED * TIME)
+             + 0.35f * intensity_at_rand(theta - SPEED * TIME);
         float intensity = abs_intensity * thick_intensity * rand_intensity;
         float d = (1f - 30f * ray_d(r));
         float dd = d * (0.8f + 0.2f * thick_intensity) * abs_intensity;
@@ -125,11 +125,11 @@ void fragment() {
         if (0.1f * intensity + dd >= 1.05f) {
             color.a = 1f;
             color.rgb *= 1.2f;
-        } else if (intensity <= 0.5f) {
+        } else if (intensity <= 0.2f) {
             color = vec4(0);
         } else {
             color = color_at(theta);
-            color.a = 0.6f * intensity - 0.1f;
+            color.a = 0.4f * intensity + 0.05f;
         }
         COLOR = color;
     }

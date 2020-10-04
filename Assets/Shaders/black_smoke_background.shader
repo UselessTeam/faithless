@@ -15,11 +15,11 @@ vec4 displaced(float x, float y, vec2 _uv, sampler2D t) {
 }
 
 float rand2(float value) {
-    return sin(value + sin(0.7*value));
+    return sin(value + 1.5f * sin(0.71*value));
 }
 
 float rand(float v) {
-    return 0.2f * sin(v) + 0.3f * sin(0.8f*v) + 0.5f * rand2(1.2f*v);
+    return 0.2f * sin(v) + 0.3f * rand2(0.811f*v) + 0.5f * rand2(1.237f*v);
 }
 
 void fragment() {
