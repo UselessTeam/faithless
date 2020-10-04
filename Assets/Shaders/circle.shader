@@ -18,6 +18,7 @@ const float GLOW_RAD = 20f;
 const float R = 0.7f;
 
 const float TWO_PI = 6.28318530718;
+const float HALF_PI = 1.5707963267949;
 
 // Hack because Godot doesn't support array export (yet)
 vec4 color_get(int id) {
@@ -36,7 +37,7 @@ vec4 color_get(int id) {
 }
 
 float index_at(float theta) {
-    float frac = theta / TWO_PI;
+    float frac = (theta - HALF_PI) / TWO_PI;
     while(frac < 0f) {
         frac += 1f;
     }
