@@ -23,7 +23,7 @@ public class DeckPanel : MarginContainer {
         CloseCard();
         gridField.QueueFreeChildren();
         int index = 0;
-        foreach (CardId id in Game.Instance.Deck) {
+        foreach (CardId id in GameData.Instance.Deck) {
             CardVisual visual = CardVisual.Instance();
             visual.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), index.InArray());
             gridField.AddChild(visual);
@@ -39,7 +39,7 @@ public class DeckPanel : MarginContainer {
     }
 
     private void OpenCard (int index) {
-        Card card = Game.Instance.Deck[index].Data();
+        Card card = GameData.Instance.Deck[index].Data();
         inspectField.Text = card.Description;
         inspectField.Show();
         banishField.Disabled = false; //TODO: Banishment price

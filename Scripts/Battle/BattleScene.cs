@@ -40,7 +40,8 @@ public class BattleScene : Node2D {
 
     public override void _Ready () {
         instance = this;
-        Deck = Game.Instance.Deck;
+        Deck = GameData.Instance.Deck;
+
         GetNode<Button>("EndTurn").Connect("button_down", this, nameof(EndPlayerTurn));
 
         MySealCircle.InitializeSlots(currentDemon.SealSlots);
