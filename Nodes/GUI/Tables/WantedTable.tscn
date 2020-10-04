@@ -51,7 +51,7 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-combatScenePath = "res://Scenes/HediTestScene.tscn"
+combatScenePath = "res://Scenes/CombatScene.tscn"
 namePath = NodePath("Content/VBox/Name")
 difficultyPath = NodePath("Content/VBox/Details/Grid/Difficulty")
 weaknessPath = NodePath("Content/VBox/Details/Grid/Weakness")

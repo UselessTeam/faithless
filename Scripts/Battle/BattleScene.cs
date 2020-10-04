@@ -16,19 +16,24 @@ public class BattleScene : MarginContainer {
     }
 
     /*** Nodes ***/
+    [Export] NodePath thoughtPath;
+    [Export] NodePath thoughtBubblePath;
     [Export] NodePath endTurnPath;
     [Export] NodePath chiPath;
     [Export] NodePath hpPath;
     [Export] NodePath deckPath;
     [Export] NodePath discardPath;
+    [Export] NodePath handholderPath;
     [Export] NodePath handPath;
     [Export] NodePath deleteHandPath;
     [Export] NodePath sealingCirclePath;
-
+    SmartText thought;
+    Control thoughtBubble;
     Label chiField;
     Label hpField;
     Label deckField;
     Label discardField;
+    public HandContainer HandHolder;
     public Control HandField;
     public Control DeleteHandField;
     public SealingCircle SealCircleField;
@@ -68,11 +73,15 @@ public class BattleScene : MarginContainer {
         instance = this;
         Deck = GameData.Instance.Deck;
 
+        thought = GetNode<SmartText>(thoughtPath);
+        thoughtBubble = GetNode<Control>(thoughtBubblePath);
+
         chiField = GetNode<Label>(chiPath);
         hpField = GetNode<Label>(hpPath);
         deckField = GetNode<Label>(deckPath);
         discardField = GetNode<Label>(discardPath);
 
+        HandHolder = GetNode<HandContainer>(handholderPath);
         HandField = GetNode<Control>(handPath);
         DeleteHandField = GetNode<Control>(deleteHandPath);
         SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
@@ -101,10 +110,13 @@ public class BattleScene : MarginContainer {
             if (Deck.Count == 0) break;
             var addCard = Deck[0];
             Hand.Add(addCard);
+            Instance.HandHolder.SetCards(Hand.Count);
             Deck.RemoveAt(0);
 
             var makeCard = CardVisual.Instance();
             makeCard.Connect(nameof(CardVisual.OnClick), Instance, nameof(SelectCard));
+            makeCard.Connect(nameof(CardVisual.FocusEntered), Instance, nameof(HoverCard));
+            makeCard.Connect(nameof(CardVisual.FocusExited), Instance, nameof(UnHoverCard));
             Instance.HandField.AddChild(makeCard);
             makeCard.Modulate = new Color(1, 1, 1, 0);
             makeCard.ShowCard(addCard.Data());
@@ -117,6 +129,7 @@ public class BattleScene : MarginContainer {
 
     public static async Task DiscardCard (byte index) {
         var toDiscard = Instance.HandField.GetChild<CardVisual>(index);
+        toDiscard.Reset();
         toDiscard.IsDisabled = true;
         Discard.Add(Hand[index]);
         Hand.RemoveAt(index);
@@ -153,6 +166,19 @@ public class BattleScene : MarginContainer {
         await SealCircleField.PlayDemonTurn();
     }
 
+    public void HoverCard (CardId card) {
+        thoughtBubble.Show();
+        thought.BbcodeText = card.Data().Description;
+    }
+
+    public void UnHoverCard (CardId _card) {
+        if (selectedCard < byte.MaxValue) {
+            thought.BbcodeText = Hand[selectedCard].Data().Description;
+        } else {
+            thoughtBubble.Hide();
+        }
+    }
+
     //////////////////
     ////////  Display
     ///////////////
@@ -183,6 +209,10 @@ public class BattleScene : MarginContainer {
         if (currentState == State.SomethingHappening)
             return;
 
+        if (selectedCard == id) {
+            DeselectCard();
+            return;
+        }
         // Unselect previous card
         if (selectedCard < byte.MaxValue)
             DeselectCard();
@@ -192,35 +222,34 @@ public class BattleScene : MarginContainer {
         }
         // Logic selection
         selectedCard = id;
-        GD.Print("Card Selected : " + Hand[id].ToString());
-
-        // Display selection
-        //TODO Show description and highlight Card
-
+        Instance.HandField.GetChild<CardVisual>(selectedCard).Holder.RectPosition = new Vector2(0f, -50f);
     }
 
     async public void ClickOnSealSlot (byte id) {
         if (currentState != State.PlayerTurn || selectedCard == byte.MaxValue) return;
         currentState = State.SomethingHappening;
 
+        CardId card = Hand[selectedCard];
+        byte selected = selectedCard;
+        DeselectCard();
         //Use the card
-        if (Chi >= Hand[selectedCard].Data().Cost
-        && Card.CheckPlayable(Hand[selectedCard], SealSlots[id])) { //Check if we can play the card
-            Chi -= Hand[selectedCard].Data().Cost;
-            await Hand[selectedCard].Data().Use(id);
+        if (Chi >= card.Data().Cost
+        && Card.CheckPlayable(card, SealSlots[id])) { //Check if we can play the card
+            Chi -= card.Data().Cost;
+            await card.Data().Use(id);
 
             // Discard the Card
-            await DiscardCard(selectedCard);
+            await DiscardCard(selected);
         }
 
-        DeselectCard();
         currentState = State.PlayerTurn;
     }
 
     public void DeselectCard () {
+        if (selectedCard < byte.MaxValue) {
+            Instance.HandField.GetChild<CardVisual>(selectedCard).Reset();
+        }
         selectedCard = byte.MaxValue;
-        GD.Print("Card Deselect");
-        //TODO
     }
 
     ///////////////////

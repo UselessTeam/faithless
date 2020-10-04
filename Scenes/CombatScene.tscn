@@ -46,13 +46,16 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-endTurnPath = NodePath("Holder/Bottom/HBox/VBoxContainer/EndTurn")
-chiPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/ChiValue")
-hpPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/HpValue")
-deckPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/DiscardValue")
-discardPath = NodePath("Holder/Bottom/HBox/VBoxContainer/Grid/DeckValue")
-handPath = NodePath("Holder/Bottom/HBox/HandContainer/Hand")
-deleteHandPath = NodePath("Holder/Bottom/HBox/HandContainer/ToDeleteHand")
+thoughtPath = NodePath("Holder/Bottom/HBox/CombatThoughts/ThoughtText/Margin/Text")
+thoughtBubblePath = NodePath("Holder/Bottom/HBox/CombatThoughts/ThoughtText")
+endTurnPath = NodePath("Holder/Bottom/HBox/Right/VBox/EndTurn")
+chiPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/ChiValue")
+hpPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/HpValue")
+deckPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/DiscardValue")
+discardPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/DeckValue")
+handholderPath = NodePath("Holder/Bottom/HBox/HandContainer")
+handPath = NodePath("Holder/Bottom/HBox/HandContainer/HBox/Hand")
+deleteHandPath = NodePath("Holder/Bottom/HBox/HandContainer/HBox/ToDeleteHand")
 sealingCirclePath = NodePath("Holder/Top/Center/Ping/SealingCircle")
 
 [node name="Holder" type="Control" parent="."]
@@ -63,7 +66,7 @@ size_flags_vertical = 3
 
 [node name="Top" type="Container" parent="Holder"]
 anchor_right = 1.0
-anchor_bottom = 0.6
+anchor_bottom = 0.68
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 5 )
@@ -110,14 +113,14 @@ position = Vector2( 0, 151 )
 [node name="Demon" type="AnimatedSprite" parent="Holder/Top/Center/Ping"]
 scale = Vector2( 0.178569, 0.180013 )
 frames = SubResource( 5 )
-frame = 1
+frame = 5
 playing = true
 
 [node name="Bottom" type="MarginContainer" parent="Holder"]
-anchor_top = 0.6
+anchor_top = 0.7
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -20.0
+margin_top = -12.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 8
@@ -132,33 +135,34 @@ __meta__ = {
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 1016.0
-margin_bottom = 252.0
+margin_bottom = 186.0
 
 [node name="CombatThoughts" parent="Holder/Bottom/HBox" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 210.0
-margin_bottom = 244.0
+margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 8
-custom_constants/margin_top = 8
+custom_constants/margin_top = -12
 custom_constants/margin_left = 8
 custom_constants/margin_bottom = 8
 
 [node name="ThoughtText" parent="Holder/Bottom/HBox/CombatThoughts" index="0"]
+visible = false
 margin_left = 8.0
-margin_top = 8.0
+margin_top = -12.0
 margin_right = 202.0
-margin_bottom = 236.0
+margin_bottom = 170.0
 
 [node name="ShadowContainer" parent="Holder/Bottom/HBox/CombatThoughts/ThoughtText" index="0"]
 margin_right = 194.0
-margin_bottom = 228.0
+margin_bottom = 182.0
 
 [node name="Margin" parent="Holder/Bottom/HBox/CombatThoughts/ThoughtText" index="1"]
 margin_right = 194.0
-margin_bottom = 228.0
+margin_bottom = 182.0
 custom_constants/margin_right = 12
 custom_constants/margin_top = 12
 custom_constants/margin_left = 12
@@ -168,46 +172,59 @@ custom_constants/margin_bottom = 12
 margin_left = 12.0
 margin_top = 12.0
 margin_right = 182.0
-margin_bottom = 216.0
+margin_bottom = 170.0
 
 [node name="HandContainer" type="Container" parent="Holder/Bottom/HBox"]
 margin_left = 214.0
 margin_right = 846.0
-margin_bottom = 244.0
+margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 script = ExtResource( 9 )
-minWidth = 800
+minWidth = 600
 
-[node name="ToDeleteHand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer"]
-margin_left = 4.0
-margin_right = 457.0
-margin_bottom = 300.0
+[node name="HBox" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Hand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer"]
-margin_left = 4.0
-margin_right = 4.0
-margin_bottom = 300.0
+[node name="ToDeleteHand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer/HBox"]
+margin_bottom = 178.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Holder/Bottom/HBox"]
+[node name="Hand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer/HBox"]
+margin_bottom = 178.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Right" type="MarginContainer" parent="Holder/Bottom/HBox"]
 margin_left = 850.0
 margin_right = 1008.0
-margin_bottom = 244.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+custom_constants/margin_right = 0
+custom_constants/margin_top = -30
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+
+[node name="VBox" type="VBoxContainer" parent="Holder/Bottom/HBox/Right"]
+margin_top = -30.0
+margin_right = 158.0
+margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.75
 
-[node name="EndTurn" type="Button" parent="Holder/Bottom/HBox/VBoxContainer"]
+[node name="EndTurn" type="Button" parent="Holder/Bottom/HBox/Right/VBox"]
 margin_right = 158.0
 margin_bottom = 42.0
 text = "End Turn"
@@ -215,14 +232,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Grid" type="GridContainer" parent="Holder/Bottom/HBox/VBoxContainer"]
+[node name="Grid" type="GridContainer" parent="Holder/Bottom/HBox/Right/VBox"]
 margin_top = 46.0
 margin_right = 158.0
-margin_bottom = 226.0
+margin_bottom = 208.0
 mouse_filter = 2
+custom_constants/vseparation = -2
 columns = 2
 
-[node name="Chi" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
+[node name="Chi" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
 margin_right = 131.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
@@ -231,7 +249,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ChiValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
+[node name="ChiValue" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
 margin_left = 135.0
 margin_right = 158.0
 margin_bottom = 42.0
@@ -240,49 +258,49 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Hp" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_top = 46.0
+[node name="Hp" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
+margin_top = 40.0
 margin_right = 131.0
-margin_bottom = 88.0
+margin_bottom = 82.0
 text = "Hp :"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HpValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
+[node name="HpValue" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
 margin_left = 135.0
-margin_top = 46.0
+margin_top = 40.0
 margin_right = 158.0
-margin_bottom = 88.0
+margin_bottom = 82.0
 text = "1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Discard" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_top = 92.0
+[node name="Discard" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
+margin_top = 80.0
 margin_right = 131.0
-margin_bottom = 134.0
+margin_bottom = 122.0
 text = "Discard :"
 
-[node name="DiscardValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
+[node name="DiscardValue" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
 margin_left = 135.0
-margin_top = 92.0
+margin_top = 80.0
 margin_right = 158.0
-margin_bottom = 134.0
+margin_bottom = 122.0
 text = "0"
 
-[node name="Deck" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
-margin_top = 138.0
+[node name="Deck" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
+margin_top = 120.0
 margin_right = 131.0
-margin_bottom = 180.0
+margin_bottom = 162.0
 text = "Deck :"
 
-[node name="DeckValue" type="Label" parent="Holder/Bottom/HBox/VBoxContainer/Grid"]
+[node name="DeckValue" type="Label" parent="Holder/Bottom/HBox/Right/VBox/Grid"]
 margin_left = 135.0
-margin_top = 138.0
+margin_top = 120.0
 margin_right = 158.0
-margin_bottom = 180.0
+margin_bottom = 162.0
 text = "0"
 
 [editable path="Holder/Bottom/HBox/CombatThoughts"]

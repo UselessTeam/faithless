@@ -17,7 +17,6 @@ public class RayCircle : ColorRect {
     };
     public override void _Ready () {
         gradientTexture.Gradient = new Gradient();
-        GD.Print(((ShaderMaterial) Material).GetPropertyList());
         ((ShaderMaterial) Material).SetShaderParam("colors", gradientTexture);
     }
     public void SetSlotCount (int n) {
