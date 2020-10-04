@@ -7,6 +7,7 @@ public class WantedTable : MarginContainer {
     public static WantedTable Instance () {
         return (WantedTable) ResourceLoader.Load<PackedScene>("res://Nodes/GUI/Tables/WantedTable.tscn").Instance();
     }
+    [Export(PropertyHint.File)] string combatScenePath;
     [Export] NodePath namePath;
     [Export] NodePath difficultyPath;
     [Export] NodePath weaknessPath;
@@ -41,7 +42,8 @@ public class WantedTable : MarginContainer {
 
     public override void _Input (InputEvent @event) {
         if (GetFocusOwner() == this && @event is InputEventMouseButton eventMouse && eventMouse.ButtonIndex == (int) ButtonList.Left && eventMouse.Pressed) {
-            GD.Print($"TODO: Load demon {demon?.Name}");
+            GameData.Instance.Oni = demon;
+            GetTree().ChangeScene(combatScenePath);
         }
     }
 

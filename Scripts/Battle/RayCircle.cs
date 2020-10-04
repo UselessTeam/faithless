@@ -27,6 +27,7 @@ public class RayCircle : ColorRect {
             N--;
         }
         N = n;
+        ((ShaderMaterial) Material).SetShaderParam("N", N);
         for (int index = 0 ; index <= n ; index++) {
             float frac = (float) index / N;
             if (index < gradientTexture.Gradient.GetPointCount()) {

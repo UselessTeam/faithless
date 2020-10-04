@@ -35,8 +35,6 @@ public class BattleScene : MarginContainer {
 
 
     /*** Others ***/
-    [Export] Demon currentDemon = new Demon() { SealSlots = 6 };
-
     public static List<CardId> Deck;
 
     public static List<CardId> Hand = new List<CardId>();
@@ -81,9 +79,9 @@ public class BattleScene : MarginContainer {
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
-        SealCircleField.InitializeSlots(currentDemon.SealSlots);
+        SealCircleField.InitializeSlots(GameData.Instance.Oni.SealSlots);
         Health = MAX_HEALTH;
-        SealSlots = Enumerable.Repeat(Element.None, currentDemon.SealSlots).ToList(); ;
+        SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
 
         SealCircleField.PlanNextDemonTurn(); // This function will start the player's turn once it's done
     }
@@ -273,7 +271,7 @@ public class BattleScene : MarginContainer {
             task = SealCircleField.AppearSeal(location);
         else task = SealCircleField.ReplaceSeal(location);
 
-        if (!SealSlots.Contains(Element.None) && currentDemon.CheckWinCondition())
+        if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition())
             GD.Print("TODO: Win!");
 
         await task;

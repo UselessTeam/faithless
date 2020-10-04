@@ -4,7 +4,7 @@ uniform sampler2D colors;
 uniform int N;
 
 const float R = 0.75f;
-const float SPEED = 4f;
+const float SPEED = 3f;
 
 const float TWO_PI = 6.28318530718;
 const float HALF_PI = 1.5707963267949;
@@ -31,7 +31,7 @@ float intensity_at_rand(float value, float t) {
 }
 
 float intensity_at_theta(float theta) {
-    return max(1.1f * color_at(theta).a - 0.1f, 0f);
+    return max(1.2f * color_at(theta).a - 0.2f, 0f);
 }
 
 float intensity_seal(float theta) {
@@ -41,10 +41,10 @@ float intensity_seal(float theta) {
     return value * value;
 }
 
-float ray_d(float r) {
+float ray_dd(float r) {
     float p = (R - r);
-    p = p * p;
-    return p;
+    p = max(1f - 30f * p * p, 0f);
+    return p * p;
 }
 
 void fragment() {
@@ -53,23 +53,23 @@ void fragment() {
     float r = sqrt(x * x + y * y);
     float theta = atan (y, x);
     float abs_intensity = intensity_at_theta(theta);
-    abs_intensity *= abs_intensity;
+    abs_intensity = 1f - (1f - abs_intensity) * (1f - abs_intensity);
     float thick_intensity = 0.6f + 0.4f * intensity_seal(theta);
     float rand_offset = 0.3f * intensity_at_rand(SPEED * TIME, TIME)
             + 0.35f * intensity_at_rand(theta + SPEED * TIME, TIME)
             + 0.35f * intensity_at_rand(theta - SPEED * TIME, TIME);
-    float rand_intensity = 1f + 0.3f * rand_offset;
+    float rand_intensity = 0.8f + 0.2f * rand_offset;
     float intensity = abs_intensity * thick_intensity * rand_intensity;
-    float dd = (1f - 30f * ray_d(r)) * (0.8f + 0.2f * thick_intensity) * abs_intensity;
+    float dd = ray_dd(r) * (0.8f + 0.2f * thick_intensity) * abs_intensity;
     intensity += dd;
-    vec4 color = color_at(theta + 0.1f * rand_offset);
-    if (intensity <= 0.2f) {
+    vec4 color = color_at(theta + 0.08f * rand_offset);
+    if (intensity <= 1f) {
         color.a = 0f;
-    } else if (0.05f * intensity + 1.02f * dd >= 1f) {
+    } else if (0.08f * intensity + 1f * dd >= 0.99f) {
         color.a = 1f;
         color.rgb *= 1.2f;
     } else {
-        color.a = max(0, 0.4f * intensity + 0.05f);
+        color.a = max(0, 0.7f * (intensity - 1f) + 0.2f);
     }
     COLOR = color;
 }
