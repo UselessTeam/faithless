@@ -100,7 +100,7 @@ public class BattleScene : MarginContainer {
                 Discard = new List<CardId>();
                 Instance.ShuffleDeck();
             }
-            if (Deck.Count == 0) GD.PrintErr("No more cards to draw");
+            if (Deck.Count == 0) break;
             var addCard = Deck[0];
             Hand.Add(addCard);
             Deck.RemoveAt(0);
@@ -143,13 +143,14 @@ public class BattleScene : MarginContainer {
     }
 
     async void EndPlayerTurn () {
-        if (currentState == State.EnemyTurn) return;
+        if (currentState != State.PlayerTurn) return;
         Task task = null;
         while (Hand.Count > 0) {
             task = DiscardCard(0);
         }
         if (task != null) await task;
         currentState = State.EnemyTurn;
+        DeselectCard();
         await EndTurnEffects();
         await SealCircleField.PlayDemonTurn();
     }
@@ -193,7 +194,6 @@ public class BattleScene : MarginContainer {
         }
         // Logic selection
         selectedCard = id;
-        currentState = State.CardSelected;
         GD.Print("Card Selected : " + Hand[id].ToString());
 
         // Display selection
@@ -202,12 +202,13 @@ public class BattleScene : MarginContainer {
     }
 
     async public void ClickOnSealSlot (byte id) {
-        if (currentState != State.CardSelected) return;
+        if (currentState != State.PlayerTurn || selectedCard == byte.MaxValue) return;
         currentState = State.SomethingHappening;
 
         //Use the card
         if (Chi >= Hand[selectedCard].Data().Cost
         && Card.CheckPlayable(Hand[selectedCard], SealSlots[id])) { //Check if we can play the card
+            Chi -= Hand[selectedCard].Data().Cost;
             await Hand[selectedCard].Data().Use(id);
 
             // Discard the Card
@@ -220,7 +221,6 @@ public class BattleScene : MarginContainer {
 
     public void DeselectCard () {
         selectedCard = byte.MaxValue;
-        currentState = State.PlayerTurn;
         GD.Print("Card Deselect");
         //TODO
     }
