@@ -21,11 +21,25 @@ public class DeckPanel : MarginContainer {
         banishField = GetNode<Button>(banishPath);
         priceField = GetNode<SmartText>(pricePath);
         GetTree().Connect("screen_resized", this, nameof(AdjustGrid));
+        GameData.Instance.Connect(nameof(GameData.DeckChanged), this, nameof(ShowDeck));
         ShowDeck();
     }
 
     public void ShowDeck () {
         CloseCard();
+        gridField.QueueFreeChildren();
+        int index = 0;
+        foreach (CardId id in GameData.Instance.Deck) {
+            CardVisual visual = CardVisual.Instance();
+            gridField.AddChild(visual);
+            GD.Print($"card {id}");
+            visual.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard));
+            visual.ShowCard(id.Data());
+            index++;
+        }
+    }
+
+    public void UpdateDeck () {
         gridField.QueueFreeChildren();
         int index = 0;
         foreach (CardId id in GameData.Instance.Deck) {

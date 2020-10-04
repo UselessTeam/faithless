@@ -64,55 +64,74 @@ public class ShopPanel : ScaleContainer {
         bubbleText.Text = AGAIN_MESSAGES.Random();
         buyButton.Hide();
     }
-    public void Load (CardId _left, CardId _middle, CardId _right, string _item = "") {
-        left = _left;
-        middle = _middle;
-        right = _right;
+    public void Load (CardId left, CardId middle, CardId right, string _item = "") {
+        SetCard(left, 0);
+        SetCard(middle, 1);
+        SetCard(right, 2);
         item = _item;
-        if (left == CardId.None) {
-            leftCard.Hide();
-        } else {
-            leftCard.ShowCard(left.Data());
-            leftCard.Show();
-        }
-        if (middle == CardId.None) {
-            middleCard.Hide();
-        } else {
-            middleCard.ShowCard(middle.Data());
-            middleCard.Show();
-        }
-        if (right == CardId.None) {
-            rightCard.Hide();
-        } else {
-            rightCard.ShowCard(right.Data());
-            rightCard.Show();
-        }
         //TODO: Item
     }
 
     int selected = -1;
 
-    private Card GetCard (int index) {
+    private CardId GetCard (int index) {
         return index switch
         {
-            0 => left.Data(),
-            1 => middle.Data(),
-            2 => right.Data(),
+            0 => left,
+            1 => middle,
+            2 => right,
             _ => throw new Exception($"No card at index {index}"),
         };
     }
+    public void SetCard (CardId card, int index) {
+        switch (index) {
+            case 0:
+                left = card;
+                if (left == CardId.None) {
+                    leftCard.Hide();
+                } else {
+                    leftCard.ShowCard(left.Data());
+                    leftCard.Show();
+                }
+                return;
+            case 1:
+                middle = card;
+                if (middle == CardId.None) {
+                    middleCard.Hide();
+                } else {
+                    middleCard.ShowCard(middle.Data());
+                    middleCard.Show();
+                }
+                return;
+            case 2:
+                right = card;
+                if (right == CardId.None) {
+                    rightCard.Hide();
+                } else {
+                    rightCard.ShowCard(right.Data());
+                    rightCard.Show();
+                }
+                return;
+            default:
+                throw new Exception($"No card at index {index}");
+        };
+    }
     public void OpenCard (int _, int index) {
-        Card card = GetCard(index);
+        Card card = GetCard(index).Data();
         selected = index;
         bubbleText.Text = $"Want to buy a {card.Name}?\n\n{card.Description}";
         buyButton.Show();
-        // TODO: Check price
-        buyButtonText.BbcodeText = $"[center]Buy (TODO: PRICE {BB.Mon})[/center] ";
+        buyButtonText.BbcodeText = $"[center]Buy ({card.MonPrice} {BB.Mon})[/center] ";
+        buyButton.Disabled = (card.MonPrice > GameData.Instance.Money);
     }
     public void Buy () {
-        Card card = GetCard(selected);
+        Card card = GetCard(selected).Data();
         bubbleText.Text = $"Here is your {card.Name}.\nIt's a pleasure doing business with you.";
         buyButton.Hide();
-        GD.Print("TODO: Buy");
+        // Buy card
+        GameData.Instance.Deck.Add(card.Id);
+        GameData.Instance.DeckChange();
+        GameData.Instance.Money -= card.MonPrice;
+        SetCard(CardId.None, selected);
     }
 }
