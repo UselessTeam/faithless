@@ -1,18 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Utils/SmartText/SmartText.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Theme/Fonts/andika_16.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/Shaders/black_smoke_background.shader" type="Shader" id=3]
 [ext_resource path="res://Assets/Sprites/GUI/shadow.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Theme/empty_box.tres" type="StyleBox" id=5]
 
-[sub_resource type="OpenSimplexNoise" id=1]
-
-[sub_resource type="NoiseTexture" id=2]
-noise = SubResource( 1 )
-
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
-shader_param/NOISE_PATTERN = SubResource( 2 )
 
 [node name="ThoughtText" type="MarginContainer"]
 anchor_right = 1.0
@@ -26,7 +21,7 @@ margin_right = 1024.0
 margin_bottom = 600.0
 
 [node name="Panel" type="TextureRect" parent="ShadowContainer"]
-material = SubResource( 3 )
+material = SubResource( 1 )
 anchor_left = -0.05
 anchor_top = -0.05
 anchor_right = 1.05
@@ -52,12 +47,12 @@ margin_left = 24.0
 margin_top = 24.0
 margin_right = 1000.0
 margin_bottom = 576.0
+custom_styles/normal = ExtResource( 5 )
 custom_fonts/normal_font = ExtResource( 2 )
 meta_underlined = false
 text = "Place one Fire Seal
 
 [Fire] At the beginning of your turn, adjacent Wood are turned into Fire and make you draw a card"
-fit_content_height = true
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

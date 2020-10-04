@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Godot;
 using Utils;
 
-public class BattleScene : Node2D {
+public class BattleScene : MarginContainer {
 
     static BattleScene instance;
     public static BattleScene Instance {

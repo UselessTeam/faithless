@@ -15,7 +15,7 @@ vec4 displaced(float x, float y, vec2 _uv, sampler2D t) {
 }
 
 float rand2(float value) {
-    return sin(value + sin(value));
+    return sin(value + sin(0.7*value));
 }
 
 float rand(float v) {
