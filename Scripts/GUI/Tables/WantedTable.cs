@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Utils;
 
 public class WantedTable : MarginContainer {
     public static WantedTable Hovered = null;
@@ -14,7 +15,7 @@ public class WantedTable : MarginContainer {
     Label nameField;
     Label difficultyField;
     Label weaknessField;
-    Label rewardField;
+    RichTextLabel rewardField;
     Label huntField;
 
     Demon demon;
@@ -22,7 +23,7 @@ public class WantedTable : MarginContainer {
         nameField = GetNode<Label>(namePath);
         difficultyField = GetNode<Label>(difficultyPath);
         weaknessField = GetNode<Label>(weaknessPath);
-        rewardField = GetNode<Label>(rewardPath);
+        rewardField = GetNode<RichTextLabel>(rewardPath);
         huntField = GetNode<Label>(huntPath);
         Connect("mouse_entered", this, nameof(MouseEntered));
         Connect("mouse_exited", this, nameof(MouseExited));
@@ -35,7 +36,7 @@ public class WantedTable : MarginContainer {
         nameField.Text = demon.Name;
         difficultyField.Text = demon.Difficulty;
         weaknessField.Text = demon.Weaknesses;
-        rewardField.Text = $"{demon.Reward} mon";
+        rewardField.BbcodeText = $"[right]{demon.Reward} {BB.Mon}[/right]  ";
     }
 
     public override void _Input (InputEvent @event) {

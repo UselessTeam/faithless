@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
+[ext_resource path="res://Assets/Theme/Fonts/kaushan_22.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Scripts/GUI/Panels/DeckPanel.cs" type="Script" id=2]
 [ext_resource path="res://Scripts/Utils/SmartText/SmartText.cs" type="Script" id=3]
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=4]
@@ -75,6 +76,7 @@ margin_top = 558.0
 margin_right = 300.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 0, 42 )
+custom_fonts/font = ExtResource( 1 )
 
 [node name="Price" type="RichTextLabel" parent="VBox/HBox/Inspect/VBox/Banish"]
 anchor_right = 1.0
@@ -85,8 +87,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/normal = SubResource( 2 )
 bbcode_enabled = true
-bbcode_text = "[center]Banish (100 mon)[/center]"
-text = "Banish (100 mon)"
+bbcode_text = "[center]Banish (100 [img]res://Assets/Sprites/GUI/mon_icon.png[/img])[/center]"
+text = "Banish (100 )"
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false

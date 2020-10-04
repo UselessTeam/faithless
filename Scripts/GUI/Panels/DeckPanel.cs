@@ -49,7 +49,7 @@ public class DeckPanel : MarginContainer {
         inspectField.Text = card.Description;
         inspectField.Show();
         banishField.Disabled = false; //TODO: Banishment price
-        priceField.BbcodeText = $"[center]Banish ({card.Cost * 99} mon)[/center]";
+        priceField.BbcodeText = $"[center]Banish ({card.Cost * 99} {BB.Mon})[/center]";
     }
 
     const float CARD_WIDTH = 180f;
