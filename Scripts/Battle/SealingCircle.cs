@@ -10,6 +10,8 @@ using Utils;
 public class SealingCircle : Node2D {
     [Export(PropertyHint.File)] string sealSlotPath;
     [Export(PropertyHint.File)] string arrowPath;
+    [Export] NodePath rayCirclePath;
+    RayCircle rayCircle;
 
     int SlotCount = 0;
     Node2D SealSlotDisplays { get { return GetNode<Node2D>("SealSlotDisplays"); } }
@@ -21,6 +23,9 @@ public class SealingCircle : Node2D {
     Vector2 CenterPosition;
     Vector2 CenterToSlot;
 
+    public override void _Ready () {
+        rayCircle = GetNode<RayCircle>(rayCirclePath);
+    }
 
     ////////////////////////////////
     ////////// Display
@@ -28,6 +33,7 @@ public class SealingCircle : Node2D {
     ///////
     public void InitializeSlots (int slotCount) {
         SlotCount = slotCount;
+        rayCircle.SetSlotCount(slotCount);
         CenterPosition = GetNode<Position2D>("Center").Position;
         CenterToSlot = GetNode<Position2D>("FirstSealSlot").Position - GetNode<Position2D>("Center").Position;
         for (byte i = 0 ; i < SlotCount ; i++) {
@@ -62,6 +68,7 @@ public class SealingCircle : Node2D {
         byte i = 0;
         foreach (var slot in BattleScene.SealSlots) {
             SealSlotDisplays.GetChild<SealSlot>(i).ShowSlot(slot);
+            rayCircle.SetSlot(slot, i);
             i++;
         }
     }
