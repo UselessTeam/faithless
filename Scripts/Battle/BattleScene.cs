@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 using Utils;
 
@@ -66,7 +67,7 @@ public class BattleScene : Node2D {
     ////////////////
     ///////
 
-    void DrawCards (byte count) {
+    async void DrawCards (byte count) {
         for (byte i = 0 ; i < count ; i++) {
             if (Deck.Count == 0) {
                 Deck = Discard;
@@ -80,24 +81,35 @@ public class BattleScene : Node2D {
         DisplayHand();
     }
 
+    async Task DiscardCard (byte index) {
+        Discard.Add(Hand[index]);
+        Hand.RemoveAt(index);
+        var toDiscard = MyHand.GetChild<CardVisual>(index);
+        toDiscard.Disappear();
+        await ToSignal(MyHand.GetChild<CardVisual>(index).MyTween, "tween_completed");
+        MyHand.GetChild<CardVisual>(index).QueueFree();
+        DisplayDeckAndDiscard();
+    }
+
     void ShuffleDeck () {
         Deck = Utils.RNG.RandomOrder(Deck).ToList();
     }
 
-    public void StartPlayerTurn () {
+    async public void StartPlayerTurn () {
         Chi = MAX_CHI;
         DrawCards(CARDS_PER_TURN);
+        await StartTurnEffects();
         currentState = State.PlayerTurn;
     }
 
-    void EndPlayerTurn () {
-        for (byte i = 0 ; i < Hand.Count ; i++) {
-            Discard.Add(Hand[i]);
+    async void EndPlayerTurn () {
+        if (currentState == State.EnemyTurn) return;
+        Task task;
+        while (Hand.Count > 0) {
+            task = DiscardCard(0);
         }
-        Hand = new List<CardId>();
-        DisplayHand();
         currentState = State.EnemyTurn;
-
+        await EndTurnEffects();
         MySealCircle.PlayDemonTurn();
     }
 
@@ -157,10 +169,7 @@ public class BattleScene : Node2D {
         Hand[selectedCard].Data().Use(id);
 
         // Discard the Card
-        MyHand.GetChild<CanvasItem>(selectedCard).QueueFree();
-        Discard.Add(Hand[selectedCard]);
-        Hand.RemoveAt(selectedCard);
-        DisplayDeckAndDiscard();
+        DiscardCard(selectedCard);
 
         //Switch State
         selectedCard = byte.MaxValue;
@@ -172,11 +181,56 @@ public class BattleScene : Node2D {
     ////////////////
     ///////
 
-    public void AddSeal (Element element, byte location) {
+    public async void AddSeal (Element element, byte location) {
+        if (element == Element.Water && SealSlots[location] == Element.Fire)
+            Health += 1;
+
+        if (element == Element.Earth && SealSlots.Contains(Element.None)) {
+            int moveLocation = location;
+            var moveElement = SealSlots[location];
+            if (moveElement == Element.None) {
+                SealSlots[location] = Element.Earth;
+                moveLocation = (moveLocation + 1) % SealSlots.Count;
+                moveElement = SealSlots[moveLocation];
+                if (!SealSlots.Contains(Element.None))
+                    moveElement = Element.None;
+                SealSlots[moveLocation] = Element.None;
+            }
+            while (moveElement != Element.None) {
+                moveLocation = (moveLocation + 1) % SealSlots.Count;
+                var tempSwap = SealSlots[moveLocation];
+                SealSlots[moveLocation] = moveElement;
+                moveElement = tempSwap;
+            }
+        }
+
         SealSlots[location] = element;
-        // TODO, apply effects
         MySealCircle.DisplaySeals();
     }
+
+    async public Task StartTurnEffects () {
+        for (int i = 0 ; i < SealSlots.Count ; i++) {
+            if (SealSlots[i] == Element.Wood) {
+                if (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire
+                || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) {// If there is a fire after or before
+                    Chi += 1;
+                    SealSlots[i] = Element.Fire;
+                    MySealCircle.DisplaySeals();
+                }
+            }
+        }
+    }
+    async public Task EndTurnEffects () {
+        for (int i = 0 ; i < SealSlots.Count ; i++) {
+            if (SealSlots[i] == Element.Wood) {
+                if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water
+                || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) {// If there is a water after or before
+                    DrawCards(1);
+                }
+            }
+        }
+    }
+
 
 
 }

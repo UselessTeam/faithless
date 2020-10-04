@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 using Utils;
 
@@ -13,9 +14,9 @@ public class SealingCircle : Node2D {
     int SlotCount = 0;
     Node2D SealSlotDisplays { get { return GetNode<Node2D>("SealSlotDisplays"); } }
     Node2D ArrowDisplays { get { return GetNode<Node2D>("ArrowDisplays"); } }
-    // List<SealSlot> sealSlotDisplays;
-    // List<Node2D> arrowDisplays;
     List<DemonAction> actionPlan;
+    bool isStaggered = false;
+
 
     Vector2 CenterPosition;
     Vector2 CenterToSlot;
@@ -67,7 +68,7 @@ public class SealingCircle : Node2D {
     /////////////
     ///////
 
-    public void PlayDemonTurn () {
+    public async Task PlayDemonTurn () {
         byte i = 0;
         foreach (var action in actionPlan) {
             switch (action) {
@@ -75,11 +76,13 @@ public class SealingCircle : Node2D {
                 case DemonAction.AttackPierce:
                     if (BattleScene.SealSlots[i] == Element.None)
                         BattleScene.Health -= 1;
+                    if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true;
                     break;
                 case DemonAction.Remove:
                     BattleScene.SealSlots[i] = Element.None;
                     break;
                 case DemonAction.AttackOrRemove:
+                    if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true;
                     if (BattleScene.SealSlots[i] == Element.None)
                         BattleScene.Health -= 1;
                     else
@@ -95,7 +98,11 @@ public class SealingCircle : Node2D {
     public void PlanNextDemonTurn () {
         actionPlan = Enumerable.Repeat(DemonAction.None, SlotCount).ToList(); ;
         actionPlan[0] = DemonAction.Attack;
-        actionPlan[RNG.rng.Next(1, SlotCount)] = DemonAction.Remove;
+        if (!isStaggered) {
+            actionPlan[RNG.rng.Next(1, SlotCount)] = DemonAction.Remove;
+        }
+
+        isStaggered = false;
         DisplayActionPlan();
         GetParent<BattleScene>().StartPlayerTurn();
     }

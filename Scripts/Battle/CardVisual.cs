@@ -11,6 +11,8 @@ public class CardVisual : MarginContainer {
     Label nameField;
     Label kanjiField;
 
+    public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
+
     public static CardVisual Instance () {
         return (CardVisual) ResourceLoader.Load<PackedScene>("res://Nodes/Battle/CardVisual.tscn").Instance();
     }
@@ -26,6 +28,11 @@ public class CardVisual : MarginContainer {
         nameField.Text = card.Name;
         kanjiField.Text = card.Kanji;
         Show();
+    }
+
+    public void Disappear () {
+        MyTween.InterpolateProperty(this, "modulate:a", 1, 0, 1);
+        MyTween.Start();
     }
 
     public override void _GuiInput (InputEvent _event) {

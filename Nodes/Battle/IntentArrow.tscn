@@ -4,6 +4,7 @@
 [ext_resource path="res://Scripts/Battle/IntentArrow.cs" type="Script" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
+resource_local_to_scene = true
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 120, 120 )
