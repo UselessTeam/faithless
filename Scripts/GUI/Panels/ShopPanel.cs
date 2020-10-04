@@ -4,11 +4,13 @@ using Utils;
 
 public class ShopPanel : ScaleContainer {
     [Export] NodePath leftCardPath;
+    [Export] NodePath middleCardPath;
     [Export] NodePath rightCardPath;
     [Export] NodePath itemPath;
     [Export] NodePath bubblePath;
     [Export] NodePath buyButtonPath;
     CardVisual leftCard;
+    CardVisual middleCard;
     CardVisual rightCard;
     TextureRect itemField;
     RichTextLabel bubbleText;
@@ -18,11 +20,13 @@ public class ShopPanel : ScaleContainer {
     // Variables
 
     CardId left;
+    CardId middle;
     CardId right;
     string item;
 
     public override void _Ready () {
         leftCard = GetNode<CardVisual>(leftCardPath);
+        middleCard = GetNode<CardVisual>(middleCardPath);
         rightCard = GetNode<CardVisual>(rightCardPath);
         itemField = GetNode<TextureRect>(itemPath);
         bubbleText = GetNode<RichTextLabel>(bubblePath);
@@ -30,7 +34,8 @@ public class ShopPanel : ScaleContainer {
         buyButtonText = GetNode<RichTextLabel>(buyButtonPath + "/Text");
 
         leftCard.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), 0.InArray());
-        rightCard.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), 1.InArray());
+        middleCard.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), 1.InArray());
+        rightCard.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), 2.InArray());
         buyButton.Connect("pressed", this, nameof(Buy));
 
         Init();
@@ -44,7 +49,7 @@ public class ShopPanel : ScaleContainer {
     public void Init () {
         bubbleText.Text = WELCOME_MESSAGES.Random();
         buyButton.Hide();
-        Load(CardId.BasicMetal, CardId.BasicFire);
+        Load(CardId.BasicMetal, CardId.BasicEarth, CardId.BasicFire);
     }
 
     private readonly string[] AGAIN_MESSAGES = new string[] {
@@ -57,8 +62,9 @@ public class ShopPanel : ScaleContainer {
         bubbleText.Text = AGAIN_MESSAGES.Random();
         buyButton.Hide();
     }
-    public void Load (CardId _left, CardId _right, string _item = "") {
+    public void Load (CardId _left, CardId _middle, CardId _right, string _item = "") {
         left = _left;
+        middle = _middle;
         right = _right;
         item = _item;
         if (left == CardId.None) {
@@ -66,6 +72,12 @@ public class ShopPanel : ScaleContainer {
         } else {
             leftCard.ShowCard(left.Data());
             leftCard.Show();
+        }
+        if (middle == CardId.None) {
+            middleCard.Hide();
+        } else {
+            middleCard.ShowCard(middle.Data());
+            middleCard.Show();
         }
         if (right == CardId.None) {
             rightCard.Hide();
@@ -82,7 +94,8 @@ public class ShopPanel : ScaleContainer {
         return index switch
         {
             0 => left.Data(),
-            1 => right.Data(),
+            1 => middle.Data(),
+            2 => right.Data(),
             _ => throw new Exception($"No card at index {index}"),
         };
     }

@@ -18,6 +18,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 leftCardPath = NodePath("Objects/LeftCardHolder/Card")
+middleCardPath = NodePath("Objects/MiddleCardHolder/Card")
 rightCardPath = NodePath("Objects/RightCardHolder/Card")
 itemPath = NodePath("Objects/ItemHolder/Item")
 bubblePath = NodePath("Objects/Speech/VBox/Text")
@@ -26,53 +27,69 @@ buyButtonPath = NodePath("Objects/Speech/VBox/Buy")
 [node name="Body" type="Control" parent="."]
 anchor_right = 2.0
 anchor_bottom = 2.0
-margin_right = -1048.0
+margin_right = -1248.0
 margin_bottom = -600.0
-rect_min_size = Vector2( 1000, 600 )
+rect_min_size = Vector2( 800, 600 )
+mouse_filter = 2
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Image" type="TextureRect" parent="Body"]
-margin_right = 1000.0
-margin_bottom = 600.0
+anchor_left = -0.1
+anchor_top = -0.1
+anchor_right = 1.2
+anchor_bottom = 1.1
 rect_min_size = Vector2( 1000, 600 )
+mouse_filter = 2
 texture = ExtResource( 8 )
-stretch_mode = 1
+stretch_mode = 6
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="Objects" type="Control" parent="."]
-margin_right = 1000.0
+margin_right = 800.0
 margin_bottom = 600.0
-rect_min_size = Vector2( 1000, 600 )
+rect_min_size = Vector2( 800, 600 )
 
 [node name="LeftCardHolder" type="MarginContainer" parent="Objects"]
-anchor_left = 0.488
-anchor_top = 0.303
-anchor_right = 0.488
-anchor_bottom = 0.303
-margin_left = -6.10352e-05
-margin_top = 0.199997
-margin_right = 180.0
-margin_bottom = 400.2
-rect_rotation = 0.5
-rect_scale = Vector2( 0.66, 0.66 )
+margin_left = 401.884
+margin_top = 202.725
+margin_right = 581.884
+margin_bottom = 602.725
+rect_rotation = -1.1
+rect_scale = Vector2( 0.6, 0.6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Card" parent="Objects/LeftCardHolder" instance=ExtResource( 2 )]
 
+[node name="MiddleCardHolder" type="MarginContainer" parent="Objects"]
+margin_left = 545.362
+margin_top = 194.606
+margin_right = 725.362
+margin_bottom = 594.606
+rect_rotation = 0.892428
+rect_scale = Vector2( 0.6, 0.6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Card" parent="Objects/MiddleCardHolder" instance=ExtResource( 2 )]
+backgroundPath = NodePath("../../MiddleCardHolder/Card/Holder/Background")
+namePath = NodePath("../../MiddleCardHolder/Card/Holder/Name")
+kanjiPath = NodePath("../../MiddleCardHolder/Card/Holder/Kanji")
+
 [node name="RightCardHolder" type="MarginContainer" parent="Objects"]
-margin_left = 808.942
-margin_top = 195.088
-margin_right = 988.942
-margin_bottom = 595.088
-rect_rotation = -1.0
-rect_scale = Vector2( 0.66, 0.66 )
+margin_left = 686.923
+margin_top = 189.451
+margin_right = 866.923
+margin_bottom = 589.451
+rect_rotation = 5.78111
+rect_scale = Vector2( 0.6, 0.6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -80,10 +97,10 @@ __meta__ = {
 [node name="Card" parent="Objects/RightCardHolder" instance=ExtResource( 2 )]
 
 [node name="ItemHolder" type="MarginContainer" parent="Objects"]
-margin_left = 242.178
-margin_top = 176.588
-margin_right = 290.178
-margin_bottom = 224.588
+margin_left = 189.737
+margin_top = 199.063
+margin_right = 237.737
+margin_bottom = 247.063
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -95,49 +112,52 @@ margin_bottom = 48.0
 texture = ExtResource( 3 )
 
 [node name="Speech" type="MarginContainer" parent="Objects"]
-margin_left = 25.0
-margin_top = 284.0
-margin_right = 394.0
-margin_bottom = 438.0
+margin_left = 10.0
+margin_top = 256.0
+margin_right = 329.0
+margin_bottom = 407.0
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="VBox" type="VBoxContainer" parent="Objects/Speech"]
-margin_right = 369.0
-margin_bottom = 154.0
+margin_right = 319.0
+margin_bottom = 151.0
 
 [node name="Text" parent="Objects/Speech/VBox" instance=ExtResource( 5 )]
-margin_right = 369.0
-margin_bottom = 108.0
+margin_right = 319.0
+margin_bottom = 105.0
 bbcode_text = "Hello, what do you want to buy?"
 text = "Hello, what do you want to buy?"
 
 [node name="Buy" parent="Objects/Speech/VBox" instance=ExtResource( 7 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 112.0
-margin_right = 369.0
-margin_bottom = 154.0
+margin_top = 109.0
+margin_right = 319.0
+margin_bottom = 151.0
 
 [node name="Wheel" type="Control" parent="."]
 anchor_right = 2.0
 anchor_bottom = 2.0
-margin_right = -1048.0
+margin_right = -1248.0
 margin_bottom = -600.0
-rect_min_size = Vector2( 1000, 600 )
+rect_min_size = Vector2( 800, 600 )
+mouse_filter = 2
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Image" type="TextureRect" parent="Wheel"]
-anchor_right = 2.0
-anchor_bottom = 2.0
-margin_right = -1000.0
-margin_bottom = -600.0
+anchor_left = -0.1
+anchor_top = -0.1
+anchor_right = 1.3
+anchor_bottom = 1.1
 rect_min_size = Vector2( 1000, 600 )
+mouse_filter = 2
 texture = ExtResource( 1 )
-stretch_mode = 1
+stretch_mode = 4
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
