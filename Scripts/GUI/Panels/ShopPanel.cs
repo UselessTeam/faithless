@@ -125,7 +125,7 @@ public class ShopPanel : ScaleContainer {
     public void OpenCard (int _, int index) {
         CardData card = GetCard(index).Data();
         selected = index;
-        bubbleText.Text = $"Want to buy a {card.Name}?\n\n{card.Description}";
+        bubbleText.Text = $"Want to buy a {card.Name}?\n\n{BB.Format(card.Description)}";
         buyButton.Show();
         buyButtonText.BbcodeText = $"[center]Buy ({card.MonPrice} {BB.Mon})[/center] ";
         buyButton.Disabled = (card.MonPrice > GameData.Instance.Money);
