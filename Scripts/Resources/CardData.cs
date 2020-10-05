@@ -399,7 +399,6 @@ public class CardData : Resource {
         }).ToDictionary((card) => card?.Id ?? CardId.None);
 
     public static CardData Find (CardId id) {
-        var card = list[id];
         if (list[id] == null) GD.Print("Trying to accesss a non-existing card : ", id);
         try {
             return list[id];

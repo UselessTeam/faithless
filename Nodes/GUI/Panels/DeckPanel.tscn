@@ -60,6 +60,7 @@ margin_bottom = 600.0
 alignment = 2
 
 [node name="Text" parent="VBox/HBox/Inspect/VBox" instance=ExtResource( 5 )]
+bbcode_enabled = true
 
 [node name="Banish" parent="VBox/HBox/Inspect/VBox" instance=ExtResource( 1 )]
 anchor_right = 0.0

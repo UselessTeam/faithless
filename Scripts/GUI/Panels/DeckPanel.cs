@@ -57,7 +57,7 @@ public class DeckPanel : MarginContainer {
 
     public void OpenCard (int index) {
         CardData card = GameData.Instance.Deck[index].Data();
-        inspectField.Text = card.Description;
+        inspectField.BbcodeText = BB.Format(card.Description);
         inspectField.Show();
         banishField.Disabled = false; //TODO: Banishment price
         priceField.BbcodeText = $"[center]Banish ({card.Cost * 99} {BB.Mon})[/center]";
