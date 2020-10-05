@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=1]
 [ext_resource path="res://Assets/Theme/Fonts/shojumaru_42.tres" type="DynamicFont" id=2]
@@ -8,6 +8,19 @@
 [ext_resource path="res://Assets/Fonts/kaushan-script/KaushanScript-Regular.otf" type="DynamicFontData" id=6]
 [ext_resource path="res://Assets/Sprites/Oni/kasaobake.png" type="Texture" id=7]
 [ext_resource path="res://Scripts/GUI/ScaleContainer.cs" type="Script" id=8]
+[ext_resource path="res://Assets/Sprites/Oni/hitotsumekozo.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Sprites/Oni/chochinobake.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Sprites/Oni/jorogumo.png" type="Texture" id=11]
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 700, 800 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 700, 800 )
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -124,6 +137,28 @@ stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Demons" type="Node2D" parent="Content/VBox/Middle"]
+
+[node name="Hitotsumekozo" type="Sprite" parent="Content/VBox/Middle/Demons"]
+visible = false
+scale = Vector2( 0.2, 0.2 )
+texture = SubResource( 5 )
+
+[node name="Kasa-Obake" type="Sprite" parent="Content/VBox/Middle/Demons"]
+visible = false
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 7 )
+
+[node name="Chochi-No-Bake" type="Sprite" parent="Content/VBox/Middle/Demons"]
+visible = false
+scale = Vector2( 0.2, 0.2 )
+texture = SubResource( 6 )
+
+[node name="Joro-Gumo" type="Sprite" parent="Content/VBox/Middle/Demons"]
+visible = false
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 11 )
 
 [node name="Details" type="MarginContainer" parent="Content/VBox"]
 margin_top = 247.0

@@ -13,9 +13,7 @@ public class HuntPanel : MarginContainer {
     }
 
     private void LoadRandomDemons () {
-        Load(new List<Demon> {
-            new Demon(), new Demon()
-        });
+        Load(DemonList);
     }
 
     public void Load (List<Demon> demons) {
@@ -26,4 +24,36 @@ public class HuntPanel : MarginContainer {
             wanted.Load(demon);
         }
     }
+
+    public static List<Demon> DemonList = new List<Demon> {
+        new Demon(){
+            Name = "Hitotsumekozo",
+            Difficulty  = "EASY",
+            DifficultyValue = 2,
+            Reward = 100,
+            SealSlots = 6,
+        },
+        new Demon(){
+            Name = "Kasa-Obake",
+            Difficulty  = "MEDIUM",
+            DifficultyValue = 3,
+            Reward = 200,
+            SealSlots = 8,
+        },
+        new Demon(){
+            Name = "Chochi-No-Bake",
+            Difficulty  = "HARD",
+            DifficultyValue = 4,
+            Reward = 300,
+            SealSlots = 10,
+
+        },
+        new Demon(){
+            Name = "Joro-Gumo",
+            Difficulty  = "LEGENDARY",
+            DifficultyValue = 5,
+            Reward = 600,
+            SealSlots = 12
+        },
+     };
 }

@@ -1,27 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Assets/Shaders/circle.shader" type="Shader" id=1]
 
-[sub_resource type="OpenSimplexNoise" id=1]
-
-[sub_resource type="NoiseTexture" id=2]
-noise = SubResource( 1 )
-
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
-shader_param/color_0 = Color( 1, 0, 0, 1 )
-shader_param/color_1 = Color( 0.898039, 1, 0, 1 )
-shader_param/color_2 = Color( 0, 0.564706, 0.941176, 1 )
-shader_param/color_3 = null
-shader_param/color_4 = null
-shader_param/color_5 = null
-shader_param/color_6 = null
-shader_param/color_7 = null
 shader_param/N = 3
-shader_param/NOISE_PATTERN = SubResource( 2 )
+shader_param/seal = null
 
 [node name="Circle" type="ColorRect"]
-material = SubResource( 3 )
+material = SubResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {

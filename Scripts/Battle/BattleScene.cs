@@ -25,6 +25,7 @@ public class BattleScene : MarginContainer {
     [Export] NodePath discardPath;
     [Export] NodePath handholderPath;
     [Export] NodePath sealingCirclePath;
+    [Export] NodePath demonsPath;
     SmartText thought;
     Control thoughtBubble;
     Label chiField;
@@ -85,6 +86,8 @@ public class BattleScene : MarginContainer {
         SealCircleField.InitializeSlots(GameData.Instance.Oni.SealSlots);
         Health = GameData.Instance.MaxHealth;
         SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
+
+        GetNode<Node2D>(demonsPath).GetNode<AnimatedSprite>(GameData.Instance.Oni.Name).Visible = true;
 
         Instance.ShuffleDeck();
 
@@ -207,7 +210,6 @@ public class BattleScene : MarginContainer {
         var OldElement = SealSlots[location];
         SealSlots[location] = element;
         Task task;
-        GD.Print("Adding seel");
         if (element == Element.Earth && SealSlots.Contains(Element.None)) { //Earth related movement
             int moveLocation = location;
             var moveElement = OldElement;

@@ -348,7 +348,7 @@ public class CardData : Resource {
                     }
                     await BattleScene.Instance.Hand.DiscardAll();
                     await BattleScene.DrawCards(4);
-                    BattleScene.Health = BattleScene.MAX_HEALTH;
+                    BattleScene.Health = GameData.Instance.MaxHealth;
 }
             },
             new CardData {Id = CardId.Drought,
@@ -356,10 +356,10 @@ public class CardData : Resource {
                 Kanji = "旱",
                 Element = Element.Earth,
                 Cost = 1,
-                Description = "Remove all [water-seal] and gain 1 Chi for each one discarded\nReplace all [wood-seal] by [earth-seal] and draw 1 card for each one discarded",
+                Description = "Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 Chi for each [water-seal] replaced\nDraw one card for each [wood-seal] replaced",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        if (BattleScene.SealSlots[i] == Element.Water) { await BattleScene.Instance.RemoveSeal(i); BattleScene.Ki += 1; }
+                        if (BattleScene.SealSlots[i] == Element.Water) { await BattleScene.Instance.SwitchSeal(Element.Earth, i); BattleScene.Ki += 1; }
                         if (BattleScene.SealSlots[i] == Element.Wood) { await BattleScene.Instance.SwitchSeal(Element.Earth, i);  await BattleScene.DrawCards(1);}
                     }
                 }

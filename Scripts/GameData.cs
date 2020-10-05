@@ -23,10 +23,8 @@ public class GameData : Node2D {
     public void DeckChange () {
         EmitSignal(nameof(DeckChanged));
     }
-    public Demon Oni = new Demon {
-        Name = "Default Oni",
-        SealSlots = 6,
-    };
+    public Demon Oni = HuntPanel.DemonList[0];
+
     [Signal] public delegate void MoneyChanged (int value);
 
     public List<Food> LeftInShop = new List<Food> {
