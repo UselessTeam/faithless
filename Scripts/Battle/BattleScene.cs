@@ -47,7 +47,7 @@ public class BattleScene : MarginContainer {
     public static short Health {
         get { return Instance.health; }
         set {
-            Instance.health = value; Instance.hpField.Text = value.ToString();
+            Instance.health = Math.Min(value, GameData.Instance.MaxHealth); Instance.hpField.Text = Instance.health.ToString();
             if (Health <= 0) {
                 LostScene.Loose(Instance.GetTree());
             }

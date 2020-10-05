@@ -13,8 +13,8 @@ public enum CardId {
     BasicEarth,
     BasicMetal,
     Flood,
-    WashAway,
-    Spring,
+    Watermill,
+    HotSpring,
     Tsunami,
     Recycle,
     Forge,
@@ -100,7 +100,7 @@ public class CardData : Resource {
                 Kanji = "水",
                 Element = Element.Water,
                 Cost = 2,
-                Description = "Place one Water Seal",
+                Description = "Place one [water-seal]",
                 Use =  async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Water, useLocation); }
             },
             new CardData {
@@ -109,7 +109,7 @@ public class CardData : Resource {
                 Kanji = "木",
                 Element = Element.Wood,
                 Cost = 2,
-                Description = "Place one Wood Seal",
+                Description = "Place one [wood-seal]",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal (Element.Wood, useLocation); }
             },
             new CardData {
@@ -118,7 +118,7 @@ public class CardData : Resource {
                 Kanji = "土",
                 Element = Element.Earth,
                 Cost = 2,
-                Description = "Place one Earth Seal",
+                Description = "Place one [earth-seal]",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Earth, useLocation); }
             },
             new CardData {Id = CardId.BasicMetal,
@@ -126,21 +126,21 @@ public class CardData : Resource {
                 Kanji = "金",
                 Element = Element.Metal,
                 Cost = 2,
-                Description = "Place one Metal Seal",
+                Description = "Place one [metal-seal]",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Metal, useLocation); }
             },
             new CardData {Id = CardId.Flood, //TODO
                 Name = "Flood",
                 Kanji = "洪",
                 Element = Element.Water,
-                Cost = 1,
-                Description = "Replace half of the seals on the sealing circle by Water Seals",
+                Cost = 2,
+                Description = "Place one [water-seal]\nReplace half of the seals on the sealing circle by [water-seal]",
                 Use = async (useLocation) => {
                     GD.Print("TODO Flood");
                 }
             },
-            new CardData {Id = CardId.WashAway,
-                Name = "Wash Away",
+            new CardData {Id = CardId.Tsunami,
+                Name = "Tsunami",
                 Kanji = "",
                 Element = Element.Water,
                 Cost = 1,
@@ -151,12 +151,12 @@ public class CardData : Resource {
                     await BattleScene.DrawCards((byte)cardCount);
                 }
             },
-            new CardData {Id = CardId.Spring,
-                Name = "Spring",
+            new CardData {Id = CardId.Watermill,
+                Name = "Watermill",
                 Kanji = "",
                 Element = Element.Water,
                 Cost = 0,
-                Description = "Select a Water Seal and replace it by a random other element",
+                Description = "Select a [water-seal] and replace it by a random other element",
                 RequiredElement = Element.Water,
                 Use = async (useLocation) => {
                     var elmIdx = Utils.RNG.rng.Next(0,4);
@@ -170,17 +170,21 @@ public class CardData : Resource {
 
                 }
             },
-            new CardData {Id = CardId.Tsunami,
-                Name = "Tsunami",
+            new CardData {Id = CardId.HotSpring,
+                Name = "Hot Spring",
                 Kanji = "",
                 Element = Element.Water,
-                Cost = 4,
-                Description = "Place Water Seals on the selected location and the two adjacent locations",
+                Cost = 1,
+                Description = "Gain one health of each [water-seal] placed next to a [fire-seal]",
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
-                    await BattleScene.Instance.AddSeal(Element.Water, useLocation);
-                    await BattleScene.Instance.AddSeal(Element.Water, (byte)((useLocation+1)%sealCount));
-                    await BattleScene.Instance.AddSeal(Element.Water, (byte)((useLocation+sealCount-1)%sealCount));
+                    for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
+                        if (BattleScene.SealSlots[i] == Element.Water){ await BattleScene.DrawCards((byte)(1+BattleScene.HarvestBonus));
+                            if (BattleScene.SealSlots[(useLocation+1)%sealCount] == Element.Fire
+                                || BattleScene.SealSlots[(useLocation+sealCount-1)%sealCount] == Element.Fire)
+                                BattleScene.Health += 1;
+                        }
+                    }
                 }
             },
             new CardData {Id = CardId.Recycle,
@@ -188,7 +192,7 @@ public class CardData : Resource {
                 Kanji = "鍛",
                 Element = Element.Metal,
                 Cost = 1,
-                Description = "Remove one Metal Seal. The next card you play will be free",
+                Description = "Remove one [metal-seal]. The next card you play will be free",
                 RequiredElement = Element.Metal,
                 Use = async (useLocation) => {
                     await BattleScene.Instance.RemoveSeal(useLocation);
@@ -200,7 +204,7 @@ public class CardData : Resource {
                 Kanji = "鍛",
                 Element = Element.Metal,
                 Cost = 3,
-                Description = "Place one Metal Seal on the selected location, and another one on the opposite side of the circle",
+                Description = "Place one [metal-seal] on the selected location, and another one on the opposite side of the circle",
                 Use = async (useLocation) => {
                     await BattleScene.Instance.AddSeal(Element.Metal, useLocation);
                     await BattleScene.Instance.AddSeal(Element.Metal, (byte)((useLocation + BattleScene.SealSlots.Count/2) % BattleScene.SealSlots.Count));
@@ -212,7 +216,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 3,
                 BanishAfterUse = true,
-                Description = "Harvesting from Wood Seals grants one more hand\nBanish this card until the end of the combat",
+                Description = "Harvesting from [wood-seal] grants one more hand\nBanish this card until the end of the combat",
                 Use = async (useLocation) => {
                     BattleScene.HarvestBonus +=1;
                 }
@@ -222,7 +226,7 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Metal,
                 Cost = 4,
-                Description = "Place Metal Seal on the selected location and the two adjacent locations",
+                Description = "Place [metal-seal] on the selected location and the two adjacent locations",
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
                     await BattleScene.Instance.AddSeal(Element.Metal, useLocation);
@@ -235,7 +239,7 @@ public class CardData : Resource {
                 Kanji = "穫",
                 Element = Element.Wood,
                 Cost = 2,
-                Description = "Harvest one card for each Wood Seal on the sealing circle",
+                Description = "Harvest one card for each [wood-seal] on the sealing circle",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if (BattleScene.SealSlots[i] == Element.Wood) await BattleScene.DrawCards((byte)(1+BattleScene.HarvestBonus));
@@ -261,24 +265,35 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Wood,
                 Cost = 0,
-                Description = "Select one Earth Seal and replace it by a Wood Seal",
+                Description = "Select one [earth-seal] and replace it by a [wood-seal]",
                 RequiredElement = Element.Earth,
                 Use = async (useLocation) => {
                     await BattleScene.Instance.SwitchSeal(Element.Wood, useLocation);
                 }
             },
-            new CardData {Id = CardId.RiceField, //TODO
+            new CardData {Id = CardId.RiceField,
                 Name = "Rice Field",
                 Kanji = "",
                 Element = Element.Wood,
                 Cost = 1,
-                Description = "Select one Water Seal, and place one Wood Seal in a random empty space next to it",
+                Description = "Select one [water-seal], and place one [wood-seal] in a random empty space next to it",
                 RequiredElement = Element.Water,
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
                     byte sealBefore = (byte)((useLocation+sealCount-1)%sealCount);
                     byte sealAfter = (byte)((useLocation+1)%sealCount);
-
+                    int noneCount =0;
+                    if(BattleScene.SealSlots[sealAfter] == Element.None) noneCount ++;
+                    if(BattleScene.SealSlots[sealBefore] == Element.None) noneCount +=2;
+                    if(noneCount == 0) return;
+                    else if(noneCount == 1) await BattleScene.Instance.AddSeal(Element.Wood, sealAfter);
+                    else if(noneCount == 2) await BattleScene.Instance.AddSeal(Element.Wood, sealBefore);
+                    else{
+                        if(Utils.RNG.rng.Next(0,2) == 0)
+                            await BattleScene.Instance.AddSeal(Element.Wood, sealAfter);
+                        else
+                            await BattleScene.Instance.AddSeal(Element.Wood, sealBefore);
+                    }
                 }
             },
             new CardData {Id = CardId.Eruption,
@@ -286,7 +301,7 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Fire,
                 Cost = 3,
-                Description = "Replace all Earth Seals by Metal Seals\nGain one Chi by Seal replaced\nDraw 1 Cards",
+                Description = "Replace all [earth-seal] by [metal-seal]\nGain one Chi by Seal replaced\nDraw 1 Cards",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if (BattleScene.SealSlots[i] == Element.Earth) { await BattleScene.Instance.SwitchSeal(Element.Metal, i); BattleScene.Ki+=1; }
@@ -324,12 +339,16 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Fire,
                 Cost = 4,
-                Description = "Destroy all Seals\nDraw 4 Cards\nHeal to full health\nGain 2 Chi for each Seal destroyed",
+                Description = "Destroy all Seals\nGain 2 Chi for each Seal destroyed\nDraw 4 Cards\nHeal to full health",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
+                        if(BattleScene.SealSlots[i] != Element.None){
                        await BattleScene.Instance.RemoveSeal(i); BattleScene.Ki+=2;
+                        }
                     }
-                    await BattleScene.DrawCards(2);
+                    await BattleScene.Instance.Hand.DiscardAll();
+                    await BattleScene.DrawCards(4);
+                    BattleScene.Health = BattleScene.MAX_HEALTH;
 }
             },
             new CardData {Id = CardId.Drought,
@@ -337,11 +356,11 @@ public class CardData : Resource {
                 Kanji = "旱",
                 Element = Element.Earth,
                 Cost = 1,
-                Description = "Remove all Water Seals and gain 1 Chi for each one discarded\nReplace all Wood Seals by Earth Seals and draw 1 card for each one discarded",
+                Description = "Remove all [water-seal] and gain 1 Chi for each one discarded\nReplace all [wood-seal] by [earth-seal] and draw 1 card for each one discarded",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        if (BattleScene.SealSlots[i] == Element.Water) { await BattleScene.Instance.RemoveSeal(i); BattleScene.Ki += 3; }
-                        if (BattleScene.SealSlots[i] == Element.Wood) { await BattleScene.Instance.SwitchSeal(Element.Earth, i); }
+                        if (BattleScene.SealSlots[i] == Element.Water) { await BattleScene.Instance.RemoveSeal(i); BattleScene.Ki += 1; }
+                        if (BattleScene.SealSlots[i] == Element.Wood) { await BattleScene.Instance.SwitchSeal(Element.Earth, i);  await BattleScene.DrawCards(1);}
                     }
                 }
             },
@@ -377,7 +396,7 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Earth,
                 Cost = 1,
-                Description = "Place an Earth Seal and swap the surrounding Seals",
+                Description = "Place an [earth-seal] and swap the surrounding Seals",
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
                     byte sealBefore = (byte)((useLocation+sealCount-1)%sealCount);
