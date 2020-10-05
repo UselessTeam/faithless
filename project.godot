@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Faithless"
-run/main_scene="res://Scenes/CombatScene.tscn"
+run/main_scene="res://Scenes/SecondCombatScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]

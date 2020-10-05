@@ -19,16 +19,15 @@ public class BattleScene : MarginContainer {
     [Export] NodePath thoughtPath;
     [Export] NodePath thoughtBubblePath;
     [Export] NodePath endTurnPath;
-    [Export] NodePath chiPath;
+    [Export] NodePath kiPath;
     [Export] NodePath hpPath;
     [Export] NodePath deckPath;
     [Export] NodePath discardPath;
     [Export] NodePath handholderPath;
     [Export] NodePath sealingCirclePath;
-    [Export] NodePath demonsPath;
     SmartText thought;
     Control thoughtBubble;
-    Label chiField;
+    Label kiField;
     Label hpField;
     Label deckField;
     Label discardField;
@@ -42,13 +41,20 @@ public class BattleScene : MarginContainer {
 
     public static List<Element> SealSlots;
 
-    short chi;
+    short ki;
     short health;
-    public static short Ki { get { return Instance.chi; } set { Instance.chi = value; Instance.chiField.Text = value.ToString(); } }
-    public static short Health {
-        get { return Instance.health; }
+    public static short Ki {
+        get => Instance.ki;
         set {
-            Instance.health = Math.Min(value, GameData.Instance.MaxHealth); Instance.hpField.Text = Instance.health.ToString();
+            Instance.ki = value;
+            Instance.kiField.Text = $"{value} / {GameData.Instance.MaxKi}";
+        }
+    }
+    public static short Health {
+        get => Instance.health;
+        set {
+            Instance.health = value;
+            Instance.hpField.Text = $"{value} / {GameData.Instance.MaxHealth}";
             if (Health <= 0) {
                 LostScene.Loose(Instance.GetTree());
             }
@@ -73,7 +79,7 @@ public class BattleScene : MarginContainer {
         thought = GetNode<SmartText>(thoughtPath);
         thoughtBubble = GetNode<Control>(thoughtBubblePath);
 
-        chiField = GetNode<Label>(chiPath);
+        kiField = GetNode<Label>(kiPath);
         hpField = GetNode<Label>(hpPath);
         deckField = GetNode<Label>(deckPath);
         discardField = GetNode<Label>(discardPath);
@@ -86,8 +92,6 @@ public class BattleScene : MarginContainer {
         SealCircleField.InitializeSlots(GameData.Instance.Oni.SealSlots);
         Health = GameData.Instance.MaxHealth;
         SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
-
-        GetNode<Node2D>(demonsPath).GetNode<AnimatedSprite>(GameData.Instance.Oni.Name).Visible = true;
 
         Instance.ShuffleDeck();
 
@@ -210,6 +214,7 @@ public class BattleScene : MarginContainer {
         var OldElement = SealSlots[location];
         SealSlots[location] = element;
         Task task;
+        GD.Print("Adding seel");
         if (element == Element.Earth && SealSlots.Contains(Element.None)) { //Earth related movement
             int moveLocation = location;
             var moveElement = OldElement;
@@ -288,6 +293,6 @@ public class BattleScene : MarginContainer {
     //Debug
     public override void _Input (InputEvent _event) {
         if (_event.IsActionPressed("win"))
-            SealedScene.Win(GetTree());
+            Win();
     }
 }

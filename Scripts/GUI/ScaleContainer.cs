@@ -12,7 +12,8 @@ public class ScaleContainer : Container {
                 float scale = Math.Min(scale_x, scale_y);
                 Vector2 size = new Vector2(minX * scale, minY * scale);
                 Vector2 extra = RectSize - size;
-                FitChildInRect(child, new Rect2(RectPosition + 0.5f * extra, new Vector2(minX, minY)));
+                // Vector2 extra = Vector2.Zero;
+                FitChildInRect(child, new Rect2(0.5f * extra, new Vector2(minX, minY)));
                 child.RectScale = new Vector2(scale, scale);
             }
         }
