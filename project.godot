@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="Faithless"
 run/main_scene="res://Scenes/IntroductionScene.tscn"
+boot_splash/image="res://Assets/thumbnail.png"
 config/icon="res://icon.png"
 
 [autoload]
