@@ -12,6 +12,8 @@ public class CardVisual : Control {
     Label kanjiField;
     public Control Holder;
 
+    private float split = 0f;
+
     public bool IsDisabled { get; set; } = false;
 
     public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
@@ -41,16 +43,17 @@ public class CardVisual : Control {
     }
     public void Disappear () {
         MyTween.InterpolateProperty(this, "modulate:a", 1, 0, 0.5f);
-        MyTween.InterpolateProperty(this, "rect_position", RectPosition, new Vector2(RectPosition.x, -120), 0.5f, Tween.TransitionType.Linear, Tween.EaseType.InOut);
+        MyTween.InterpolateProperty(this, "rect_min_size:x", RectMinSize.x - split, 0 - split, 0.4f, Tween.TransitionType.Cubic, Tween.EaseType.InOut, 0.1f);
+        MyTween.InterpolateProperty(Holder, "rect_position", Holder.RectPosition, new Vector2(Holder.RectPosition.x, -120), 0.5f, Tween.TransitionType.Linear, Tween.EaseType.InOut);
         MyTween.Start();
     }
     public void MoveFrom (Vector2 position) {
         MyTween.InterpolateProperty(this, "modulate:a", 0, 1, 0.5f);
-        MyTween.InterpolateProperty(this, "rect_position", position, RectPosition + new Vector2(180, 0) * GetIndex(), 0.5f);
+        MyTween.InterpolateProperty(Holder, "rect_position", position, Holder.RectPosition, 0.5f);
         MyTween.Start();
     }
     public void Pull (float offset) {
-        MyTween.InterpolateProperty(this, "rect_position", RectPosition, new Vector2(RectPosition.x, offset), 0.2f, Tween.TransitionType.Back, Tween.EaseType.Out);
+        MyTween.InterpolateProperty(Holder, "rect_position", Holder.RectPosition, new Vector2(Holder.RectPosition.x, offset), 0.2f, Tween.TransitionType.Back, Tween.EaseType.Out);
         MyTween.Start();
     }
 

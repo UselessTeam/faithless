@@ -24,8 +24,6 @@ public class BattleScene : MarginContainer {
     [Export] NodePath deckPath;
     [Export] NodePath discardPath;
     [Export] NodePath handholderPath;
-    [Export] NodePath handPath;
-    [Export] NodePath deleteHandPath;
     [Export] NodePath sealingCirclePath;
     SmartText thought;
     Control thoughtBubble;
@@ -33,16 +31,12 @@ public class BattleScene : MarginContainer {
     Label hpField;
     Label deckField;
     Label discardField;
-    public HandContainer HandHolder;
-    public Control HandField;
-    public Control DeleteHandField;
+    public HandHolder Hand;
     public SealingCircle SealCircleField;
 
 
     /*** Others ***/
     public static List<CardId> Deck;
-
-    public static List<CardId> Hand = new List<CardId>();
     public static List<CardId> Discard = new List<CardId>();
 
     public static List<Element> SealSlots;
@@ -66,7 +60,6 @@ public class BattleScene : MarginContainer {
 
     public enum State { PlayerTurn, CardSelected, SomethingHappening, EnemyTurn }
     State currentState = State.EnemyTurn;
-    byte selectedCard = byte.MaxValue;
 
     /////Initialization
     ///
@@ -83,9 +76,7 @@ public class BattleScene : MarginContainer {
         deckField = GetNode<Label>(deckPath);
         discardField = GetNode<Label>(discardPath);
 
-        HandHolder = GetNode<HandContainer>(handholderPath);
-        HandField = GetNode<Control>(handPath);
-        DeleteHandField = GetNode<Control>(deleteHandPath);
+        Hand = GetNode<HandHolder>(handholderPath);
         SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
@@ -111,38 +102,10 @@ public class BattleScene : MarginContainer {
             }
             if (Deck.Count == 0) break;
             var addCard = Deck[0];
-            Hand.Add(addCard);
-            Instance.HandHolder.SetCards(Hand.Count);
+            CardVisual card = await Instance.Hand.DrawCard(addCard);
             Deck.RemoveAt(0);
-
-            var makeCard = CardVisual.Instance();
-            makeCard.Connect(nameof(CardVisual.OnClick), Instance, nameof(SelectCard));
-            makeCard.Connect(nameof(CardVisual.FocusEntered), Instance, nameof(HoverCard));
-            makeCard.Connect(nameof(CardVisual.FocusExited), Instance, nameof(UnHoverCard));
-            Instance.HandField.AddChild(makeCard);
-            makeCard.Modulate = new Color(1, 1, 1, 0);
-            makeCard.ShowCard(addCard.Data());
-            makeCard.MoveFrom(new Vector2(1000, 0));
-            await Instance.ToSignal(Instance.HandField.GetChild<CardVisual>(Instance.HandField.GetChildCount() - 1).MyTween, "tween_completed");
         }
-        Instance.HandField.Hide();
-        Instance.HandField.Show();
     }
-
-    public static async Task DiscardCard (byte index) {
-        var toDiscard = Instance.HandField.GetChild<CardVisual>(index);
-        toDiscard.IsDisabled = true;
-        Discard.Add(Hand[index]);
-        Hand.RemoveAt(index);
-        Instance.HandField.RemoveChild(toDiscard);
-        Instance.DeleteHandField.AddChild(toDiscard);
-
-        toDiscard.Disappear();
-        await Instance.ToSignal(toDiscard.MyTween, "tween_completed");
-        toDiscard.QueueFree();
-        Instance.DisplayDeckAndDiscard();
-    }
-
     void ShuffleDeck () {
         Deck = Utils.RNG.RandomOrder(Deck).ToList();
     }
@@ -156,26 +119,23 @@ public class BattleScene : MarginContainer {
 
     async void EndPlayerTurn () {
         if (currentState != State.PlayerTurn) return;
-        Task task = null;
-        while (Hand.Count > 0) {
-            task = DiscardCard(0);
-        }
-        if (task != null) await task;
+        Task task = Hand.DiscardAll();
         currentState = State.EnemyTurn;
         await EndTurnEffects();
+        await task;
         await SealCircleField.PlayDemonTurn();
     }
 
-    public void HoverCard (CardId card) {
-        thoughtBubble.Show();
-        thought.BbcodeText = card.Data().Description;
+    public bool IsBusy () {
+        return currentState == State.SomethingHappening;
     }
 
-    public void UnHoverCard (CardId _card) {
-        if (selectedCard < byte.MaxValue) {
-            thought.BbcodeText = Hand[selectedCard].Data().Description;
-        } else {
+    public void DescribeCard (CardId card = CardId.None) {
+        if (card == CardId.None) {
             thoughtBubble.Hide();
+        } else {
+            thoughtBubble.Show();
+            thought.BbcodeText = card.Data().Description;
         }
     }
 
@@ -195,7 +155,7 @@ public class BattleScene : MarginContainer {
     //     DisplayDeckAndDiscard();
     // }
 
-    void DisplayDeckAndDiscard () {
+    public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count.ToString();
         discardField.Text = Discard.Count.ToString();
     }
@@ -205,51 +165,22 @@ public class BattleScene : MarginContainer {
     ////////////////
     //////
 
-    public void SelectCard (byte id) {
-        if (currentState == State.SomethingHappening)
-            return;
-
-        if (selectedCard == id) {
-            DeselectCard();
-            return;
-        }
-        // Unselect previous card
-        if (selectedCard < byte.MaxValue)
-            DeselectCard();
-
-        if (Hand[id].Data().Cost > Chi) {
-            GD.Print("Not enough Chi"); //Might be usefull?
-        }
-        // Logic selection
-        selectedCard = id;
-        Instance.HandField.GetChild<CardVisual>(selectedCard).Pull(-50f);
-    }
-
     async public void ClickOnSealSlot (byte id) {
-        if (currentState != State.PlayerTurn || selectedCard == byte.MaxValue) return;
+        if (currentState != State.PlayerTurn || Hand.Selected == null) return;
         currentState = State.SomethingHappening;
 
-        CardId card = Hand[selectedCard];
-        byte selected = selectedCard;
-        DeselectCard();
+        CardVisual visual = Hand.Selected;
+        CardData card = visual.Card.Data();
         //Use the card
-        if (Chi >= card.Data().Cost
-        && CardData.CheckPlayable(card, SealSlots[id])) { //Check if we can play the card
-            Chi -= card.Data().Cost;
-            await card.Data().Use(id);
-
+        if (Chi >= card.Cost
+        && CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
+            Chi -= card.Cost;
+            await card.Use(id);
             // Discard the Card
-            await DiscardCard(selected);
+            await Hand.DiscardCard(visual);
         }
 
         currentState = State.PlayerTurn;
-    }
-
-    public void DeselectCard () {
-        if (selectedCard < byte.MaxValue) {
-            Instance.HandField.GetChild<CardVisual>(selectedCard).Pull(0f);
-        }
-        selectedCard = byte.MaxValue;
     }
 
     ///////////////////

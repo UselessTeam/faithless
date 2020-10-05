@@ -8,7 +8,7 @@
 [ext_resource path="res://Scripts/Battle/RayCircle.cs" type="Script" id=6]
 [ext_resource path="res://Nodes/Battle/Circle.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Nodes/GUI/Thoughts/CombatThoughts.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Scripts/GUI/Panels/HandContainer.cs" type="Script" id=9]
+[ext_resource path="res://Scripts/GUI/Panels/HandHolder.cs" type="Script" id=9]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -53,9 +53,7 @@ chiPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/ChiValue")
 hpPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/HpValue")
 deckPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/DiscardValue")
 discardPath = NodePath("Holder/Bottom/HBox/Right/VBox/Grid/DeckValue")
-handholderPath = NodePath("Holder/Bottom/HBox/HandContainer")
-handPath = NodePath("Holder/Bottom/HBox/HandContainer/HBox/Hand")
-deleteHandPath = NodePath("Holder/Bottom/HBox/HandContainer/HBox/ToDeleteHand")
+handholderPath = NodePath("Holder/Bottom/HBox/Hand")
 sealingCirclePath = NodePath("Holder/Top/Center/Ping/SealingCircle")
 
 [node name="Holder" type="Control" parent="."]
@@ -174,7 +172,7 @@ margin_top = 12.0
 margin_right = 182.0
 margin_bottom = 170.0
 
-[node name="HandContainer" type="Container" parent="Holder/Bottom/HBox"]
+[node name="Hand" type="Container" parent="Holder/Bottom/HBox"]
 margin_left = 214.0
 margin_right = 846.0
 margin_bottom = 178.0
@@ -184,26 +182,12 @@ size_flags_stretch_ratio = 3.0
 script = ExtResource( 9 )
 minWidth = 600
 
-[node name="HBox" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer"]
+[node name="Container" type="HBoxContainer" parent="Holder/Bottom/HBox/Hand"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
-
-[node name="ToDeleteHand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer/HBox"]
-margin_bottom = 178.0
-custom_constants/separation = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Hand" type="HBoxContainer" parent="Holder/Bottom/HBox/HandContainer/HBox"]
-margin_bottom = 178.0
-custom_constants/separation = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Right" type="MarginContainer" parent="Holder/Bottom/HBox"]
 margin_left = 850.0
