@@ -11,7 +11,7 @@ public class SealingCircle : Node2D {
     [Export(PropertyHint.File)] string sealSlotPath;
     [Export(PropertyHint.File)] string arrowPath;
     [Export] NodePath rayCirclePath;
-    RayCircle rayCircle;
+    public RayCircle RayCircle;
 
     int SlotCount = 0;
     Node2D SealSlotDisplays { get { return GetNode<Node2D>("SealSlotDisplays"); } }
@@ -24,7 +24,7 @@ public class SealingCircle : Node2D {
     Vector2 CenterToSlot;
 
     public override void _Ready () {
-        rayCircle = GetNode<RayCircle>(rayCirclePath);
+        RayCircle = GetNode<RayCircle>(rayCirclePath);
     }
 
     ////////////////////////////////
@@ -33,11 +33,12 @@ public class SealingCircle : Node2D {
     ///////
     public void InitializeSlots (int slotCount) {
         SlotCount = slotCount;
-        rayCircle.SetSlotCount(slotCount);
+        RayCircle.SetSlotCount(slotCount);
         CenterPosition = GetNode<Position2D>("Center").Position;
         CenterToSlot = GetNode<Position2D>("FirstSealSlot").Position - GetNode<Position2D>("Center").Position;
         for (byte i = 0 ; i < SlotCount ; i++) {
             var slot = GD.Load<PackedScene>(sealSlotPath).Instance().GetNode<SealSlot>("./");
+            slot.Circle = this;
             slot.RectPosition = CenterPosition + CenterToSlot;
             slot.id = i;
             // slot.Name = i.ToString();
@@ -50,12 +51,12 @@ public class SealingCircle : Node2D {
     async public Task AppearSeal (byte index) {
         var currentSeal = SealSlotDisplays.GetChild<SealSlot>(index);
         currentSeal.ShowSlot(BattleScene.SealSlots[index]);
-        currentSeal.Appear();
+        currentSeal.Change(BattleScene.SealSlots[index]);
         await ToSignal(currentSeal.MyTween, "tween_completed");
     }
     async public Task DisappearSeal (byte index) {
         var currentSeal = SealSlotDisplays.GetChild<SealSlot>(index);
-        currentSeal.Disappear();
+        currentSeal.Change(Element.None);
         await ToSignal(currentSeal.MyTween, "tween_completed");
         currentSeal.ShowSlot(Element.None);
         currentSeal.Modulate = new Color(1, 1, 1, 1);
@@ -70,7 +71,7 @@ public class SealingCircle : Node2D {
         byte i = 0;
         foreach (var slot in BattleScene.SealSlots) {
             SealSlotDisplays.GetChild<SealSlot>(i).ShowSlot(slot);
-            rayCircle.SetSlot(slot, i);
+            RayCircle.SetSlot(slot, i);
             i++;
         }
     }

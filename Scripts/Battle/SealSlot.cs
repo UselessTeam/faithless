@@ -4,6 +4,7 @@ using Godot;
 
 public class SealSlot : Control {
     [Signal] delegate void OnClick (byte id);
+    public SealingCircle Circle;
     public int id;
 
     public override void _Ready () {
@@ -28,16 +29,19 @@ public class SealSlot : Control {
         Show();
     }
 
-    public void Disappear () {
-        MyTween.InterpolateProperty(MySprite, "modulate:a", 1, 0, 0.5f);
-        MyTween.Start();
+    Color color = RayCircle.NO_COLOR;
+    public void ModifyColor (Color color) {
+        Circle.RayCircle.SetSlotColor(id, color);
+        Color modulate = MySprite.Modulate;
+        modulate.a = color.a;
+        MySprite.Modulate = modulate;
     }
-    public void Appear () {
-        MyTween.InterpolateProperty(MySprite, "modulate:a", 0, 1, 0.5f);
+    public void Change (Element e) {
+        MyTween.InterpolateMethod(this, nameof(ModifyColor), color, RayCircle.ELEMENT_COLORS[(int) e], 0.5f);
         MyTween.Start();
     }
     public void MoveTo (Vector2 position) {
-        MyTween.InterpolateProperty(GetNode<TextureRect>("Sprite"), "rect_position", RectPosition, position, 0.5f);
+        MyTween.InterpolateMethod(GetNode<TextureRect>("Sprite"), "rect_position", RectPosition, position, 0.5f);
         MyTween.Start();
     }
 
