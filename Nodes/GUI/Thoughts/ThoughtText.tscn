@@ -49,6 +49,10 @@ margin_right = 1000.0
 margin_bottom = 576.0
 custom_styles/normal = ExtResource( 5 )
 custom_fonts/normal_font = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "Place one Fire Seal
+
+[Fire] At the beginning of your turn, adjacent Wood are turned into Fire and make you draw a card"
 meta_underlined = false
 text = "Place one Fire Seal
 

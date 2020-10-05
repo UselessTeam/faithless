@@ -22,7 +22,9 @@ public class RayCircle : ColorRect {
     };
     public override void _Ready () {
         gradientTexture.Gradient = new Gradient();
-        ((ShaderMaterial) Material).SetShaderParam("colors", gradientTexture);
+        ShaderMaterial shader = (ShaderMaterial) Material;
+        shader.SetShaderParam("colors", gradientTexture);
+        shader.SetShaderParam("seal", 0f);
         tween = new Tween();
         AddChild(tween);
     }
