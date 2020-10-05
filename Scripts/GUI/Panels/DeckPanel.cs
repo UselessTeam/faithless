@@ -9,18 +9,15 @@ public class DeckPanel : MarginContainer {
     [Export] NodePath inspectPath;
     [Export] NodePath banishPath;
     [Export] NodePath pricePath;
-    GridContainer gridField;
-    Control gridContainerField;
+    AdjustableGrid gridField;
     SmartText inspectField;
     Button banishField;
     SmartText priceField;
     public override void _Ready () {
-        gridField = GetNode<GridContainer>(gridPath);
-        gridContainerField = GetNode<Control>(gridContainerPath);
+        gridField = GetNode<AdjustableGrid>(gridPath);
         inspectField = GetNode<SmartText>(inspectPath);
         banishField = GetNode<Button>(banishPath);
         priceField = GetNode<SmartText>(pricePath);
-        GetTree().Connect("screen_resized", this, nameof(AdjustGrid));
         GameData.Instance.Connect(nameof(GameData.DeckChanged), this, nameof(ShowDeck));
         ShowDeck();
     }
@@ -64,11 +61,5 @@ public class DeckPanel : MarginContainer {
         inspectField.Show();
         banishField.Disabled = false; //TODO: Banishment price
         priceField.BbcodeText = $"[center]Banish ({card.Cost * 99} {BB.Mon})[/center]";
-    }
-
-    const float CARD_WIDTH = 180f;
-    private void AdjustGrid () {
-        gridField.Columns = Math.Max(1, (int) (gridContainerField.RectSize.x / CARD_WIDTH));
-        gridField.Update();
     }
 }

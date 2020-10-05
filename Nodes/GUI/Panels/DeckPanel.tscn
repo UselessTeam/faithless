@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Nodes/GUI/Buttons/RichButton.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GUI/Panels/DeckPanel.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/GUI/Tables/AdjustableGrid.cs" type="Script" id=3]
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=4]
 [ext_resource path="res://Nodes/GUI/Tables/BoldText.tscn" type="PackedScene" id=5]
 
@@ -43,6 +44,8 @@ size_flags_vertical = 3
 
 [node name="Grid" type="GridContainer" parent="VBox/HBox/Deck/CenterContainer"]
 columns = 3
+script = ExtResource( 3 )
+margin = 20.0
 
 [node name="Inspect" type="MarginContainer" parent="VBox/HBox"]
 margin_left = 724.0
