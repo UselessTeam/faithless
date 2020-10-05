@@ -177,9 +177,10 @@ public class CardData : Resource {
                 Cost = 4,
                 Description = "Place Water Seals on the selected location and the two adjacent locations",
                 Use = async (useLocation) => {
-                    for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        // if (BattleScene.SealSlots[i] != Element.Wood) await BattleScene.DrawCards(1);
-                    }
+                    byte sealCount = (byte) BattleScene.SealSlots.Count;
+                    await BattleScene.Instance.AddSeal(Element.Water, useLocation);
+                    await BattleScene.Instance.AddSeal(Element.Water, (byte)((useLocation+1)%sealCount));
+                    await BattleScene.Instance.AddSeal(Element.Water, (byte)((useLocation+sealCount-1)%sealCount));
                 }
             },
             new CardData {Id = CardId.Recycle,
@@ -220,11 +221,11 @@ public class CardData : Resource {
                 Name = "Stronghold",
                 Kanji = "",
                 Element = Element.Metal,
-                Cost = 1,
-                RequiredElement = Element.Metal,
-                Description = "Select a Metal Seal\nPlace a Metal Seal on the 2 surrounding locations",
+                Cost = 4,
+                Description = "Place Metal Seal on the selected location and the two adjacent locations",
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
+                    await BattleScene.Instance.AddSeal(Element.Metal, useLocation);
                     await BattleScene.Instance.AddSeal(Element.Metal, (byte)((useLocation+1)%sealCount));
                     await BattleScene.Instance.AddSeal(Element.Metal, (byte)((useLocation+sealCount-1)%sealCount));
                 }
@@ -285,7 +286,7 @@ public class CardData : Resource {
                 Description = "Replace all Earth Seals by Metal Seals\nGain one Chi by Seal replaced\nDraw 2 Cards",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        if (BattleScene.SealSlots[i] == Element.Wood) { await BattleScene.Instance.SwitchSeal(Element.Earth, i); BattleScene.Chi+=1; }
+                        if (BattleScene.SealSlots[i] == Element.Earth) { await BattleScene.Instance.SwitchSeal(Element.Metal, i); BattleScene.Chi+=1; }
                     }
                     await BattleScene.DrawCards(2);
                 }
@@ -298,7 +299,7 @@ public class CardData : Resource {
                 RequireFull = true,
                 Description = "Destroy a Seal\nDraw 3 Cards",
                 Use = async (useLocation) => {
-                    await BattleScene.Instance.SwitchSeal(Element.Wood, useLocation);
+                    await BattleScene.Instance.RemoveSeal(useLocation);
                     await BattleScene.DrawCards(3);
                 }
             },
