@@ -107,6 +107,7 @@ public class BattleScene : MarginContainer {
 
     public static async Task DrawCards (byte count) {
         for (byte i = 0 ; i < count ; i++) {
+            // GD.Print($"[{i}/{count}] {Deck.Count}:{Discard.Count}");
             if (Deck.Count == 0) {
                 Deck = Discard;
                 Discard = new List<CardId>();
@@ -114,8 +115,9 @@ public class BattleScene : MarginContainer {
             }
             if (Deck.Count == 0) break;
             var addCard = Deck[0];
-            CardVisual card = await Instance.Hand.DrawCard(addCard);
+            // GD.Print($"[{addCard.Data().Name}]");
             Deck.RemoveAt(0);
+            CardVisual card = await Instance.Hand.DrawCard(addCard);
             Instance.DisplayDeckAndDiscard();
         }
     }
@@ -133,10 +135,9 @@ public class BattleScene : MarginContainer {
 
     async void EndPlayerTurn () {
         if (currentState != State.PlayerTurn) return;
-        Task task = Hand.DiscardAll();
+        await Hand.DiscardAll();
         currentState = State.EnemyTurn;
         await EndTurnEffects();
-        await task;
         await SealCircleField.PlayDemonTurn();
     }
 
@@ -167,7 +168,7 @@ public class BattleScene : MarginContainer {
     //         if (s != "") {
     //             s += ", ";
     //         }
-    //         s += card.Data().Name;
+    //         s += $"<{card.Data().Name}>";
     //     }
     //     return s;
     // }
