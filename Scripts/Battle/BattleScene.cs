@@ -114,29 +114,6 @@ public class BattleScene : MarginContainer {
         }
     }
 
-
-    // public static async Task DiscardCard (byte index, bool banish = false) {
-    //     var toDiscard = Instance.HandField.GetChild<CardVisual>(index);
-    //     toDiscard.Reset();
-    //     toDiscard.IsDisabled = true;
-    //     if (!banish) Discard.Add(Hand[index]);
-    //     Hand.RemoveAt(index);
-    //     var position = toDiscard.RectGlobalPosition;
-
-    //     toDiscard.Disappear();
-    //     await Instance.ToSignal(toDiscard.MyTween, "tween_completed");
-    //     toDiscard.QueueFree();
-    //     Instance.DisplayDeckAndDiscard();
-    // }
-
-    // public static async void DiscardAllCards () {
-    //     Task task = null;
-    //     while (Hand.Count > 0) {
-    //         task = DiscardCard((byte) (Hand.Count - 1));
-    //     }
-    //     if (task != null) await task;
-    // }
-
     void ShuffleDeck () {
         Deck = Utils.RNG.RandomOrder(Deck).ToList();
     }
@@ -300,7 +277,8 @@ public class BattleScene : MarginContainer {
         }
     }
 
-    void Win () {
+    public async void Win () {
+        await SealCircleField.RayCircle.Seal();
         SealedScene.Win(GetTree());
         // GetTree().Paused = true;
     }
@@ -310,7 +288,4 @@ public class BattleScene : MarginContainer {
         if (_event.IsActionPressed("win"))
             Win();
     }
-
-
-
 }
