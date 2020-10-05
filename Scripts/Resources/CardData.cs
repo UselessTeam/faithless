@@ -24,7 +24,6 @@ public enum CardId {
     Roots,
     Plantation,
     RiceField,
-    Agriculture,
     Eruption,
     Combustion,
     Phoenix,
