@@ -17,6 +17,7 @@ public class DeckPanel : MarginContainer {
         gridField = GetNode<AdjustableGrid>(gridPath);
         inspectField = GetNode<SmartText>(inspectPath);
         banishField = GetNode<Button>(banishPath);
+        banishField.Connect("pressed", this, nameof(Banish));
         priceField = GetNode<SmartText>(pricePath);
         GameData.Instance.Connect(nameof(GameData.DeckChanged), this, nameof(ShowDeck));
         ShowDeck();
@@ -55,11 +56,20 @@ public class DeckPanel : MarginContainer {
         priceField.BbcodeText = $"[center]Banish[/center]";
     }
 
+    CardData opened;
+    const int BANISHMENT_COST = 150;
+
     public void OpenCard (int index) {
-        CardData card = GameData.Instance.Deck[index].Data();
-        inspectField.BbcodeText = BB.Format(card.Description);
+        opened = GameData.Instance.Deck[index].Data();
+        inspectField.BbcodeText = BB.Format(opened.Description);
         inspectField.Show();
-        banishField.Disabled = false; //TODO: Banishment price
-        priceField.BbcodeText = $"[center]Banish ({card.Cost * 99} {BB.Mon})[/center]";
+        banishField.Disabled = (GameData.Instance.Money < BANISHMENT_COST);
+        priceField.BbcodeText = $"[center]Banish ({BANISHMENT_COST} {BB.Mon})[/center]";
+    }
+
+    public void Banish () {
+        GameData.Instance.Money -= BANISHMENT_COST;
+        GameData.Instance.Deck.Remove(opened.Id);
+        GameData.Instance.DeckChange();
     }
 }
