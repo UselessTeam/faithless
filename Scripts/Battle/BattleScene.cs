@@ -164,7 +164,7 @@ public class BattleScene : MarginContainer {
             thoughtBubble.Hide();
         } else {
             thoughtBubble.Show();
-            thought.BbcodeText = card.Data().Description;
+            thought.BbcodeText = BB.Format(card.Data().Description);
         }
     }
 
@@ -193,7 +193,7 @@ public class BattleScene : MarginContainer {
         //Use the card
         if ((Chi >= card.Cost || NextCardFree)
         && CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
-            Chi -= (NextCardFree) ? 0 : card.Cost;
+            Chi -= (NextCardFree) ? (short) 0 : (short) card.Cost;
             await card.Use(id);
             NextCardFree = false;
             // Discard the Card

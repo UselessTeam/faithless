@@ -4,6 +4,7 @@
 [ext_resource path="res://Scripts/GUI/Thoughts/ThoughtPopup.cs" type="Script" id=2]
 
 [node name="ThoughtPopup" type="Popup"]
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
@@ -16,3 +17,25 @@ anchor_left = 0.2
 anchor_top = 0.2
 anchor_right = 0.8
 anchor_bottom = 0.8
+
+[node name="ShadowContainer" parent="ThoughtText" index="0"]
+margin_right = 614.0
+margin_bottom = 360.0
+
+[node name="Margin" parent="ThoughtText" index="1"]
+margin_right = 614.0
+margin_bottom = 360.0
+
+[node name="Text" parent="ThoughtText/Margin" index="0"]
+margin_right = 590.0
+margin_bottom = 336.0
+bbcode_enabled = true
+bbcode_text = "[font=res://Assets/Theme/Fonts/riiltf_22.tres]火[/font]
+
+[Fire] At the beginning of your turn, adjacent Wood are turned into Fire and make you draw a card"
+meta_underlined = true
+text = "火
+
+[Fire] At the beginning of your turn, adjacent Wood are turned into Fire and make you draw a card"
+
+[editable path="ThoughtText"]

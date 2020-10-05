@@ -11,14 +11,20 @@ public class ThoughtPopup : Popup {
         text = GetNode<SmartText>("ThoughtText/Margin/Text");
     }
 
-    public void Open (string info) {
+    public void Open (string key) {
         PopupCentered();
-        text.BbcodeText = info;
+        text.BbcodeText = $"[center]{BB.Format(Help.Explanations[key])}[/center]";
     }
 
     public override void _GuiInput (InputEvent @event) {
         if (@event is InputEventMouseButton eventMouse && eventMouse.ButtonIndex == (int) ButtonList.Left && eventMouse.Pressed) {
             Hide();
+        }
+    }
+
+    public override void _UnhandledInput (InputEvent @event) {
+        if (@event.IsActionPressed("ui_cancel")) {
+            Open("esc");
         }
     }
 }

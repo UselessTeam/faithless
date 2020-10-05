@@ -21,7 +21,7 @@ public class SealedScene : ColorRect {
         CardId card = CardData.AllSpecial.Random();
         GetNode<CardVisual>(cardPath).ShowCard(card.Data());
         GetNode<CardVisual>(cardPath).IsDisabled = true;
-        GetNode<RichTextLabel>(descriptionPath).BbcodeText = card.Data().Description;
+        GetNode<RichTextLabel>(descriptionPath).BbcodeText = BB.Format(card.Data().Description);
         GetNode<Button>(addCardbuttonPath).Connect("pressed", this, nameof(AddToDeck), new Godot.Collections.Array() { card });
         GetNode<Button>(continuePath).Connect("pressed", this, nameof(Continue));
     }
