@@ -5,6 +5,7 @@ using Utils;
 public class StoryPanel : ColorRect {
     [Export] NodePath textPath;
     [Export] float time;
+    [Export] float speedUp = 10f;
     [Export(PropertyHint.File)] string nextScene;
     SmartText text;
     public override void _Ready () {
@@ -13,7 +14,8 @@ public class StoryPanel : ColorRect {
 
     float progress;
     public override void _Process (float delta) {
-        progress += delta / time;
+        float factor = Input.IsActionPressed("ui_accept") || Input.IsActionPressed("ui_select") || Input.IsMouseButtonPressed(0) || Input.IsMouseButtonPressed(1) ? speedUp : 1f;
+        progress += factor * delta / time;
         progress = Math.Min(1f, progress);
         text.PercentVisible = progress;
     }
