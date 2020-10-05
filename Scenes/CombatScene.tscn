@@ -146,29 +146,29 @@ margin_right = 1280.0
 margin_bottom = 540.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/margin_right = 24
-custom_constants/margin_top = 24
+custom_constants/margin_right = 48
+custom_constants/margin_top = 48
 custom_constants/margin_left = -24
-custom_constants/margin_bottom = 24
+custom_constants/margin_bottom = 48
 
 [node name="VBox" type="VBoxContainer" parent="Holder/Top/Right"]
 margin_left = -24.0
-margin_top = 24.0
-margin_right = 231.0
-margin_bottom = 516.0
+margin_top = 48.0
+margin_right = 207.0
+margin_bottom = 492.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.75
 custom_constants/separation = 12
 alignment = 1
 
 [node name="Ki" type="HBoxContainer" parent="Holder/Top/Right/VBox"]
-margin_right = 255.0
+margin_right = 231.0
 margin_bottom = 64.0
 custom_constants/separation = 12
 
 [node name="Value" type="Label" parent="Holder/Top/Right/VBox/Ki"]
 margin_top = 8.0
-margin_right = 179.0
+margin_right = 155.0
 margin_bottom = 55.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 1 )
@@ -177,8 +177,8 @@ text = "5 / 5"
 align = 2
 
 [node name="Icon" type="Control" parent="Holder/Top/Right/VBox/Ki"]
-margin_left = 191.0
-margin_right = 255.0
+margin_left = 167.0
+margin_right = 231.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 
@@ -194,13 +194,13 @@ __meta__ = {
 
 [node name="Health" type="HBoxContainer" parent="Holder/Top/Right/VBox"]
 margin_top = 76.0
-margin_right = 255.0
+margin_right = 231.0
 margin_bottom = 140.0
 custom_constants/separation = 12
 
 [node name="Value" type="Label" parent="Holder/Top/Right/VBox/Health"]
 margin_top = 8.0
-margin_right = 179.0
+margin_right = 155.0
 margin_bottom = 55.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 2 )
@@ -209,8 +209,8 @@ text = "3 / 3"
 align = 2
 
 [node name="Icon" type="Control" parent="Holder/Top/Right/VBox/Health"]
-margin_left = 191.0
-margin_right = 255.0
+margin_left = 167.0
+margin_right = 231.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 
@@ -226,25 +226,25 @@ __meta__ = {
 
 [node name="SpaceUp" type="Control" parent="Holder/Top/Right/VBox"]
 margin_top = 152.0
-margin_right = 255.0
-margin_bottom = 230.0
+margin_right = 231.0
+margin_bottom = 206.0
 size_flags_vertical = 3
 
 [node name="Margin" type="MarginContainer" parent="Holder/Top/Right/VBox"]
-margin_top = 242.0
-margin_right = 255.0
-margin_bottom = 348.0
+margin_top = 218.0
+margin_right = 231.0
+margin_bottom = 324.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect" type="ColorRect" parent="Holder/Top/Right/VBox/Margin"]
-margin_right = 255.0
+margin_right = 231.0
 margin_bottom = 106.0
 color = Color( 1, 1, 1, 0.121569 )
 
 [node name="Margin" type="MarginContainer" parent="Holder/Top/Right/VBox/Margin"]
-margin_right = 255.0
+margin_right = 231.0
 margin_bottom = 106.0
 custom_constants/margin_right = 14
 custom_constants/margin_top = 12
@@ -252,9 +252,9 @@ custom_constants/margin_left = 10
 custom_constants/margin_bottom = 12
 
 [node name="Grid" type="GridContainer" parent="Holder/Top/Right/VBox/Margin/Margin"]
-margin_left = 66.0
+margin_left = 54.0
 margin_top = 12.0
-margin_right = 184.0
+margin_right = 172.0
 margin_bottom = 94.0
 mouse_filter = 2
 size_flags_horizontal = 4
@@ -290,15 +290,15 @@ margin_bottom = 82.0
 text = "0"
 
 [node name="SpaceDown" type="Control" parent="Holder/Top/Right/VBox"]
-margin_top = 360.0
-margin_right = 255.0
-margin_bottom = 438.0
+margin_top = 336.0
+margin_right = 231.0
+margin_bottom = 390.0
 size_flags_vertical = 3
 
 [node name="EndTurn" type="Button" parent="Holder/Top/Right/VBox"]
-margin_top = 450.0
-margin_right = 255.0
-margin_bottom = 492.0
+margin_top = 402.0
+margin_right = 231.0
+margin_bottom = 444.0
 text = "End Turn"
 __meta__ = {
 "_edit_use_anchors_": false
