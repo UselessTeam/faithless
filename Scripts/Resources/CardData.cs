@@ -91,7 +91,7 @@ public class CardData : Resource {
                 Kanji = "火",
                 Element = Element.Fire,
                 Cost = 2,
-                Description = "Place one Fire Seal",
+                Description = "Place one [fire-seal]",
                 Use =  async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Fire, useLocation); }
             },
             new CardData {
@@ -184,7 +184,7 @@ public class CardData : Resource {
                 }
             },
             new CardData {Id = CardId.Recycle,
-                Name = "Forge",
+                Name = "Recycle",
                 Kanji = "鍛",
                 Element = Element.Metal,
                 Cost = 1,
@@ -272,10 +272,13 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Wood,
                 Cost = 1,
-                Description = "Select one Water Seal, and place one Wood Seal in an empty space next to it",
+                Description = "Select one Water Seal, and place one Wood Seal in a random empty space next to it",
                 RequiredElement = Element.Water,
                 Use = async (useLocation) => {
-                    GD.Print("TODO Rice field");
+                    byte sealCount = (byte) BattleScene.SealSlots.Count;
+                    byte sealBefore = (byte)((useLocation+sealCount-1)%sealCount);
+                    byte sealAfter = (byte)((useLocation+1)%sealCount);
+
                 }
             },
             new CardData {Id = CardId.Eruption,
@@ -283,12 +286,12 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Fire,
                 Cost = 3,
-                Description = "Replace all Earth Seals by Metal Seals\nGain one Chi by Seal replaced\nDraw 2 Cards",
+                Description = "Replace all Earth Seals by Metal Seals\nGain one Chi by Seal replaced\nDraw 1 Cards",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if (BattleScene.SealSlots[i] == Element.Earth) { await BattleScene.Instance.SwitchSeal(Element.Metal, i); BattleScene.Chi+=1; }
                     }
-                    await BattleScene.DrawCards(2);
+                    await BattleScene.DrawCards(1);
                 }
             },
             new CardData {Id = CardId.Combustion,
@@ -309,7 +312,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 2,
                 RequiredElement = Element.Fire,
-                Description = "Select one Fire Seal\nPlace a Fire Seal on surrounding locations",
+                Description = "Select one [fire-seal]\nPlace a [fire-seal] on surrounding locations",
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
                     await BattleScene.Instance.AddSeal(Element.Fire, (byte)((useLocation+1)%sealCount));
@@ -333,8 +336,8 @@ public class CardData : Resource {
                 Name = "Drought",
                 Kanji = "旱",
                 Element = Element.Earth,
-                Cost = 2,
-                Description = "Remove all Water Seals and gain 3 Chi for each one discarded\nReplace all Wood Seals by Earth Seals",
+                Cost = 1,
+                Description = "Remove all Water Seals and gain 1 Chi for each one discarded\nReplace all Wood Seals by Earth Seals and draw 1 card for each one discarded",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if (BattleScene.SealSlots[i] == Element.Water) { await BattleScene.Instance.RemoveSeal(i); BattleScene.Chi += 3; }
