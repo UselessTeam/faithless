@@ -288,6 +288,6 @@ public class BattleScene : MarginContainer {
     //Debug
     public override void _Input (InputEvent _event) {
         if (_event.IsActionPressed("win"))
-            Win();
+            SealedScene.Win(GetTree());
     }
 }

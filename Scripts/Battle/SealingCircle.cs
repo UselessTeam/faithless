@@ -120,13 +120,14 @@ public class SealingCircle : Node2D {
     ///////
 
     bool AttackOn (byte i) {
-        if (BattleScene.SealSlots[i] == Element.None) {
-            // TODO cool attack effect
+        if (BattleScene.SealSlots[i] == Element.Earth) {
+            return false;
+        } else if (BattleScene.SealSlots[i] == Element.Metal) {
+            isStaggered = true; //Cool Staggered effect
+            return false;
+        } else
             BattleScene.Health -= 1;
-            return true;
-        }
-        if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true; //Cool Staggered effect
-        return false;
+        return true;
 
     }
 
@@ -154,9 +155,10 @@ public class SealingCircle : Node2D {
 
     public void PlanNextDemonTurn () {
         actionPlan = Enumerable.Repeat(DemonAction.None, SlotCount).ToList(); ;
-        actionPlan[0] = DemonAction.Attack;
-        if (!isStaggered) {
-            actionPlan[RNG.rng.Next(1, SlotCount)] = DemonAction.Remove;
+        for (int i = 0 ; i < GameData.Instance.Oni.DifficultyValue - ((isStaggered) ? 1 : 0) ; i++) {
+            int location = RNG.rng.Next(0, SlotCount);
+            while (actionPlan[location] != DemonAction.None) location = RNG.rng.Next(0, SlotCount);
+            actionPlan[location] = DemonActionExtention.DemonActionList[i];
         }
 
         isStaggered = false;
@@ -170,13 +172,17 @@ public class SealingCircle : Node2D {
 public enum DemonAction { None, Attack, Remove, AttackPierce, AttackOrRemove }
 
 public static class DemonActionExtention {
+    public static List<DemonAction> DemonActionList = new List<DemonAction>() {
+        DemonAction.Attack, DemonAction.Remove, DemonAction.Remove, DemonAction.AttackOrRemove, DemonAction.Remove, DemonAction.Attack, DemonAction.Remove,
+    };
+
     public static string Description (this DemonAction action) {
         return action switch
         {
-            DemonAction.Attack => "Attack\n\nIf no [metal-seal] is present, remove one health",
-            DemonAction.AttackOrRemove => "Attack or Remove\n\nRemove seal, or remove one health if none",
+            DemonAction.Attack => "Attack\n\nThe demon will attack this location and remove 1 health\nYou can defend yourself by placing a [metal-seal] or a [earth-seal]",
+            DemonAction.AttackOrRemove => "Attack and Remove\n\nThe demon will attack and remove the seal in this location",
             DemonAction.AttackPierce => "Pierce Attack\n\nRemove one health",
-            DemonAction.Remove => "Remove\n\nRemove seal in front",
+            DemonAction.Remove => "Remove\n\nThe demon will remove the seal in this location",
             _ => "ERROR"
         };
     }
