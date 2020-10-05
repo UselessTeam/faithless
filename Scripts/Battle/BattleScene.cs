@@ -141,6 +141,10 @@ public class BattleScene : MarginContainer {
             thought.BbcodeText = BB.Format(card.Data().Description);
         }
     }
+    public void DescribeAction (DemonAction action) {
+        thoughtBubble.Show();
+        thought.BbcodeText = BB.Format(action.Description());
+    }
 
     //////////////////
     ////////  Display

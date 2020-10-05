@@ -13,6 +13,17 @@ region = Rect2( 0, 0, 120, 120 )
 modulate = Color( 1, 0.756863, 0.243137, 1 )
 scale = Vector2( 0.7, 0.7 )
 script = ExtResource( 2 )
+areaPath = NodePath("Hover")
+
+[node name="Hover" type="Control" parent="."]
+margin_left = -40.0
+margin_top = -60.0
+margin_right = 40.0
+margin_bottom = 60.0
+focus_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 1.26636, 0.485928 )

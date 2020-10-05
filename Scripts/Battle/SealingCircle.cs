@@ -94,12 +94,25 @@ public class SealingCircle : Node2D {
                 arrow.GlobalPosition = CenterPosition + CenterToSlot / 2;
                 arrow.Rotate(2 * Mathf.Pi * i / SlotCount);
                 arrow.ShowArrow(actionPlan[i]);
+                arrow.Connect(nameof(IntentArrow.FocusEntered), this, nameof(Hover));
+                arrow.Connect(nameof(IntentArrow.FocusExited), this, nameof(UnHover));
                 ArrowDisplays.AddChild(arrow);
             }
             CenterToSlot = CenterToSlot.Rotated(2 * Mathf.Pi / SlotCount);
         }
     }
 
+    public void Hover (DemonAction action) {
+        BattleScene.Instance.DescribeAction(action);
+    }
+
+    public void UnHover (DemonAction _) {
+        if (BattleScene.Instance.Hand.Selected == null) {
+            BattleScene.Instance.DescribeCard(CardId.None);
+        } else {
+            BattleScene.Instance.DescribeCard(BattleScene.Instance.Hand.Selected.Card);
+        }
+    }
 
     ////////////////////////////////
     ////////// Demon AI
@@ -155,3 +168,16 @@ public class SealingCircle : Node2D {
 }
 
 public enum DemonAction { None, Attack, Remove, AttackPierce, AttackOrRemove }
+
+public static class DemonActionExtention {
+    public static string Description (this DemonAction action) {
+        return action switch
+        {
+            DemonAction.Attack => "Attack\n\nIf no [metal-seal] is present, remove one health",
+            DemonAction.AttackOrRemove => "Attack or Remove\n\nRemove seal, or remove one health if none",
+            DemonAction.AttackPierce => "Pierce Attack\n\nRemove one health",
+            DemonAction.Remove => "Remove\n\nRemove seal in front",
+            _ => "ERROR"
+        };
+    }
+}
