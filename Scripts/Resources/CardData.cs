@@ -20,13 +20,13 @@ public enum CardId {
 }
 
 public static class CardIdExtensions {
-    public static Card Data (this CardId id) {
-        return Card.Find(id);
+    public static CardData Data (this CardId id) {
+        return CardData.Find(id);
     }
 }
 
 public enum Element { None, Fire, Water, Wood, Earth, Metal }
-public class Card : Resource {
+public class CardData : Resource {
     // [Export] readonly ushort Id = ushort.MaxValue;
     private static List<CardId> GenerateAll () {
         List<CardId> all = new List<CardId>();
@@ -62,11 +62,11 @@ public class Card : Resource {
     public bool RequireFull = false;
 
     /*** Methods ***/
-    private Card () { }
+    private CardData () { }
 
-    private static Dictionary<CardId, Card> list = (new Card[] {
+    private static Dictionary<CardId, CardData> list = (new CardData[] {
             null,
-            new Card {
+            new CardData {
                 Id = CardId.BasicFire,
                 Name = "Fire Seal",
                 Kanji = "火",
@@ -75,7 +75,7 @@ public class Card : Resource {
                 Description = "Place one Fire Seal",
                 Use =  async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Fire, useLocation); }
             },
-            new Card {
+            new CardData {
                 Id = CardId.BasicWater,
                 Name = "Water Seal",
                 Kanji = "水",
@@ -84,7 +84,7 @@ public class Card : Resource {
                 Description = "Place one Water Seal",
                 Use =  async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Water, useLocation); }
             },
-            new Card {
+            new CardData {
                 Id = CardId.BasicWood,
                 Name = "Wood Seal",
                 Kanji = "木",
@@ -93,7 +93,7 @@ public class Card : Resource {
                 Description = "Place one Wood Seal",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal (Element.Wood, useLocation); }
             },
-            new Card {
+            new CardData {
                 Id = CardId.BasicEarth,
                 Name = "Earth Seal",
                 Kanji = "土",
@@ -102,7 +102,7 @@ public class Card : Resource {
                 Description = "Place one Earth Seal",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Earth, useLocation); }
             },
-            new Card {
+            new CardData {
                 Id = CardId.BasicMetal,
                 Name = "Metal Seal",
                 Kanji = "金",
@@ -111,7 +111,7 @@ public class Card : Resource {
                 Description = "Place one Metal Seal",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Metal, useLocation); }
             },
-            new Card {
+            new CardData {
                 Id = CardId.Drought,
                 Name = "Drought",
                 Kanji = "旱",
@@ -125,7 +125,7 @@ public class Card : Resource {
                     }
                 }
             },
-            new Card {
+            new CardData {
                 Id = CardId.Harvest,
                 Name = "Harvest",
                 Kanji = "穫",
@@ -139,7 +139,7 @@ public class Card : Resource {
                 }
             },
 
-            new Card {
+            new CardData {
                 Id = CardId.Forge,
                 Name = "Forge",
                 Kanji = "鍛",
@@ -154,7 +154,7 @@ public class Card : Resource {
                         GD.Print("TODO: Abort using a card");
                 }
             },
-            new Card {
+            new CardData {
                 Id = CardId.Flood,
                 Name = "Flood",
                 Kanji = "洪",
@@ -171,11 +171,11 @@ public class Card : Resource {
     // Landslide,
     // Eruption,
     // Confusion,
-    public static Card Find (CardId id) {
+    public static CardData Find (CardId id) {
         return list[id];
     }
     public static bool CheckPlayable (CardId id, Element currentElement) {
-        Card card = Find(id);
+        CardData card = Find(id);
         if (card.RequiredElement != Element.None && card.RequiredElement != currentElement)
             return false;
         if (card.RequireEmpty && currentElement != Element.None)

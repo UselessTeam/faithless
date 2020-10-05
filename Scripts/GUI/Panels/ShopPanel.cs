@@ -50,7 +50,7 @@ public class ShopPanel : ScaleContainer {
     public void Init () {
         bubbleText.Text = WELCOME_MESSAGES.Random();
         buyButton.Hide();
-        List<CardId> all = new List<CardId>(Card.All);
+        List<CardId> all = new List<CardId>(CardData.All);
         Load(all.PopRandom(), all.PopRandom(), all.PopRandom());
     }
 
@@ -117,7 +117,7 @@ public class ShopPanel : ScaleContainer {
         };
     }
     public void OpenCard (int _, int index) {
-        Card card = GetCard(index).Data();
+        CardData card = GetCard(index).Data();
         selected = index;
         bubbleText.Text = $"Want to buy a {card.Name}?\n\n{card.Description}";
         buyButton.Show();
@@ -125,7 +125,7 @@ public class ShopPanel : ScaleContainer {
         buyButton.Disabled = (card.MonPrice > GameData.Instance.Money);
     }
     public void Buy () {
-        Card card = GetCard(selected).Data();
+        CardData card = GetCard(selected).Data();
         bubbleText.Text = $"Here is your {card.Name}.\nIt's a pleasure doing business with you.";
         buyButton.Hide();
         // Buy card

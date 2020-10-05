@@ -131,7 +131,6 @@ public class BattleScene : MarginContainer {
 
     public static async Task DiscardCard (byte index) {
         var toDiscard = Instance.HandField.GetChild<CardVisual>(index);
-        toDiscard.Reset();
         toDiscard.IsDisabled = true;
         Discard.Add(Hand[index]);
         Hand.RemoveAt(index);
@@ -223,7 +222,7 @@ public class BattleScene : MarginContainer {
         }
         // Logic selection
         selectedCard = id;
-        Instance.HandField.GetChild<CardVisual>(selectedCard).Holder.RectPosition = new Vector2(0f, -50f);
+        Instance.HandField.GetChild<CardVisual>(selectedCard).Pull(-50f);
     }
 
     async public void ClickOnSealSlot (byte id) {
@@ -235,7 +234,7 @@ public class BattleScene : MarginContainer {
         DeselectCard();
         //Use the card
         if (Chi >= card.Data().Cost
-        && Card.CheckPlayable(card, SealSlots[id])) { //Check if we can play the card
+        && CardData.CheckPlayable(card, SealSlots[id])) { //Check if we can play the card
             Chi -= card.Data().Cost;
             await card.Data().Use(id);
 
@@ -248,7 +247,7 @@ public class BattleScene : MarginContainer {
 
     public void DeselectCard () {
         if (selectedCard < byte.MaxValue) {
-            Instance.HandField.GetChild<CardVisual>(selectedCard).Reset();
+            Instance.HandField.GetChild<CardVisual>(selectedCard).Pull(0f);
         }
         selectedCard = byte.MaxValue;
     }

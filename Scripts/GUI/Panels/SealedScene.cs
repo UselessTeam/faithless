@@ -18,7 +18,7 @@ public class SealedScene : ColorRect {
         GameData.Instance.Oni = null;
         GetNode<Label>(moneyPath).Text = $"+{oni.Reward}";
         GameData.Instance.Money += oni.Reward;
-        CardId card = Card.AllSpecial.Random();
+        CardId card = CardData.AllSpecial.Random();
         GetNode<CardVisual>(cardPath).ShowCard(card.Data());
         GetNode<RichTextLabel>(descriptionPath).BbcodeText = card.Data().Description;
         GetNode<Button>(addCardbuttonPath).Connect("pressed", this, nameof(AddToDeck), new Godot.Collections.Array() { card });

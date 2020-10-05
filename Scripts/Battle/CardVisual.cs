@@ -32,25 +32,25 @@ public class CardVisual : Control {
         MyTween.Start();
     }
 
-    public void ShowCard (Card card) {
+    public void ShowCard (CardData card) {
         Card = card.Id;
         backgroundField.Texture = card.Texture;
         nameField.Text = card.Name;
         kanjiField.Text = card.Kanji;
         Show();
     }
-
-    public void Reset () {
-        Holder.RectPosition = Vector2.Zero;
-    }
-
     public void Disappear () {
         MyTween.InterpolateProperty(this, "modulate:a", 1, 0, 0.5f);
+        MyTween.InterpolateProperty(this, "rect_position", RectPosition, new Vector2(RectPosition.x, -120), 0.5f, Tween.TransitionType.Linear, Tween.EaseType.InOut);
         MyTween.Start();
     }
     public void MoveFrom (Vector2 position) {
         MyTween.InterpolateProperty(this, "modulate:a", 0, 1, 0.5f);
         MyTween.InterpolateProperty(this, "rect_position", position, RectPosition + new Vector2(180, 0) * GetIndex(), 0.5f);
+        MyTween.Start();
+    }
+    public void Pull (float offset) {
+        MyTween.InterpolateProperty(this, "rect_position", RectPosition, new Vector2(RectPosition.x, offset), 0.2f, Tween.TransitionType.Back, Tween.EaseType.Out);
         MyTween.Start();
     }
 

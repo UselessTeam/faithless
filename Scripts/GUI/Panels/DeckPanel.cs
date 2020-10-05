@@ -59,7 +59,7 @@ public class DeckPanel : MarginContainer {
     }
 
     public void OpenCard (int index) {
-        Card card = GameData.Instance.Deck[index].Data();
+        CardData card = GameData.Instance.Deck[index].Data();
         inspectField.Text = card.Description;
         inspectField.Show();
         banishField.Disabled = false; //TODO: Banishment price
