@@ -99,7 +99,7 @@ public class CardData : Resource {
                 Kanji = "水",
                 Element = Element.Water,
                 Cost = 2,
-                Description = "Click on a slot to place a [water-seal]\nPlace a [water-seal] on a [fire-seal] to estinguish it and recover 1 Health",
+                Description = "Click on a slot to place a [water-seal]\nPlace a [water-seal] on a [fire-seal] to extinguish it and recover 1 Health",
                 Use =  async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Water, useLocation); }
             },
             new CardData {
@@ -108,7 +108,7 @@ public class CardData : Resource {
                 Kanji = "木",
                 Element = Element.Wood,
                 Cost = 2,
-                Description = "Click on a slot to place a [wood-seal]\nIf a [wood-seal] is next to at least one [water-seal], harvest and draw 1 card",
+                Description = "Click on a slot to place a [wood-seal]\nIf a [wood-seal] is next to at least one [water-seal], harvest (draw 1 card)",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal (Element.Wood, useLocation); }
             },
             new CardData {
@@ -143,7 +143,7 @@ public class CardData : Resource {
                 Kanji = "波",
                 Element = Element.Water,
                 Cost = 1,
-                Description = "Discard all your cards\nDraw as many cards",
+                Description = "Discard all your cards\nDraw as many cards plus one",
                 Use = async (useLocation) => {
                     int cardCount =  BattleScene.Instance.Hand.Cards.Count();
                     await BattleScene.Instance.Hand.DiscardAll();
@@ -336,7 +336,7 @@ public class CardData : Resource {
                 Kanji = "鵬",
                 Element = Element.Fire,
                 Cost = 4,
-                Description = "Destroy all Seals\nGain 2 Chi for each Seal destroyed\nDraw 4 Cards\nHeal to full health",
+                Description = "Destroy all Seals\nGain 2 Chi for each Seal destroyed\nDiscard all cards\nDraw new Cards (as a new turn)\nHeal to full health",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if(BattleScene.SealSlots[i] != Element.None){
@@ -345,7 +345,7 @@ public class CardData : Resource {
                         }
                     }
                     await BattleScene.Instance.Hand.DiscardAll();
-                    await BattleScene.DrawCards(4);
+                    await BattleScene.DrawCards(GameData.Instance.CardsPerTurn);
                     BattleScene.Health = GameData.Instance.MaxHealth;
 }
             },
@@ -388,7 +388,7 @@ public class CardData : Resource {
                 Kanji = "彫",
                 Element = Element.Earth,
                 Cost = 1,
-                Description = "Select a location and place a copy of the Seal on the opposide side of the sealing circle",
+                Description = "Select a location and place a copy of the Seal on the opposite side of the sealing circle",
                 Use = async (useLocation) => {
                     await BattleScene.Instance.SwitchSeal(BattleScene.SealSlots[(useLocation + BattleScene.SealSlots.Count/2) % BattleScene.SealSlots.Count], useLocation);
                 }
