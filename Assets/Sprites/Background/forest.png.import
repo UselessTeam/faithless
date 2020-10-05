@@ -14,7 +14,7 @@ dest_files=[ "res://.import/forest.png-93134e49177a59d62a7df3588bca96d2.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

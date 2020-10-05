@@ -14,7 +14,7 @@ dest_files=[ "res://.import/town.png-6a0b57c9f522e784e2ecb63d24186825.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
