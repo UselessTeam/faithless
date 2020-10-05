@@ -126,7 +126,7 @@ position = Vector2( 0, 151 )
 [node name="Demon" type="AnimatedSprite" parent="Holder/Top/Center/Ping"]
 scale = Vector2( 0.178569, 0.180013 )
 frames = SubResource( 5 )
-frame = 5
+frame = 3
 playing = true
 
 [node name="Bottom" type="MarginContainer" parent="Holder"]

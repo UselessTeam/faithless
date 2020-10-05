@@ -61,6 +61,10 @@ public class BattleScene : MarginContainer {
     public enum State { PlayerTurn, CardSelected, SomethingHappening, EnemyTurn }
     State currentState = State.EnemyTurn;
 
+    ///////Battle effects
+    static public bool NextCardFree = false;
+    static public short HarvestBonus = 0;
+
     /////Initialization
     ///
 
@@ -85,6 +89,8 @@ public class BattleScene : MarginContainer {
         Health = MAX_HEALTH;
         SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
 
+        Instance.ShuffleDeck();
+
         SealCircleField.PlanNextDemonTurn(); // This function will start the player's turn once it's done
     }
 
@@ -106,6 +112,30 @@ public class BattleScene : MarginContainer {
             Deck.RemoveAt(0);
         }
     }
+
+
+    // public static async Task DiscardCard (byte index, bool banish = false) {
+    //     var toDiscard = Instance.HandField.GetChild<CardVisual>(index);
+    //     toDiscard.Reset();
+    //     toDiscard.IsDisabled = true;
+    //     if (!banish) Discard.Add(Hand[index]);
+    //     Hand.RemoveAt(index);
+    //     var position = toDiscard.RectGlobalPosition;
+
+    //     toDiscard.Disappear();
+    //     await Instance.ToSignal(toDiscard.MyTween, "tween_completed");
+    //     toDiscard.QueueFree();
+    //     Instance.DisplayDeckAndDiscard();
+    // }
+
+    // public static async void DiscardAllCards () {
+    //     Task task = null;
+    //     while (Hand.Count > 0) {
+    //         task = DiscardCard((byte) (Hand.Count - 1));
+    //     }
+    //     if (task != null) await task;
+    // }
+
     void ShuffleDeck () {
         Deck = Utils.RNG.RandomOrder(Deck).ToList();
     }
@@ -129,7 +159,6 @@ public class BattleScene : MarginContainer {
     public bool IsBusy () {
         return currentState == State.SomethingHappening;
     }
-
     public void DescribeCard (CardId card = CardId.None) {
         if (card == CardId.None) {
             thoughtBubble.Hide();
@@ -144,16 +173,6 @@ public class BattleScene : MarginContainer {
     ///////////////
     //////////
 
-    // void DisplayHand () {
-    //     HandField.QueueFreeChildren();
-    //     for (byte i = 0 ; i < Hand.Count ; i++) {
-    //         var makeCard = CardVisual.Instance();
-    //         makeCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard));
-    //         HandField.AddChild(makeCard);
-    //         makeCard.ShowCard(Hand[i].Data());
-    //     }
-    //     DisplayDeckAndDiscard();
-    // }
 
     public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count.ToString();
@@ -172,14 +191,14 @@ public class BattleScene : MarginContainer {
         CardVisual visual = Hand.Selected;
         CardData card = visual.Card.Data();
         //Use the card
-        if (Chi >= card.Cost
+        if ((Chi >= card.Cost || NextCardFree)
         && CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
-            Chi -= card.Cost;
+            Chi -= (NextCardFree) ? 0 : card.Cost;
             await card.Use(id);
+            NextCardFree = false;
             // Discard the Card
             await Hand.DiscardCard(visual);
         }
-
         currentState = State.PlayerTurn;
     }
 
@@ -202,7 +221,7 @@ public class BattleScene : MarginContainer {
             await SealCircleField.ReplaceSeal(location);
 
         if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
-            SealedScene.Win(GetTree());
+            Win();
         }
     }
 
@@ -236,7 +255,7 @@ public class BattleScene : MarginContainer {
         else task = SealCircleField.ReplaceSeal(location);
 
         if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
-            SealedScene.Win(GetTree());
+            Win();
         }
 
         await task;
@@ -270,16 +289,21 @@ public class BattleScene : MarginContainer {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water
                 || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) {// If there is a water after or before
                                                                                              // TODO: show a cute water effect on the wood
-                    await DrawCards(1);
+                    await DrawCards((byte) (1 + HarvestBonus));
                 }
             }
         }
     }
 
+    void Win () {
+        SealedScene.Win(GetTree());
+        // GetTree().Paused = true;
+    }
+
     //Debug
     public override void _Input (InputEvent _event) {
         if (_event.IsActionPressed("win"))
-            SealedScene.Win(GetTree());
+            Win();
     }
 
 

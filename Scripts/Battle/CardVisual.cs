@@ -14,7 +14,17 @@ public class CardVisual : Control {
 
     public bool IsDisabled { get; set; } = false;
 
-    public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
+    public Tween MyTween {
+        get {
+            Tween tween = GetNodeOrNull<Tween>("Tween");
+            if (tween == null) {
+                tween = new Tween();
+                tween.Name = "Tween";
+                AddChild(tween);
+            }
+            return tween;
+        }
+    }
 
     public static CardVisual Instance () {
         return (CardVisual) ResourceLoader.Load<PackedScene>("res://Nodes/Battle/CardVisual.tscn").Instance();
@@ -59,16 +69,20 @@ public class CardVisual : Control {
     [Signal] public delegate void FocusExited (CardId id);
 
     private void MouseEntered () {
+        if (IsDisabled) return;
         GrabFocus();
     }
     private void MouseExited () {
+        if (IsDisabled) return;
         ReleaseFocus();
     }
     private void FocusEnter () {
+        if (IsDisabled) return;
         Modulate = new Color(1.2f, 1.2f, 1.2f, 1f);
         EmitSignal(nameof(FocusEntered), Card);
     }
     private void FocusExit () {
+        if (IsDisabled) return;
         Modulate = Colors.White;
         EmitSignal(nameof(FocusExited), Card);
     }

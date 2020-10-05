@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Nodes/Battle/CardVisual.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Assets/Theme/Fonts/shojumaru_102.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Theme/Fonts/shojumaru_42.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/Fonts/shojumaru/shojumaru-regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Assets/Sprites/GUI/mon_icon.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=5]
@@ -17,6 +17,7 @@ extra_spacing_bottom = -6
 font_data = ExtResource( 3 )
 
 [node name="SealedScene" type="ColorRect"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_rotation = 0.0058071

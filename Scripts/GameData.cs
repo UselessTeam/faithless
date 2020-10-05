@@ -6,7 +6,12 @@ public class GameData : Node2D {
     public static GameData Instance;
 
     [Signal] public delegate void DeckChanged (int value);
-    public List<CardId> Deck = new List<CardId>() { CardId.BasicEarth, CardId.BasicFire, CardId.BasicMetal, CardId.BasicWater, CardId.BasicWood };
+    public List<CardId> Deck = new List<CardId>() { CardId.BasicEarth, CardId.BasicEarth,
+                                                    CardId.BasicFire, CardId.BasicFire,
+                                                    CardId.BasicMetal, CardId.BasicMetal,
+                                                    CardId.BasicWater, CardId.BasicWater,
+                                                    CardId.BasicWood, CardId.BasicWood,
+                                                   };
     public void DeckChange () {
         EmitSignal(nameof(DeckChanged));
     }
