@@ -11,25 +11,28 @@ public class HandHolder : Container {
     public CardVisual Selected;
     HBoxContainer container;
     [Export] int minWidth;
-    int cards = 4;
+    Tween tween;
+    float split = 0f;
     const int CARDS_WIDTH = 180;
 
     public override void _Ready () {
         container = GetNode<HBoxContainer>("Container");
-        Resize();
+        tween = new Tween();
+        AddChild(tween);
+        Refresh();
     }
     public async Task<CardVisual> DrawCard (CardId card) {
-        SetCards(visuals.Count);
         var visualCard = CardVisual.Instance();
+        visuals.Add(visualCard);
         container.AddChild(visualCard);
         visualCard.Modulate = new Color(1, 1, 1, 0);
         visualCard.ShowCard(card.Data());
         visualCard.MoveFrom(new Vector2(1000, 0));
         await ToSignal(visualCard.MyTween, "tween_completed");
+        Refresh();
         visualCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard), visualCard.InArray());
         visualCard.Connect(nameof(CardVisual.FocusEntered), this, nameof(HoverCard));
         visualCard.Connect(nameof(CardVisual.FocusExited), this, nameof(UnHoverCard));
-        visuals.Add(visualCard);
         return visualCard;
     }
 
@@ -57,7 +60,7 @@ public class HandHolder : Container {
             DeselectCard();
         }
         visual.IsDisabled = true;
-        visual.Disappear();
+        visual.Disappear(split);
         BattleScene.Discard.Add(visual.Card);
         await ToSignal(visual.MyTween, "tween_all_completed");
         visuals.Remove(visual);
@@ -98,26 +101,34 @@ public class HandHolder : Container {
     }
 
     /*** Display ***/
-    public void SetCards (int total) {
-        cards = total;
-        Resize();
+    private float SplitFor (float cardCount) {
+        float width = Math.Max(RectSize.x, minWidth);
+        float split = (width - cardCount * CARDS_WIDTH);
+        if (split < 0) {
+            return split / (cardCount - 1);
+        } else {
+            return 0;
+        }
     }
     public override void _Notification (int notification) {
-        Resize();
+        Refresh();
     }
 
-    public void Resize () {
-        float horizontal = Math.Min(1f, RectSize.x / minWidth);
-        float width = Math.Max(RectSize.x, minWidth);
-        float split = (width - cards * CARDS_WIDTH);
-        if (split < 0) {
-            split /= cards - 1;
-        } else {
-            split = 0;
+    public void Refresh () {
+        // Split
+        float newSplit = SplitFor(visuals.Count);
+        if (split != newSplit) {
+            if (IsInstanceValid(container)) {
+                tween.InterpolateProperty(container, "custom_constants/separation", split, newSplit, 0.3f, Tween.TransitionType.Cubic, Tween.EaseType.InOut);
+                tween.Start();
+            }
+            split = newSplit;
         }
+        // Scale
+        float scale = Math.Min(1f, RectSize.x / minWidth);
         if (IsInstanceValid(container)) {
             container.RectPosition = Vector2.Zero;
-            container.Set("custom_constants/separation", split);
+            container.RectScale = new Vector2(scale, scale);
         }
     }
 }

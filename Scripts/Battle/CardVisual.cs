@@ -12,8 +12,6 @@ public class CardVisual : Control {
     Label kanjiField;
     public Control Holder;
 
-    private float split = 0f;
-
     public bool IsDisabled { get; set; } = false;
 
     public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
@@ -41,9 +39,9 @@ public class CardVisual : Control {
         kanjiField.Text = card.Kanji;
         Show();
     }
-    public void Disappear () {
+    public void Disappear (float split = 0f) {
         MyTween.InterpolateProperty(this, "modulate:a", 1, 0, 0.5f);
-        MyTween.InterpolateProperty(this, "rect_min_size:x", RectMinSize.x - split, 0 - split, 0.4f, Tween.TransitionType.Cubic, Tween.EaseType.InOut, 0.1f);
+        MyTween.InterpolateProperty(this, "rect_min_size:x", RectMinSize.x, 0 - split, 0.4f, Tween.TransitionType.Cubic, Tween.EaseType.InOut, 0.1f);
         MyTween.InterpolateProperty(Holder, "rect_position", Holder.RectPosition, new Vector2(Holder.RectPosition.x, -120), 0.5f, Tween.TransitionType.Linear, Tween.EaseType.InOut);
         MyTween.Start();
     }
