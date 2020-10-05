@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/GUI/SFXHandler.cs" type="Script" id=1]
+
+[node name="SFXHandler" type="AudioStreamPlayer"]
+volume_db = -10.0
+autoplay = true
+script = ExtResource( 1 )
+battleMusicPath = "res://Assets/Sounds/Musics/the_stone_prison.wav"
+villageMusicPath = "res://Assets/Sounds/Musics/dark_world.wav"

@@ -24,6 +24,7 @@ config/icon="res://icon.png"
 GameData="*res://Nodes/GameData.tscn"
 TextureHolder="*res://Nodes/Battle/TextureHolder.tscn"
 ThoughtPopup="*res://Nodes/GUI/Thoughts/ThoughtPopup.tscn"
+SfxHandler="*res://Nodes/Sounds/SFXHandler.tscn"
 
 [display]
 
