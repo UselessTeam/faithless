@@ -36,7 +36,6 @@ public class HandHolder : Container {
         return visualCard;
     }
 
-
     public void DeselectCard () {
         if (Selected != null) {
             Selected.Pull(0f);
@@ -77,6 +76,7 @@ public class HandHolder : Container {
         }
         foreach (Task task in tasks) {
             await task;
+            BattleScene.Instance.DisplayDeckAndDiscard();
         }
     }
     public void SelectCard (byte _, CardVisual visual) {

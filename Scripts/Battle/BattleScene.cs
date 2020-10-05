@@ -35,7 +35,6 @@ public class BattleScene : MarginContainer {
     public HandHolder Hand;
     public SealingCircle SealCircleField;
 
-
     /*** Others ***/
     public static List<CardId> Deck;
     public static List<CardId> Discard = new List<CardId>();
@@ -117,6 +116,7 @@ public class BattleScene : MarginContainer {
             var addCard = Deck[0];
             CardVisual card = await Instance.Hand.DrawCard(addCard);
             Deck.RemoveAt(0);
+            Instance.DisplayDeckAndDiscard();
         }
     }
 
@@ -161,7 +161,6 @@ public class BattleScene : MarginContainer {
     ///////////////
     //////////
 
-
     public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count.ToString();
         discardField.Text = Discard.Count.ToString();
@@ -179,8 +178,8 @@ public class BattleScene : MarginContainer {
         CardVisual visual = Hand.Selected;
         CardData card = visual.Card.Data();
         //Use the card
-        if ((Ki >= card.Cost || NextCardFree)
-        && CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
+        if ((Ki >= card.Cost || NextCardFree) &&
+            CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
             Ki -= (NextCardFree) ? (short) 0 : (short) card.Cost;
             await card.Use(id);
             NextCardFree = false;
@@ -265,8 +264,8 @@ public class BattleScene : MarginContainer {
     async public Task StartTurnEffects () {
         for (int i = 0 ; i < SealSlots.Count ; i++) {
             if (SealSlots[i] == Element.Wood) {
-                if (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire
-                || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) {// If there is a fire after or before
+                if (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire ||
+                    SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) { // If there is a fire after or before
                     Ki += 1;
 
                     await SwitchSeal(Element.Fire, (byte) i);
@@ -278,9 +277,9 @@ public class BattleScene : MarginContainer {
     async public Task EndTurnEffects () {
         for (int i = 0 ; i < SealSlots.Count ; i++) {
             if (SealSlots[i] == Element.Wood) {
-                if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water
-                || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) {// If there is a water after or before
-                                                                                             // TODO: show a cute water effect on the wood
+                if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water ||
+                    SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) { // If there is a water after or before
+                    // TODO: show a cute water effect on the wood
                     await DrawCards((byte) (1 + HarvestBonus));
                 }
             }
