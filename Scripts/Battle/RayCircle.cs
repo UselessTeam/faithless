@@ -7,14 +7,17 @@ public class RayCircle : ColorRect {
     GradientTexture gradientTexture = new GradientTexture();
     int N = 2;
 
+    private static Color C (int r, int g, int b) {
+        return new Color(r / 255f, g / 255f, b / 255f);
+    }
     public static readonly Color NO_COLOR = new Color(0, 0, 0, 0);
-    public static readonly Color[] ELEMENT_COLORS = new Color[] {
-        NO_COLOR,
-        Colors.Red,
-        Colors.Blue,
-        Colors.Green,
-        Colors.Orange,
-        Colors.Gray,
+    public static readonly Dictionary<Element, Color> ELEMENT_COLORS = new Dictionary<Element, Color> {
+        {Element.None, NO_COLOR},
+        {Element.Fire, C(189,89,72)},
+        {Element.Water, C(102,206,232)},
+        {Element.Earth, C(232,212,168)},
+        {Element.Metal, C(177,210,227)},
+        {Element.Wood, C(190,227,214)},
     };
     public override void _Ready () {
         gradientTexture.Gradient = new Gradient();
@@ -50,11 +53,11 @@ public class RayCircle : ColorRect {
     }
 
     public void SetSlot (Element e, int i) {
-        SetSlotColor(i, ELEMENT_COLORS[(int) e]);
+        SetSlotColor(i, ELEMENT_COLORS[e]);
     }
 
     public void TweenSlot (Element e, int i) {
-        Color color = ELEMENT_COLORS[(int) e];
+        Color color = ELEMENT_COLORS[e];
         tweens[i].InterpolateMethod(this, nameof(SetSlotColor), color, color, 0.5f, Tween.TransitionType.Cubic, Tween.EaseType.InOut);
     }
 

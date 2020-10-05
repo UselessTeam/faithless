@@ -37,7 +37,7 @@ public class SealSlot : Control {
         MySprite.Modulate = modulate;
     }
     public void Change (Element e) {
-        MyTween.InterpolateMethod(this, nameof(ModifyColor), color, RayCircle.ELEMENT_COLORS[(int) e], 0.5f);
+        MyTween.InterpolateMethod(this, nameof(ModifyColor), color, RayCircle.ELEMENT_COLORS[e], 0.5f);
         MyTween.Start();
     }
     public void MoveTo (Vector2 position) {

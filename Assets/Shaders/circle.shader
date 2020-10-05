@@ -67,9 +67,9 @@ void fragment() {
         color.a = 0f;
     } else if (0.08f * intensity + 1f * dd >= 0.99f) {
         color.a = 1f;
-        color.rgb *= 1.2f;
+        color.rgb *= 1.25f;
     } else {
-        color.a = max(0, 0.7f * (intensity - 1f) + 0.2f);
+        color.a = max(0, 1f * (intensity - 1f) + 0.4f);
     }
     COLOR = color;
 }
