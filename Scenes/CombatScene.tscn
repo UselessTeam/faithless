@@ -45,7 +45,7 @@ thoughtBubblePath = NodePath("Holder/Bottom/HBox/CombatThoughts/ThoughtText")
 endTurnPath = NodePath("Holder/Top/Right/VBox/EndTurn")
 kiPath = NodePath("Holder/Top/Right/VBox/Ki/Value")
 hpPath = NodePath("Holder/Top/Right/VBox/Health/Value")
-deckPath = NodePath("Holder/Top/Right/VBox/Margin/Margin/Grid/DeckValue")
+deckPath = NodePath("Holder/Top/Right/VBox/Margin/Margin/Grid/PileValue")
 discardPath = NodePath("Holder/Top/Right/VBox/Margin/Margin/Grid/DiscardValue")
 handholderPath = NodePath("Holder/Bottom/HBox/Hand")
 sealingCirclePath = NodePath("Holder/Top/Circle/Center/Ping/SealingCircle")
@@ -265,24 +265,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Discard" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
+[node name="Pile" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
 margin_right = 91.0
 margin_bottom = 42.0
-text = "Discard :"
+text = "Pile :"
 
-[node name="DiscardValue" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
+[node name="PileValue" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
 margin_left = 95.0
 margin_right = 118.0
 margin_bottom = 42.0
 text = "0"
 
-[node name="Deck" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
+[node name="Discard" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
 margin_top = 40.0
 margin_right = 91.0
 margin_bottom = 82.0
-text = "Deck :"
+text = "Discard :"
 
-[node name="DeckValue" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
+[node name="DiscardValue" type="Label" parent="Holder/Top/Right/VBox/Margin/Margin/Grid"]
 margin_left = 95.0
 margin_top = 40.0
 margin_right = 118.0

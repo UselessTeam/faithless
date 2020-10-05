@@ -1,0 +1,12 @@
+[gd_resource type="DynamicFont" load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Fonts/kaushan-script/KaushanScript-Regular.otf" type="DynamicFontData" id=1]
+
+[resource]
+size = 23
+outline_size = 2
+outline_color = Color( 0.647059, 0.537255, 0.411765, 0.498039 )
+use_filter = true
+extra_spacing_top = 1
+extra_spacing_bottom = -1
+font_data = ExtResource( 1 )

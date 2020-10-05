@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=1]
 [ext_resource path="res://Assets/Theme/Fonts/shojumaru_42.tres" type="DynamicFont" id=2]
@@ -8,6 +8,10 @@
 [ext_resource path="res://Assets/Fonts/kaushan-script/KaushanScript-Regular.otf" type="DynamicFontData" id=6]
 [ext_resource path="res://Assets/Sprites/Oni/kasaobake.png" type="Texture" id=7]
 [ext_resource path="res://Scripts/GUI/ScaleContainer.cs" type="Script" id=8]
+[ext_resource path="res://Assets/Theme/Fonts/kaushan_brown_22.tres" type="DynamicFont" id=10]
+
+[sub_resource type="Theme" id=5]
+default_font = ExtResource( 10 )
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -105,8 +109,8 @@ size_flags_vertical = 3
 [node name="Container" type="Container" parent="Content/VBox/Middle"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -20.0
-margin_bottom = 40.0
+margin_top = -30.0
+margin_bottom = 30.0
 mouse_filter = 2
 script = ExtResource( 8 )
 __meta__ = {
@@ -139,6 +143,7 @@ margin_left = 14.0
 margin_right = 257.0
 margin_bottom = 80.0
 mouse_filter = 2
+theme = SubResource( 5 )
 custom_constants/vseparation = -4
 columns = 2
 
@@ -198,6 +203,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 theme = SubResource( 4 )
+custom_fonts/normal_font = ExtResource( 10 )
 bbcode_enabled = true
 bbcode_text = "[right]1000[/right] "
 text = "1000 "
