@@ -119,13 +119,13 @@ public class SealingCircle : Node2D {
     ///////
 
     bool AttackOn (byte i) {
-        if (BattleScene.SealSlots[i] == Element.Earth) {
-            return false;
-        } else if (BattleScene.SealSlots[i] == Element.Metal) {
+        if (BattleScene.SealSlots[i] == Element.Metal) {
             isStaggered = true; //Cool Staggered effect
             return false;
-        } else
-            BattleScene.Health -= 1;
+        } else if (BattleScene.SealSlots[i] != Element.None) {
+            return false;
+        }
+        BattleScene.Health -= 1;
         return true;
 
     }
@@ -178,7 +178,7 @@ public static class DemonActionExtention {
         return action
         switch
         {
-            DemonAction.Attack => "Attack\n\nThe demon will attack this location and remove 1 health\nYou can defend yourself by placing a [metal-seal] or a [earth-seal]",
+            DemonAction.Attack => "Attack\n\nThe demon will attack this location and remove 1 health\nYou can defend yourself by placing a Seal of any type",
             DemonAction.AttackOrRemove => "Attack and Remove\n\nThe demon will attack and remove the seal in this location",
             DemonAction.AttackPierce => "Pierce Attack\n\nRemove one health",
             DemonAction.Remove => "Remove\n\nThe demon will remove the seal in this location",

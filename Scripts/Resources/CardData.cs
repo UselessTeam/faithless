@@ -117,7 +117,7 @@ public class CardData : Resource {
                 Kanji = "土",
                 Element = Element.Earth,
                 Cost = 2,
-                Description = "Click on a slot to place a [earth-seal]\nProtects against attacks\nWhen you place a [earth-seal], pushes the Seal it was placed on and the next Seal clockwise",
+                Description = "Click on a slot to place a [earth-seal]\nWhen you place a [earth-seal], pushes the Seal it was placed on clockwise",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Earth, useLocation); }
             },
             new CardData {Id = CardId.BasicMetal,
@@ -125,7 +125,7 @@ public class CardData : Resource {
                 Kanji = "金",
                 Element = Element.Metal,
                 Cost = 2,
-                Description = "Click on a slot to place a [metal-seal]\nProtects against attacks\nIf an enemy attacks this seal, he is staggered for the next turn",
+                Description = "Click on a slot to place a [metal-seal]\nIf an enemy attacks this seal, he is staggered for the next turn",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Metal, useLocation); }
             },
             new CardData {Id = CardId.Flood, //TODO

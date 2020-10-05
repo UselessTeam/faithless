@@ -220,15 +220,15 @@ public class BattleScene : MarginContainer {
         if (element == Element.Earth && SealSlots.Contains(Element.None)) { //Earth related movement
             int moveLocation = location;
             var moveElement = OldElement;
-            if (moveElement == Element.None) {
-                OldElement = Element.Earth;
-                moveLocation = (moveLocation + 1) % SealSlots.Count;
-                moveElement = SealSlots[moveLocation];
-                if (!SealSlots.Contains(Element.None))
-                    moveElement = Element.None;
-                else
-                    SealSlots[moveLocation] = Element.None;
-            }
+            // if (moveElement == Element.None) {
+            //     OldElement = Element.Earth;
+            //     moveLocation = (moveLocation + 1) % SealSlots.Count;
+            //     moveElement = SealSlots[moveLocation];
+            //     if (!SealSlots.Contains(Element.None))
+            //         moveElement = Element.None;
+            //     else
+            //         SealSlots[moveLocation] = Element.None;
+            // }
             Task taskMove = null;
             while (moveElement != Element.None) {
                 var newMoveLocation = (moveLocation + 1) % SealSlots.Count;
