@@ -161,9 +161,21 @@ public class BattleScene : MarginContainer {
     ///////////////
     //////////
 
+    // private string DebugCards (IEnumerable<CardId> cards) {
+    //     string s = "";
+    //     foreach (CardId card in cards) {
+    //         if (s != "") {
+    //             s += ", ";
+    //         }
+    //         s += card.Data().Name;
+    //     }
+    //     return s;
+    // }
+
     public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count.ToString();
         discardField.Text = Discard.Count.ToString();
+        // GD.Print($"=============\nDiscard {DebugCards(Discard)}\nHand {DebugCards(Hand.Cards)}\nPile {DebugCards(Deck)}");
     }
 
     //////////////////////
@@ -216,7 +228,6 @@ public class BattleScene : MarginContainer {
         var OldElement = SealSlots[location];
         SealSlots[location] = element;
         Task task;
-        GD.Print("Adding seel");
         if (element == Element.Earth && SealSlots.Contains(Element.None)) { //Earth related movement
             int moveLocation = location;
             var moveElement = OldElement;

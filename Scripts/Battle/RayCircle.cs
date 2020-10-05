@@ -30,7 +30,6 @@ public class RayCircle : ColorRect {
     }
     public void SetSlotCount (int n) {
         while (N > n) {
-            GD.Print(gradientTexture.Gradient.GetPointCount());
             gradientTexture.Gradient.RemovePoint(0);
             N--;
         }

@@ -54,24 +54,28 @@ public class HandHolder : Container {
             BattleScene.Instance.DescribeCard(Selected.Card);
         }
     }
-    public async Task DiscardCard (CardVisual visual) {
+    public Task DiscardCard (CardVisual visual) {
         if (visual == Selected) {
             DeselectCard();
         }
         if (visual.IsDisabled) {
-            return;
+            return new Task(() => { });
         }
         visual.IsDisabled = true;
         visual.Disappear(split);
         BattleScene.Discard.Add(visual.Card);
-        await ToSignal(visual.MyTween, "tween_all_completed");
         visuals.Remove(visual);
+        return DiscardInternal(visual);
+    }
+
+    public async Task DiscardInternal (CardVisual visual) {
+        await ToSignal(visual.MyTween, "tween_all_completed");
         visual.QueueFree();
         BattleScene.Instance.DisplayDeckAndDiscard();
     }
     public async Task DiscardAll () {
         List<Task> tasks = new List<Task>();
-        foreach (CardVisual card in visuals) {
+        foreach (CardVisual card in visuals.ToList()) {
             tasks.Add(DiscardCard(card));
         }
         foreach (Task task in tasks) {

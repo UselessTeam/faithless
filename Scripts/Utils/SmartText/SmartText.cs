@@ -19,7 +19,7 @@ namespace Utils {
                     } else if (metaTag.key == "combat") {
                         GetTree().ChangeScene("res://Scenes/CombatScene.tscn");
                     } else {
-                        GD.Print("Unknown scene");
+                        GD.PrintErr("Unknown scene");
                     }
                     break;
             }
