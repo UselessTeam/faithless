@@ -10,6 +10,7 @@
 [sub_resource type="DynamicFont" id=1]
 size = 50
 outline_size = 2
+outline_color = Color( 1, 1, 1, 0.498039 )
 use_filter = true
 extra_spacing_top = -2
 extra_spacing_bottom = -2

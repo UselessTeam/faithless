@@ -70,6 +70,7 @@ public class BattleScene : MarginContainer {
 
     public override void _Ready () {
         instance = this;
+        GameData.Instance.State = GameData.GameState.Battle;
         Deck = new List<CardId>(GameData.Instance.Deck);
 
         thought = GetNode<SmartText>(thoughtPath);

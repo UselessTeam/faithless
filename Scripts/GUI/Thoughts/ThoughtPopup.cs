@@ -24,7 +24,14 @@ public class ThoughtPopup : Popup {
 
     public override void _UnhandledInput (InputEvent @event) {
         if (@event.IsActionPressed("ui_cancel")) {
-            Open("esc");
+            switch (GameData.Instance.State) {
+                case GameData.GameState.Battle:
+                    Open("help-battle");
+                    break;
+                case GameData.GameState.Village:
+                    Open("help-village");
+                    break;
+            }
         }
     }
 }

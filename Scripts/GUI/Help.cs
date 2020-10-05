@@ -5,10 +5,16 @@ public static class Help {
         return BB.Format(Explanations[key]);
     }
     public static readonly Dictionary<string, string> Explanations = new Dictionary<string, string>() {
-{"esc",
+{"help-battle",
 @"Escape
 
+[?battle]Help[/?]
 [?retry]Give Up[/?]
+"},
+{"help-village",
+@"Help
+
+Seal the Demons, earn Mon ([mon] coins), acquire new Talismans, and bright back peace
 "},
 {"retry",
 @"Give Up
@@ -16,7 +22,14 @@ Are you sure you want to give up?
 
 [url=~combat]Retry[/url]
 [url=~village]Back to Village[/url]
-[?esc]Cancel[/?]
+[?help-battle]Cancel[/?]
+"},
+{"battle",
+@"Help
+
+Surround the demon by seals to seal it.
+Hover a talisman to see its effect.
+Select a talisman and a seal-slot to activate the effect.
 "},
 {"fire",
 @"Fire Spread
