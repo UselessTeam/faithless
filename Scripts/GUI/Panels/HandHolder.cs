@@ -6,6 +6,9 @@ using Godot;
 using Utils;
 
 public class HandHolder : Container {
+    static readonly object flowLock = new object();
+    public List<CardId> Deck;
+    public List<CardId> Discard;
     public IEnumerable<CardId> Cards => visuals.Select(visual => visual.Card);
     private List<CardVisual> visuals = new List<CardVisual>();
     public CardVisual Selected;
@@ -17,13 +20,27 @@ public class HandHolder : Container {
 
     public override void _Ready () {
         container = GetNode<HBoxContainer>("Container");
+
+        Deck = GameData.Instance.Deck.RandomOrder().ToList();
+        Discard = new List<CardId>();
+
         tween = new Tween();
         AddChild(tween);
         Refresh();
     }
-    public async Task<CardVisual> DrawCard (CardId card) {
-        var visualCard = CardVisual.Instance();
-        visuals.Add(visualCard);
+    public async Task<bool> DrawCard () {
+        CardId card;
+        CardVisual visualCard;
+        lock (flowLock) {
+            if (Deck.Count == 0) {
+                Deck = Discard.RandomOrder().ToList();
+                Discard = new List<CardId>();
+            }
+            card = Deck[0];
+            Deck.RemoveAt(0);
+            visualCard = CardVisual.Instance();
+            visuals.Add(visualCard);
+        }
         container.AddChild(visualCard);
         visualCard.Modulate = new Color(1, 1, 1, 0);
         visualCard.ShowCard(card.Data());
@@ -33,7 +50,37 @@ public class HandHolder : Container {
         visualCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard), visualCard.InArray());
         visualCard.Connect(nameof(CardVisual.FocusEntered), this, nameof(HoverCard));
         visualCard.Connect(nameof(CardVisual.FocusExited), this, nameof(UnHoverCard));
-        return visualCard;
+        return true;
+    }
+
+    public async Task<bool> DrawLastDiscard () {
+        CardId card;
+        CardVisual visualCard;
+        lock (flowLock) {
+            if (Discard.Count == 0) {
+                return false;
+            }
+            card = Discard[Discard.Count - 1];
+            Discard.RemoveAt(Discard.Count - 1);
+            visualCard = CardVisual.Instance();
+            visuals.Add(visualCard);
+        }
+        container.AddChild(visualCard);
+        visualCard.Modulate = new Color(1, 1, 1, 0);
+        visualCard.ShowCard(card.Data());
+        visualCard.MoveFrom(new Vector2(1000, 0));
+        await ToSignal(visualCard.MyTween, "tween_completed");
+        Refresh();
+        visualCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard), visualCard.InArray());
+        visualCard.Connect(nameof(CardVisual.FocusEntered), this, nameof(HoverCard));
+        visualCard.Connect(nameof(CardVisual.FocusExited), this, nameof(UnHoverCard));
+        return true;
+    }
+
+    public void ShuffleDeck () {
+        lock (flowLock) {
+            Deck = Utils.RNG.RandomOrder(Deck).ToList();
+        }
     }
 
     public void DeselectCard () {
@@ -64,8 +111,10 @@ public class HandHolder : Container {
         }
         visual.IsDisabled = true;
         visual.Disappear(split);
-        BattleScene.Discard.Add(visual.Card);
-        visuals.Remove(visual);
+        lock (flowLock) {
+            Discard.Add(visual.Card);
+            visuals.Remove(visual);
+        }
         return DiscardInternal(visual);
     }
 

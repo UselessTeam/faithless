@@ -6,7 +6,6 @@ using Godot;
 using Utils;
 
 public class BattleScene : MarginContainer {
-
     static BattleScene instance;
     public static BattleScene Instance {
         get {
@@ -36,10 +35,10 @@ public class BattleScene : MarginContainer {
     public SealingCircle SealCircleField;
 
     /*** Others ***/
-    public static List<CardId> Deck;
-    public static List<CardId> Discard;
-
     public static List<Element> SealSlots;
+
+    public static IEnumerable<CardId> Deck => Instance.Hand.Deck;
+    public static IEnumerable<CardId> Discard => Instance.Hand.Discard;
 
     short ki;
     short health;
@@ -74,8 +73,6 @@ public class BattleScene : MarginContainer {
     public override void _Ready () {
         instance = this;
         GameData.Instance.State = GameData.GameState.Battle;
-        Deck = new List<CardId>(GameData.Instance.Deck);
-        Discard = new List<CardId>();
 
         thought = GetNode<SmartText>(thoughtPath);
         thoughtBubble = GetNode<Control>(thoughtBubblePath);
@@ -96,7 +93,6 @@ public class BattleScene : MarginContainer {
         Health = GameData.Instance.MaxHealth;
         SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
 
-        Instance.ShuffleDeck();
         // GD.Print("~~~~~~~");
         DisplayDeckAndDiscard();
         SealCircleField.PlanNextDemonTurn(); // This function will start the player's turn once it's done
@@ -109,23 +105,11 @@ public class BattleScene : MarginContainer {
 
     public static async Task DrawCards (byte count) {
         for (byte i = 0 ; i < count ; i++) {
-            // GD.Print($"[{i}/{count}] {Deck.Count}:{Discard.Count}");
-            if (Deck.Count == 0) {
-                Deck = Discard;
-                Discard = new List<CardId>();
-                Instance.ShuffleDeck();
+            if (!await Instance.Hand.DrawCard()) {
+                break;
             }
-            if (Deck.Count == 0) break;
-            var addCard = Deck[0];
-            // GD.Print($"[{addCard.Data().Name}]");
-            Deck.RemoveAt(0);
-            CardVisual card = await Instance.Hand.DrawCard(addCard);
             Instance.DisplayDeckAndDiscard();
         }
-    }
-
-    void ShuffleDeck () {
-        Deck = Utils.RNG.RandomOrder(Deck).ToList();
     }
 
     async public void StartPlayerTurn () {
@@ -137,8 +121,8 @@ public class BattleScene : MarginContainer {
 
     async void EndPlayerTurn () {
         if (currentState != State.PlayerTurn) return;
-        await Hand.DiscardAll();
         currentState = State.EnemyTurn;
+        await Hand.DiscardAll();
         await EndTurnEffects();
         await SealCircleField.PlayDemonTurn();
     }
@@ -176,8 +160,8 @@ public class BattleScene : MarginContainer {
     // }
 
     public void DisplayDeckAndDiscard () {
-        deckField.Text = Deck.Count.ToString();
-        discardField.Text = Discard.Count.ToString();
+        deckField.Text = Deck.Count().ToString();
+        discardField.Text = Discard.Count().ToString();
         // GD.Print($"=============\nDiscard {DebugCards(Discard)}\nHand {DebugCards(Hand.Cards)}\nPile {DebugCards(Deck)}");
     }
 

@@ -68,11 +68,8 @@ public class SealingCircle : Node2D {
         var fromSeal = SealSlotDisplays.GetChild<SealSlot>(index);
         var toSeal = SealSlotDisplays.GetChild<SealSlot>(indexTo);
         fromSeal.ShowSlot(element);
-        GD.Print("Before the Tween");
         fromSeal.MoveTo(toSeal.RectPosition - fromSeal.RectPosition);
-        GD.Print("Tween Started");
         await ToSignal(fromSeal.MyTween, "tween_completed");
-        GD.Print("Tween Finished, arrived at ", fromSeal.MySprite.RectPosition);
         toSeal.ShowSlot(element);
         fromSeal.ShowSlot(Element.None);
     }

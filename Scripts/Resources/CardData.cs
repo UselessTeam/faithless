@@ -252,11 +252,9 @@ public class CardData : Resource {
                 Cost = 0,
                 Description = "Draw the last card your discarded\nIf the discard is empty, draw one card",
                 Use = async (useLocation) => {
-                    if(BattleScene.Discard.Count >0) {
-                        BattleScene.Deck.Insert(0, BattleScene.Discard[BattleScene.Discard.Count-1]);
-                        BattleScene.Discard.RemoveAt(BattleScene.Discard.Count-1);
+                    if(!await BattleScene.Instance.Hand.DrawLastDiscard()) {
+                        await BattleScene.Instance.Hand.DrawCard();
                     }
-                    await BattleScene.DrawCards(1);
                 }
             },
             new CardData {Id = CardId.Plantation,
