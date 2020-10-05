@@ -17,9 +17,11 @@ public class IntentArrow : Node2D {
         Intent = action;
         switch (action) {
             case DemonAction.Attack:
-            case DemonAction.AttackOrRemove:
             case DemonAction.AttackPierce:
                 (GetNode<Sprite>("Sprite").Texture as AtlasTexture).Region = new Rect2(new Vector2(0, 0), new Vector2(120, 120));
+                break;
+            case DemonAction.AttackOrRemove:
+                (GetNode<Sprite>("Sprite").Texture as AtlasTexture).Region = new Rect2(new Vector2(240, 0), new Vector2(120, 120));
                 break;
             case DemonAction.Remove:
                 (GetNode<Sprite>("Sprite").Texture as AtlasTexture).Region = new Rect2(new Vector2(120, 0), new Vector2(120, 120));

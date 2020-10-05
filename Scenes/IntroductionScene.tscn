@@ -39,25 +39,24 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 36.0
 margin_top = 36.0
-margin_right = 988.0
-margin_bottom = 564.0
+margin_right = 1244.0
+margin_bottom = 764.0
 
 [node name="ShadowContainer" parent="MarginContainer/ThoughtText" index="0"]
-margin_right = 952.0
-margin_bottom = 528.0
+margin_right = 1208.0
+margin_bottom = 728.0
 
 [node name="Margin" parent="MarginContainer/ThoughtText" index="1"]
-margin_right = 952.0
-margin_bottom = 528.0
+margin_right = 1208.0
+margin_bottom = 728.0
 
 [node name="Text" parent="MarginContainer/ThoughtText/Margin" index="0"]
-margin_right = 928.0
-margin_bottom = 504.0
+margin_right = 1184.0
+margin_bottom = 704.0
 rect_min_size = Vector2( 520, 340 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/normal_font = SubResource( 1 )
-bbcode_enabled = true
 bbcode_text = "[center]                       
 Demons...
         
