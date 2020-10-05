@@ -183,7 +183,9 @@ public class BattleScene : MarginContainer {
             NextCardFree = false;
             await card.Use(id);
             // Discard the Card
-            await Hand.DiscardCard(visual);
+            if (IsInstanceValid(visual) && !visual.IsDisabled) {
+                await Hand.DiscardCard(visual, card.BanishAfterUse);
+            }
         }
         currentState = State.PlayerTurn;
     }

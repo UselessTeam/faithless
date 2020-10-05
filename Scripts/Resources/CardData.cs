@@ -340,7 +340,8 @@ public class CardData : Resource {
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if(BattleScene.SealSlots[i] != Element.None){
-                       await BattleScene.Instance.RemoveSeal(i); BattleScene.Ki+=2;
+                            await BattleScene.Instance.RemoveSeal(i);
+                            BattleScene.Ki += 2;
                         }
                     }
                     await BattleScene.Instance.Hand.DiscardAll();

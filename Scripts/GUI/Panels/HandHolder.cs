@@ -101,18 +101,17 @@ public class HandHolder : Container {
             BattleScene.Instance.DescribeCard(Selected.Card);
         }
     }
-    public Task DiscardCard (CardVisual visual) {
+    public Task DiscardCard (CardVisual visual, bool banish = false) {
         if (visual == Selected) {
             DeselectCard();
             BattleScene.Instance.DescribeCard(CardId.None);
         }
-        if (visual.IsDisabled) {
-            return new Task(() => { });
-        }
         visual.IsDisabled = true;
         visual.Disappear(split);
         lock (flowLock) {
-            Discard.Add(visual.Card);
+            if (!banish) {
+                Discard.Add(visual.Card);
+            }
             visuals.Remove(visual);
         }
         return DiscardInternal(visual);
