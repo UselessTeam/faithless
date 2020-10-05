@@ -29,6 +29,7 @@ public class GameData : Node2D {
                                                     CardId.BasicMetal, CardId.BasicMetal,
                                                     CardId.BasicWater, CardId.BasicWater,
                                                     CardId.BasicWood, CardId.BasicWood,
+                                                    CardId.Recycle, CardId.Recycle
                                                    };
     public void DeckChange () {
         EmitSignal(nameof(DeckChanged));

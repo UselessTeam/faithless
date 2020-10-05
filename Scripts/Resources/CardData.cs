@@ -194,8 +194,8 @@ public class CardData : Resource {
                 Description = "Remove one [metal-seal]. The next card you play will be free",
                 RequiredElement = Element.Metal,
                 Use = async (useLocation) => {
+                    BattleScene.Instance.NextCardFree = true;
                     await BattleScene.Instance.RemoveSeal(useLocation);
-                    BattleScene.NextCardFree = true;
                 }
             },
             new CardData {Id = CardId.Forge,
@@ -217,7 +217,7 @@ public class CardData : Resource {
                 BanishAfterUse = true,
                 Description = "Harvesting from [wood-seal] grants one more hand\nBanish this card until the end of the combat",
                 Use = async (useLocation) => {
-                    BattleScene.HarvestBonus +=1;
+                    BattleScene.Instance.HarvestBonus +=1;
                 }
             },
             new CardData {Id = CardId.Stronghold,
@@ -241,7 +241,7 @@ public class CardData : Resource {
                 Description = "Harvest one card for each [wood-seal] on the sealing circle",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        if (BattleScene.SealSlots[i] == Element.Wood) await BattleScene.DrawCards((byte)(1+BattleScene.HarvestBonus));
+                        if (BattleScene.SealSlots[i] == Element.Wood) await BattleScene.DrawCards((byte)(1+BattleScene.Instance.HarvestBonus));
                     }
                 }
             },
@@ -371,11 +371,15 @@ public class CardData : Resource {
                 Description = "Rotate the sealing circle counter-clockwise\n",
                 Use = async (useLocation) => {
                 var lastElement = BattleScene.SealSlots[0];
-                    for (byte i = 0 ; i < BattleScene.SealSlots.Count-1 ; i++) {
-                        BattleScene.Instance.SealCircleField.MoveSeal((byte)(i+1),i,BattleScene.SealSlots[i+1]);
+                    List<Task> tasks = new List<Task>();
+                    for (byte i = 0 ; i < BattleScene.SealSlots.Count - 1; i++) {
+                        tasks.Add(BattleScene.Instance.SealCircleField.MoveSeal((byte)(i+1),i,BattleScene.SealSlots[i+1]));
                         BattleScene.SealSlots[i]= BattleScene.SealSlots[i+1];
                     }
-                    await BattleScene.Instance.SealCircleField.MoveSeal(0,(byte)(BattleScene.SealSlots.Count -1 ),lastElement);
+                    tasks.Add( BattleScene.Instance.SealCircleField.MoveSeal(0,(byte)(BattleScene.SealSlots.Count -1 ),lastElement));
+                    foreach (Task task in tasks) {
+                        await task;
+                    }
                     BattleScene.SealSlots[BattleScene.SealSlots.Count -1] = lastElement;
                     BattleScene.Instance.SealCircleField.DisplaySeals();
                 }

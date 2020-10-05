@@ -65,8 +65,8 @@ public class BattleScene : MarginContainer {
     State currentState = State.EnemyTurn;
 
     ///////Battle effects
-    static public bool NextCardFree = false;
-    static public short HarvestBonus = 0;
+    public bool NextCardFree = false;
+    public short HarvestBonus = 0;
 
     /////Initialization
     ///
@@ -196,8 +196,8 @@ public class BattleScene : MarginContainer {
         if ((Ki >= card.Cost || NextCardFree) &&
             CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
             Ki -= (NextCardFree) ? (short) 0 : (short) card.Cost;
-            await card.Use(id);
             NextCardFree = false;
+            await card.Use(id);
             // Discard the Card
             await Hand.DiscardCard(visual);
         }
