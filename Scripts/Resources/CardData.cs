@@ -12,7 +12,7 @@ public enum CardId {
     BasicWood,
     BasicEarth,
     BasicMetal,
-    Flood,
+    // Flood,
     Watermill,
     HotSpring,
     Tsunami,
@@ -128,16 +128,16 @@ public class CardData : Resource {
                 Description = "Click on a slot to place a [metal-seal]\nIf an enemy attacks this seal, he is staggered for the next turn",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Metal, useLocation); }
             },
-            new CardData {Id = CardId.Flood, //TODO
-                Name = "Flood",
-                Kanji = "洪",
-                Element = Element.Water,
-                Cost = 2,
-                Description = "Place one [water-seal]\nReplace half of the seals on the sealing circle by [water-seal]",
-                Use = async (useLocation) => {
-                    GD.Print("TODO Flood");
-                }
-            },
+            // new CardData {Id = CardId.Flood, //TODO
+            //     Name = "Flood",
+            //     Kanji = "洪",
+            //     Element = Element.Water,
+            //     Cost = 2,
+            //     Description = "Place one [water-seal]\nReplace half of the seals on the sealing circle by [water-seal]",
+            //     Use = async (useLocation) => {
+            //         GD.Print("TODO Flood");
+            //     }
+            // },
             new CardData {Id = CardId.Tsunami,
                 Name = "Tsunami",
                 Kanji = "波",
