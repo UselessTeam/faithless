@@ -79,7 +79,6 @@ __meta__ = {
 }
 
 [node name="Card" parent="Objects/MiddleCardHolder" instance=ExtResource( 2 )]
-margin_bottom = 399.0
 backgroundPath = NodePath("../../MiddleCardHolder/Card/Holder/Background")
 namePath = NodePath("../../MiddleCardHolder/Card/Holder/Name")
 kanjiPath = NodePath("../../MiddleCardHolder/Card/Holder/Kanji")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/GUI/Panels/LostScene.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Theme/Fonts/shojumaru_42.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Theme/Fonts/shojumaru_102.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=5]
 
 [node name="LostScene" type="ColorRect"]

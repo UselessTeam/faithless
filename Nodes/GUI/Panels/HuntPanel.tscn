@@ -23,12 +23,12 @@ containerPath = NodePath("VBox/ScrollContainer/HBox")
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 1008.0
-margin_bottom = 707.0
+margin_bottom = 584.0
 mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
 margin_right = 992.0
-margin_bottom = 691.0
+margin_bottom = 568.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -36,13 +36,12 @@ scroll_vertical_enabled = false
 
 [node name="HBox" type="HBoxContainer" parent="VBox/ScrollContainer"]
 margin_left = 338.0
-margin_top = 6.0
+margin_top = 74.0
 margin_right = 653.0
-margin_bottom = 685.0
+margin_bottom = 494.0
 mouse_filter = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 custom_constants/separation = 16
 
 [node name="Wanted" parent="VBox/ScrollContainer/HBox" instance=ExtResource( 1 )]
-margin_bottom = 679.0
