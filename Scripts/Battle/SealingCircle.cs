@@ -19,7 +19,6 @@ public class SealingCircle : Node2D {
     List<DemonAction> actionPlan;
     bool isStaggered = false;
 
-
     Vector2 CenterPosition;
     Vector2 CenterToSlot;
 
@@ -140,8 +139,8 @@ public class SealingCircle : Node2D {
                     AttackOn(i);
                     break;
                 case DemonAction.AttackOrRemove:
-                    if (!AttackOn(i))
-                        await BattleScene.Instance.RemoveSeal(i);
+                    AttackOn(i);
+                    await BattleScene.Instance.RemoveSeal(i);
                     break;
                 case DemonAction.Remove:
                     await BattleScene.Instance.RemoveSeal(i);
@@ -166,7 +165,6 @@ public class SealingCircle : Node2D {
         BattleScene.Instance.StartPlayerTurn();
     }
 
-
 }
 
 public enum DemonAction { None, Attack, Remove, AttackPierce, AttackOrRemove }
@@ -177,7 +175,8 @@ public static class DemonActionExtention {
     };
 
     public static string Description (this DemonAction action) {
-        return action switch
+        return action
+        switch
         {
             DemonAction.Attack => "Attack\n\nThe demon will attack this location and remove 1 health\nYou can defend yourself by placing a [metal-seal] or a [earth-seal]",
             DemonAction.AttackOrRemove => "Attack and Remove\n\nThe demon will attack and remove the seal in this location",

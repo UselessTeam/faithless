@@ -45,10 +45,11 @@ thoughtBubblePath = NodePath("Holder/Bottom/HBox/CombatThoughts/ThoughtText")
 endTurnPath = NodePath("Holder/Top/Right/VBox/EndTurn")
 kiPath = NodePath("Holder/Top/Right/VBox/Ki/Value")
 hpPath = NodePath("Holder/Top/Right/VBox/Health/Value")
-deckPath = NodePath("Holder/Top/Right/VBox/Margin/Margin/Grid/DiscardValue")
-discardPath = NodePath("Holder/Top/Right/VBox/Margin/Margin/Grid/DeckValue")
+deckPath = NodePath("Holder/Top/Right/VBox/Margin/Margin/Grid/DeckValue")
+discardPath = NodePath("Holder/Top/Right/VBox/Margin/Margin/Grid/DiscardValue")
 handholderPath = NodePath("Holder/Bottom/HBox/Hand")
 sealingCirclePath = NodePath("Holder/Top/Circle/Center/Ping/SealingCircle")
+demonsPath = NodePath("Holder/Top/Circle/Center/Ping/Demons")
 
 [node name="Background" type="Control" parent="."]
 margin_right = 1280.0

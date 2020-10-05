@@ -25,6 +25,7 @@ public class BattleScene : MarginContainer {
     [Export] NodePath discardPath;
     [Export] NodePath handholderPath;
     [Export] NodePath sealingCirclePath;
+    [Export] NodePath demonsPath;
     SmartText thought;
     Control thoughtBubble;
     Label kiField;
@@ -88,6 +89,8 @@ public class BattleScene : MarginContainer {
         SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
+
+        GetNode<Node2D>(demonsPath).GetNode<AnimatedSprite>(GameData.Instance.Oni.Name).Visible = true;
 
         SealCircleField.InitializeSlots(GameData.Instance.Oni.SealSlots);
         Health = GameData.Instance.MaxHealth;

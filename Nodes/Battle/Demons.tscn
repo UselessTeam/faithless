@@ -85,9 +85,10 @@ animations = [ {
 [node name="Demons" type="Node2D"]
 
 [node name="Hitotsumekozo" type="AnimatedSprite" parent="."]
+visible = false
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 9
+frame = 7
 playing = true
 
 [node name="Kasa-Obake" type="AnimatedSprite" parent="."]
@@ -99,7 +100,7 @@ frames = SubResource( 7 )
 visible = false
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 12 )
-frame = 16
+frame = 12
 playing = true
 
 [node name="Joro-Gumo" type="AnimatedSprite" parent="."]
