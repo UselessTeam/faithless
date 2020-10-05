@@ -6,9 +6,11 @@ public class CardVisual : Control {
     public CardId Card { get; private set; }
     [Export] NodePath backgroundPath;
     [Export] NodePath namePath;
+    [Export] NodePath costPath;
     [Export] NodePath kanjiPath;
     TextureRect backgroundField;
     Label nameField;
+    Label costField;
     Label kanjiField;
     public Control Holder;
 
@@ -34,6 +36,7 @@ public class CardVisual : Control {
         Holder = GetNode<Control>("Holder");
         backgroundField = GetNode<TextureRect>(backgroundPath);
         nameField = GetNode<Label>(namePath);
+        costField = GetNode<Label>(costPath);
         kanjiField = GetNode<Label>(kanjiPath);
         Connect("mouse_entered", this, nameof(MouseEntered));
         Connect("mouse_exited", this, nameof(MouseExited));
@@ -46,6 +49,7 @@ public class CardVisual : Control {
         Card = card.Id;
         backgroundField.Texture = card.Texture;
         nameField.Text = card.Name;
+        costField.Text = card.Cost.ToString();
         kanjiField.Text = card.Kanji;
         Show();
     }
