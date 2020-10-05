@@ -28,7 +28,8 @@ __meta__ = {
 moneyPath = NodePath("Container/Control/HBox/Money")
 cardPath = NodePath("Container/Control/CardVisual")
 descriptionPath = NodePath("Container/Control/ThoughtText/Margin/Text")
-buttonPath = NodePath("Container/Control/Continue")
+addCardbuttonPath = NodePath("Container/Control/AddCard")
+continuePath = NodePath("Container/Control/Continue")
 
 [node name="Container" type="Container" parent="."]
 anchor_right = 1.0
@@ -146,15 +147,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="AddCard" type="Button" parent="Container/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -355.914
+margin_top = 69.5399
+margin_right = -104.914
+margin_bottom = 133.54
+text = "Add Talisman to your deck"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Continue" type="Button" parent="Container/Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -354.574
-margin_top = 125.603
-margin_right = -206.574
-margin_bottom = 189.603
+margin_left = -309.184
+margin_top = 180.327
+margin_right = -161.184
+margin_bottom = 244.327
 text = "Continue "
 __meta__ = {
 "_edit_use_anchors_": false

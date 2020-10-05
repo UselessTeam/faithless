@@ -57,6 +57,8 @@ public class SealingCircle : Node2D {
         var currentSeal = SealSlotDisplays.GetChild<SealSlot>(index);
         currentSeal.Disappear();
         await ToSignal(currentSeal.MyTween, "tween_completed");
+        currentSeal.ShowSlot(Element.None);
+        currentSeal.Modulate = new Color(1, 1, 1, 1);
     }
     async public Task ReplaceSeal (byte index) {
         await DisappearSeal(index);
@@ -95,7 +97,7 @@ public class SealingCircle : Node2D {
     bool AttackOn (byte i) {
         if (BattleScene.SealSlots[i] == Element.None) {
             // TODO cool attack effect
-            BattleScene.Instance.Health -= 1;
+            BattleScene.Health -= 1;
             return true;
         }
         if (BattleScene.SealSlots[i] == Element.Metal) isStaggered = true; //Cool Staggered effect

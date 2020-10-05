@@ -54,12 +54,12 @@ public class BattleScene : MarginContainer {
     short chi;
     short health;
     public static short Chi { get { return Instance.chi; } set { Instance.chi = value; Instance.chiField.Text = value.ToString(); } }
-    public short Health {
+    public static short Health {
         get { return Instance.health; }
         set {
             Instance.health = value; Instance.hpField.Text = value.ToString();
             if (Health <= 0) {
-                LostScene.Loose(GetTree());
+                LostScene.Loose(Instance.GetTree());
             }
         }
     }
@@ -163,7 +163,6 @@ public class BattleScene : MarginContainer {
         }
         if (task != null) await task;
         currentState = State.EnemyTurn;
-        DeselectCard();
         await EndTurnEffects();
         await SealCircleField.PlayDemonTurn();
     }
@@ -271,6 +270,10 @@ public class BattleScene : MarginContainer {
             await SealCircleField.AppearSeal(location);
         else
             await SealCircleField.ReplaceSeal(location);
+
+        if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
+            SealedScene.Win(GetTree());
+        }
     }
 
     public async Task AddSeal (Element element, byte location) {
@@ -341,6 +344,12 @@ public class BattleScene : MarginContainer {
                 }
             }
         }
+    }
+
+    //Debug
+    public override void _Input (InputEvent _event) {
+        if (_event.IsActionPressed("win"))
+            SealedScene.Win(GetTree());
     }
 
 

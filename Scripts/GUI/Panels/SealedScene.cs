@@ -11,7 +11,8 @@ public class SealedScene : ColorRect {
     [Export] NodePath moneyPath;
     [Export] NodePath cardPath;
     [Export] NodePath descriptionPath;
-    [Export] NodePath buttonPath;
+    [Export] NodePath addCardbuttonPath;
+    [Export] NodePath continuePath;
     public override void _Ready () {
         Demon oni = GameData.Instance.Oni;
         GameData.Instance.Oni = null;
@@ -20,11 +21,17 @@ public class SealedScene : ColorRect {
         CardId card = Card.AllSpecial.Random();
         GetNode<CardVisual>(cardPath).ShowCard(card.Data());
         GetNode<RichTextLabel>(descriptionPath).BbcodeText = card.Data().Description;
-        GameData.Instance.Deck.Add(card);
-        GetNode<Button>(buttonPath).Connect("pressed", this, nameof(Continue));
+        GetNode<Button>(addCardbuttonPath).Connect("pressed", this, nameof(AddToDeck), new Godot.Collections.Array() { card });
+        GetNode<Button>(continuePath).Connect("pressed", this, nameof(Continue));
     }
 
     public void Continue () {
         GetTree().ChangeScene("res://Scenes/VillageScene.tscn");
+        this.QueueFree();
+    }
+
+    public void AddToDeck (CardId card) {
+        GetNode<Button>(addCardbuttonPath).Disabled = true;
+        GameData.Instance.Deck.Add(card);
     }
 }
