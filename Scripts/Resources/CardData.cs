@@ -90,7 +90,7 @@ public class CardData : Resource {
                 Kanji = "火",
                 Element = Element.Fire,
                 Cost = 2,
-                Description = "Place one [fire-seal]",
+                Description = "Click on a slot to place a [fire-seal]\nAt the start of your turn, a [fire-seal] burns any surrounding [wood-seal] to produce 1 Ki",
                 Use =  async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Fire, useLocation); }
             },
             new CardData {
@@ -99,7 +99,7 @@ public class CardData : Resource {
                 Kanji = "水",
                 Element = Element.Water,
                 Cost = 2,
-                Description = "Place one [water-seal]",
+                Description = "Click on a slot to place a [water-seal]\nPlace a [water-seal] on a [fire-seal] to estinguish it and recover 1 Health",
                 Use =  async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Water, useLocation); }
             },
             new CardData {
@@ -108,7 +108,7 @@ public class CardData : Resource {
                 Kanji = "木",
                 Element = Element.Wood,
                 Cost = 2,
-                Description = "Place one [wood-seal]",
+                Description = "Click on a slot to place a [wood-seal]\nIf a [wood-seal] is next to at least one [water-seal], harvest and draw 1 card",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal (Element.Wood, useLocation); }
             },
             new CardData {
@@ -117,7 +117,7 @@ public class CardData : Resource {
                 Kanji = "土",
                 Element = Element.Earth,
                 Cost = 2,
-                Description = "Place one [earth-seal]",
+                Description = "Click on a slot to place a [earth-seal]\nProtects against attacks\nWhen you place a [earth-seal], pushes the Seal it was placed on and the next Seal clockwise",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Earth, useLocation); }
             },
             new CardData {Id = CardId.BasicMetal,
@@ -125,7 +125,7 @@ public class CardData : Resource {
                 Kanji = "金",
                 Element = Element.Metal,
                 Cost = 2,
-                Description = "Place one [metal-seal]",
+                Description = "Click on a slot to place a [metal-seal]\nProtects against attacks\nIf an enemy attacks this seal, he is staggered for the next turn",
                 Use = async (useLocation) => { await BattleScene.Instance.AddSeal(Element.Metal, useLocation); }
             },
             new CardData {Id = CardId.Flood, //TODO
@@ -178,7 +178,7 @@ public class CardData : Resource {
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        if (BattleScene.SealSlots[i] == Element.Water){ await BattleScene.DrawCards((byte)(1+BattleScene.HarvestBonus));
+                        if (BattleScene.SealSlots[i] == Element.Water){
                             if (BattleScene.SealSlots[(useLocation+1)%sealCount] == Element.Fire
                                 || BattleScene.SealSlots[(useLocation+sealCount-1)%sealCount] == Element.Fire)
                                 BattleScene.Health += 1;
