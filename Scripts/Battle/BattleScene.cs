@@ -37,7 +37,7 @@ public class BattleScene : MarginContainer {
 
     /*** Others ***/
     public static List<CardId> Deck;
-    public static List<CardId> Discard = new List<CardId>();
+    public static List<CardId> Discard;
 
     public static List<Element> SealSlots;
 
@@ -75,6 +75,7 @@ public class BattleScene : MarginContainer {
         instance = this;
         GameData.Instance.State = GameData.GameState.Battle;
         Deck = new List<CardId>(GameData.Instance.Deck);
+        Discard = new List<CardId>();
 
         thought = GetNode<SmartText>(thoughtPath);
         thoughtBubble = GetNode<Control>(thoughtBubblePath);
@@ -96,7 +97,8 @@ public class BattleScene : MarginContainer {
         SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
 
         Instance.ShuffleDeck();
-
+        GD.Print("~~~~~~~");
+        DisplayDeckAndDiscard();
         SealCircleField.PlanNextDemonTurn(); // This function will start the player's turn once it's done
     }
 
@@ -162,21 +164,21 @@ public class BattleScene : MarginContainer {
     ///////////////
     //////////
 
-    // private string DebugCards (IEnumerable<CardId> cards) {
-    //     string s = "";
-    //     foreach (CardId card in cards) {
-    //         if (s != "") {
-    //             s += ", ";
-    //         }
-    //         s += $"<{card.Data().Name}>";
-    //     }
-    //     return s;
-    // }
+    private string DebugCards (IEnumerable<CardId> cards) {
+        string s = "";
+        foreach (CardId card in cards) {
+            if (s != "") {
+                s += ", ";
+            }
+            s += $"<{card.Data().Name}>";
+        }
+        return s;
+    }
 
     public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count.ToString();
         discardField.Text = Discard.Count.ToString();
-        // GD.Print($"=============\nDiscard {DebugCards(Discard)}\nHand {DebugCards(Hand.Cards)}\nPile {DebugCards(Deck)}");
+        GD.Print($"=============\nDiscard {DebugCards(Discard)}\nHand {DebugCards(Hand.Cards)}\nPile {DebugCards(Deck)}");
     }
 
     //////////////////////
