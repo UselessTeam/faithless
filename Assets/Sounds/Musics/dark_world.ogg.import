@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/dark_world.ogg-e5bc5bccc4ff55e9e2a6f9f19e3c8479.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Musics/dark_world.ogg"
+dest_files=[ "res://.import/dark_world.ogg-e5bc5bccc4ff55e9e2a6f9f19e3c8479.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
