@@ -145,6 +145,7 @@ public class ShopPanel : ScaleContainer {
             // Buy food
             food.Effect();
             GameData.Instance.LeftInShop.Remove(food);
+            GameData.Instance.Money -= food.Price;
             SetFood(null);
         } else {
             CardData card = GetCard(selected).Data();

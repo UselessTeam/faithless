@@ -20,7 +20,7 @@ public class Food {
         Index = 1,
         Description = "A single sushi for +1 max ki",
         Effect = () => GameData.Instance.MaxKi += 1,
-        Price = 400,
+        Price = 500,
     };
     public static readonly Food DANGO = new Food {
         Name = "Dango",
