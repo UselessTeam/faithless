@@ -27,8 +27,18 @@ public class GameData : Node2D {
         Name = "Default Oni",
         SealSlots = 6,
     };
-
     [Signal] public delegate void MoneyChanged (int value);
+
+    public List<Food> LeftInShop = new List<Food> {
+        Food.ONIGIRI,
+        Food.SUSHI,
+        Food.DANGO,
+        Food.JAGAIMO
+    };
+    public short MaxHealth = 3;
+    public byte CardsPerTurn = 4;
+    public short MaxKi = 5;
+    public int MoneyPercentageBonus = 0;
     public int Money {
         get => _money;
         set {

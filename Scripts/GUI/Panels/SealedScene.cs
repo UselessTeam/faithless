@@ -17,8 +17,9 @@ public class SealedScene : ColorRect {
         GameData.Instance.State = GameData.GameState.Narration;
         Demon oni = GameData.Instance.Oni;
         GameData.Instance.Oni = null;
-        GetNode<Label>(moneyPath).Text = $"+{oni.Reward}";
-        GameData.Instance.Money += oni.Reward;
+        int money = (100 + GameData.Instance.MoneyPercentageBonus) * oni.Reward / 100;
+        GetNode<Label>(moneyPath).Text = $"+{money}";
+        GameData.Instance.Money += money;
         CardId card = CardData.AllSpecial.Random();
         GetNode<CardVisual>(cardPath).ShowCard(card.Data());
         GetNode<CardVisual>(cardPath).IsDisabled = true;

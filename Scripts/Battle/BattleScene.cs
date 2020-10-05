@@ -41,13 +41,9 @@ public class BattleScene : MarginContainer {
 
     public static List<Element> SealSlots;
 
-    const byte MAX_CHI = 5;
-    const byte MAX_HEALTH = 3;
-    const byte CARDS_PER_TURN = 4;
-
     short chi;
     short health;
-    public static short Chi { get { return Instance.chi; } set { Instance.chi = value; Instance.chiField.Text = value.ToString(); } }
+    public static short Ki { get { return Instance.chi; } set { Instance.chi = value; Instance.chiField.Text = value.ToString(); } }
     public static short Health {
         get { return Instance.health; }
         set {
@@ -87,7 +83,7 @@ public class BattleScene : MarginContainer {
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
         SealCircleField.InitializeSlots(GameData.Instance.Oni.SealSlots);
-        Health = MAX_HEALTH;
+        Health = GameData.Instance.MaxHealth;
         SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
 
         Instance.ShuffleDeck();
@@ -119,8 +115,8 @@ public class BattleScene : MarginContainer {
     }
 
     async public void StartPlayerTurn () {
-        Chi = MAX_CHI;
-        await DrawCards(CARDS_PER_TURN);
+        Ki = GameData.Instance.MaxKi;
+        await DrawCards(GameData.Instance.CardsPerTurn);
         await StartTurnEffects();
         currentState = State.PlayerTurn;
     }
@@ -169,9 +165,9 @@ public class BattleScene : MarginContainer {
         CardVisual visual = Hand.Selected;
         CardData card = visual.Card.Data();
         //Use the card
-        if ((Chi >= card.Cost || NextCardFree)
+        if ((Ki >= card.Cost || NextCardFree)
         && CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
-            Chi -= (NextCardFree) ? (short) 0 : (short) card.Cost;
+            Ki -= (NextCardFree) ? (short) 0 : (short) card.Cost;
             await card.Use(id);
             NextCardFree = false;
             // Discard the Card
@@ -245,7 +241,7 @@ public class BattleScene : MarginContainer {
         if (element == Element.Water && OldElement == Element.Fire)
             Health += 1;
         if (element == Element.Fire && OldElement == Element.Wood)
-            Chi += 1;
+            Ki += 1;
         if (element == Element.Wood && OldElement == Element.Water)
             await DrawCards(1);
 
@@ -257,7 +253,7 @@ public class BattleScene : MarginContainer {
             if (SealSlots[i] == Element.Wood) {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire
                 || SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) {// If there is a fire after or before
-                    Chi += 1;
+                    Ki += 1;
 
                     await SwitchSeal(Element.Fire, (byte) i);
                     SealCircleField.DisplaySeals(); //Sanity check

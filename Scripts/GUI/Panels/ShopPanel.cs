@@ -7,13 +7,13 @@ public class ShopPanel : ScaleContainer {
     [Export] NodePath leftCardPath;
     [Export] NodePath middleCardPath;
     [Export] NodePath rightCardPath;
-    [Export] NodePath itemPath;
+    [Export] NodePath foodPath;
     [Export] NodePath bubblePath;
     [Export] NodePath buyButtonPath;
     CardVisual leftCard;
     CardVisual middleCard;
     CardVisual rightCard;
-    TextureRect itemField;
+    FoodVisual foodField;
     RichTextLabel bubbleText;
     Button buyButton;
     RichTextLabel buyButtonText;
@@ -23,13 +23,13 @@ public class ShopPanel : ScaleContainer {
     CardId left;
     CardId middle;
     CardId right;
-    string item;
+    Food food;
 
     public override void _Ready () {
         leftCard = GetNode<CardVisual>(leftCardPath);
         middleCard = GetNode<CardVisual>(middleCardPath);
         rightCard = GetNode<CardVisual>(rightCardPath);
-        itemField = GetNode<TextureRect>(itemPath);
+        foodField = GetNode<FoodVisual>(foodPath);
         bubbleText = GetNode<RichTextLabel>(bubblePath);
         buyButton = GetNode<Button>(buyButtonPath);
         buyButtonText = GetNode<RichTextLabel>(buyButtonPath + "/Text");
@@ -37,6 +37,7 @@ public class ShopPanel : ScaleContainer {
         leftCard.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), 0.InArray());
         middleCard.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), 1.InArray());
         rightCard.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard), 2.InArray());
+        foodField.Connect(nameof(FoodVisual.OnClick), this, nameof(OpenFood));
         buyButton.Connect("pressed", this, nameof(Buy));
 
         Init();
@@ -51,7 +52,7 @@ public class ShopPanel : ScaleContainer {
         bubbleText.Text = WELCOME_MESSAGES.Random();
         buyButton.Hide();
         List<CardId> all = new List<CardId>(CardData.All);
-        Load(all.PopRandom(), all.PopRandom(), all.PopRandom());
+        Load(all.PopRandom(), all.PopRandom(), all.PopRandom(), GameData.Instance.LeftInShop.Count == 0 ? null : GameData.Instance.LeftInShop.Random());
     }
 
     private readonly string[] AGAIN_MESSAGES = new string[] {
@@ -64,15 +65,14 @@ public class ShopPanel : ScaleContainer {
         bubbleText.Text = AGAIN_MESSAGES.Random();
         buyButton.Hide();
     }
-    public void Load (CardId left, CardId middle, CardId right, string _item = "") {
+    public void Load (CardId left, CardId middle, CardId right, Food food) {
         SetCard(left, 0);
         SetCard(middle, 1);
         SetCard(right, 2);
-        item = _item;
-        //TODO: Item
+        SetFood(food);
     }
 
-    int selected = -1;
+    int selected = -2;
 
     private CardId GetCard (int index) {
         return index switch
@@ -116,6 +116,12 @@ public class ShopPanel : ScaleContainer {
                 throw new Exception($"No card at index {index}");
         };
     }
+
+    public void SetFood (Food food) {
+        this.food = food;
+        foodField.SetFood(food);
+    }
+
     public void OpenCard (int _, int index) {
         CardData card = GetCard(index).Data();
         selected = index;
@@ -124,14 +130,31 @@ public class ShopPanel : ScaleContainer {
         buyButtonText.BbcodeText = $"[center]Buy ({card.MonPrice} {BB.Mon})[/center] ";
         buyButton.Disabled = (card.MonPrice > GameData.Instance.Money);
     }
+
+    public void OpenFood () {
+        selected = -1;
+        bubbleText.Text = $"Want to buy a {food.Name}?\n\n{food.Description}";
+        buyButton.Show();
+        buyButtonText.BbcodeText = $"[center]Buy ({food.Price} {BB.Mon})[/center] ";
+        buyButton.Disabled = (food.Price > GameData.Instance.Money);
+    }
     public void Buy () {
-        CardData card = GetCard(selected).Data();
-        bubbleText.Text = $"Here is your {card.Name}.\nIt's a pleasure doing business with you.";
-        buyButton.Hide();
-        // Buy card
-        GameData.Instance.Deck.Add(card.Id);
-        GameData.Instance.DeckChange();
-        GameData.Instance.Money -= card.MonPrice;
-        SetCard(CardId.None, selected);
+        if (selected == -1) {
+            bubbleText.Text = $"Here is your {food.Name}.\nIt's a pleasure doing business with you.";
+            buyButton.Hide();
+            // Buy food
+            food.Effect();
+            GameData.Instance.LeftInShop.Remove(food);
+            SetFood(null);
+        } else {
+            CardData card = GetCard(selected).Data();
+            bubbleText.Text = $"Here is your {card.Name}.\nIt's a pleasure doing business with you.";
+            buyButton.Hide();
+            // Buy card
+            GameData.Instance.Deck.Add(card.Id);
+            GameData.Instance.DeckChange();
+            GameData.Instance.Money -= card.MonPrice;
+            SetCard(CardId.None, selected);
+        }
     }
 }

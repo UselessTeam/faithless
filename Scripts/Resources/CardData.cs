@@ -289,7 +289,7 @@ public class CardData : Resource {
                 Description = "Replace all Earth Seals by Metal Seals\nGain one Chi by Seal replaced\nDraw 1 Cards",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        if (BattleScene.SealSlots[i] == Element.Earth) { await BattleScene.Instance.SwitchSeal(Element.Metal, i); BattleScene.Chi+=1; }
+                        if (BattleScene.SealSlots[i] == Element.Earth) { await BattleScene.Instance.SwitchSeal(Element.Metal, i); BattleScene.Ki+=1; }
                     }
                     await BattleScene.DrawCards(1);
                 }
@@ -327,7 +327,7 @@ public class CardData : Resource {
                 Description = "Destroy all Seals\nDraw 4 Cards\nHeal to full health\nGain 2 Chi for each Seal destroyed",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                       await BattleScene.Instance.RemoveSeal(i); BattleScene.Chi+=2;
+                       await BattleScene.Instance.RemoveSeal(i); BattleScene.Ki+=2;
                     }
                     await BattleScene.DrawCards(2);
 }
@@ -340,7 +340,7 @@ public class CardData : Resource {
                 Description = "Remove all Water Seals and gain 1 Chi for each one discarded\nReplace all Wood Seals by Earth Seals and draw 1 card for each one discarded",
                 Use = async (useLocation) => {
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-                        if (BattleScene.SealSlots[i] == Element.Water) { await BattleScene.Instance.RemoveSeal(i); BattleScene.Chi += 3; }
+                        if (BattleScene.SealSlots[i] == Element.Water) { await BattleScene.Instance.RemoveSeal(i); BattleScene.Ki += 3; }
                         if (BattleScene.SealSlots[i] == Element.Wood) { await BattleScene.Instance.SwitchSeal(Element.Earth, i); }
                     }
                 }
