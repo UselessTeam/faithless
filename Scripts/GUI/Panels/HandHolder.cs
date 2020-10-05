@@ -57,6 +57,7 @@ public class HandHolder : Container {
     public Task DiscardCard (CardVisual visual) {
         if (visual == Selected) {
             DeselectCard();
+            BattleScene.Instance.DescribeCard(CardId.None);
         }
         if (visual.IsDisabled) {
             return new Task(() => { });
