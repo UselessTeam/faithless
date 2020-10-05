@@ -144,11 +144,11 @@ public class CardData : Resource {
                 Kanji = "",
                 Element = Element.Water,
                 Cost = 1,
-                Description = "Discard all your cards\nDraw as many cards +1",
+                Description = "Discard all your cards\nDraw as many cards",
                 Use = async (useLocation) => {
                     int cardCount =  BattleScene.Instance.Hand.Cards.Count();
                     await BattleScene.Instance.Hand.DiscardAll();
-                    await BattleScene.DrawCards((byte)(cardCount+1));
+                    await BattleScene.DrawCards((byte)cardCount);
                 }
             },
             new CardData {Id = CardId.Spring,
@@ -350,8 +350,10 @@ public class CardData : Resource {
                 Use = async (useLocation) => {
                 var lastElement = BattleScene.SealSlots[0];
                     for (byte i = 0 ; i < BattleScene.SealSlots.Count-1 ; i++) {
+                        BattleScene.Instance.SealCircleField.MoveSeal((byte)(i+1),i,BattleScene.SealSlots[i+1]);
                         BattleScene.SealSlots[i]= BattleScene.SealSlots[i+1];
                     }
+                    await BattleScene.Instance.SealCircleField.MoveSeal(0,(byte)(BattleScene.SealSlots.Count -1 ),lastElement);
                     BattleScene.SealSlots[BattleScene.SealSlots.Count -1] = lastElement;
                     BattleScene.Instance.SealCircleField.DisplaySeals();
                 }
@@ -374,11 +376,18 @@ public class CardData : Resource {
                 Description = "Place an Earth Seal and swap the surrounding Seals",
                 Use = async (useLocation) => {
                     byte sealCount = (byte) BattleScene.SealSlots.Count;
+                    byte sealBefore = (byte)((useLocation+sealCount-1)%sealCount);
+                    byte sealAfter = (byte)((useLocation+1)%sealCount);
+
                     await BattleScene.Instance.SwitchSeal(Element.Earth, useLocation);
-                    var swapElm = BattleScene.SealSlots[(useLocation+1)%sealCount];
-                    await BattleScene.Instance.SwitchSeal(BattleScene.SealSlots[(useLocation+sealCount-1)%sealCount], (byte)((useLocation+1)%sealCount));
-                    await BattleScene.Instance.SwitchSeal(swapElm, (byte)((useLocation+sealCount-1)%sealCount));
-                    await BattleScene.Instance.AddSeal(Element.Earth, useLocation);
+                    await BattleScene.Instance.SealCircleField.MoveSeal(sealBefore,sealAfter,BattleScene.SealSlots[sealBefore]);
+                    await BattleScene.Instance.SealCircleField.MoveSeal(sealAfter,sealBefore,BattleScene.SealSlots[sealAfter]);
+
+                    var swapElm = BattleScene.SealSlots[sealBefore];
+                    BattleScene.SealSlots[sealBefore] = BattleScene.SealSlots[sealAfter];
+                    BattleScene.SealSlots[sealAfter] = swapElm;
+
+                    BattleScene.Instance.SealCircleField.DisplaySeals();
                 }
 
             },

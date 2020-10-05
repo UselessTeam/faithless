@@ -65,7 +65,18 @@ public class SealingCircle : Node2D {
         await DisappearSeal(index);
         await AppearSeal(index);
     }
-    async public Task MoveSeal (byte index, byte indexTo) { }
+    async public Task MoveSeal (byte index, byte indexTo, Element element) { //By default, willmove the element that is at index
+        var fromSeal = SealSlotDisplays.GetChild<SealSlot>(index);
+        var toSeal = SealSlotDisplays.GetChild<SealSlot>(indexTo);
+        fromSeal.ShowSlot(element);
+        GD.Print("Before the Tween");
+        fromSeal.MoveTo(toSeal.RectPosition - fromSeal.RectPosition);
+        GD.Print("Tween Started");
+        await ToSignal(fromSeal.MyTween, "tween_completed");
+        GD.Print("Tween Finished, arrived at ", fromSeal.MySprite.RectPosition);
+        toSeal.ShowSlot(element);
+        fromSeal.ShowSlot(Element.None);
+    }
 
     public void DisplaySeals () {
         byte i = 0;

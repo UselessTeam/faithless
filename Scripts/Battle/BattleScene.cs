@@ -230,7 +230,7 @@ public class BattleScene : MarginContainer {
         var OldElement = SealSlots[location];
         SealSlots[location] = element;
         Task task;
-
+        GD.Print("Adding seel");
         if (element == Element.Earth && SealSlots.Contains(Element.None)) { //Earth related movement
             int moveLocation = location;
             var moveElement = OldElement;
@@ -243,12 +243,16 @@ public class BattleScene : MarginContainer {
                 else
                     SealSlots[moveLocation] = Element.None;
             }
+            Task taskMove = null;
             while (moveElement != Element.None) {
-                moveLocation = (moveLocation + 1) % SealSlots.Count;
+                var newMoveLocation = (moveLocation + 1) % SealSlots.Count;
+                taskMove = SealCircleField.MoveSeal((byte) moveLocation, (byte) newMoveLocation, moveElement);
+                moveLocation = newMoveLocation;
                 var tempSwap = SealSlots[moveLocation];
                 SealSlots[moveLocation] = moveElement;
                 moveElement = tempSwap;
             }
+            if (taskMove != null) await taskMove;
         }
 
         if (OldElement == Element.None)
