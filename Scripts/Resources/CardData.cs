@@ -388,7 +388,12 @@ public class CardData : Resource {
     public static CardData Find (CardId id) {
         var card = list[id];
         if (list[id] == null) GD.Print("Trying to accesss a non-existing card : ", id);
-        return list[id];
+        try {
+            return list[id];
+        } catch {
+            GD.PrintErr($"No card {id}");
+            return null;
+        }
     }
     public static bool CheckPlayable (CardId id, Element currentElement) {
         CardData card = Find(id);

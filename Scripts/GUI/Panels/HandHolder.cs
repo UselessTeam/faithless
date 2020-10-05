@@ -59,6 +59,9 @@ public class HandHolder : Container {
         if (visual == Selected) {
             DeselectCard();
         }
+        if (visual.IsDisabled) {
+            return;
+        }
         visual.IsDisabled = true;
         visual.Disappear(split);
         BattleScene.Discard.Add(visual.Card);
