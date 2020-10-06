@@ -1,6 +1,8 @@
-# Faithless
+![Faithless](https://static.jam.vg/raw/27e/1/z/38d0b.jpg)
 
 This is Useless Team's attempt at making a game for the [Ludum Dare](https://ldjam.com/) 47.
+
+The submittion, called **Faithless Land** can be found at https://ldjam.com/events/ludum-dare/47/faithless-land.
 
 ## Downloading the repository
 
@@ -8,7 +10,7 @@ This repository uses [git lfs](https://git-lfs.github.com/) to better store larg
 
 Then, you can clone the repository with
 ```
-git lfs clone git@github.com:Swynfel/template.git
+git lfs clone git@github.com:UselessTeam/faithless.git
 ```
 
 ## Dependencies
