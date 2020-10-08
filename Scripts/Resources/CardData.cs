@@ -388,9 +388,10 @@ public class CardData : Resource {
                 Kanji = "彫",
                 Element = Element.Earth,
                 Cost = 1,
-                Description = "Select a location and place a copy of the Seal on the opposite side of the sealing circle",
+                RequireFull = true,
+                Description = "Select a Seal and place a copy of it on the opposite side of the sealing circle",
                 Use = async (useLocation) => {
-                    await BattleScene.Instance.SwitchSeal(BattleScene.SealSlots[(useLocation + BattleScene.SealSlots.Count/2) % BattleScene.SealSlots.Count], useLocation);
+                    await BattleScene.Instance.SwitchSeal(BattleScene.SealSlots[useLocation],(byte)( (useLocation + BattleScene.SealSlots.Count/2) % BattleScene.SealSlots.Count));
                 }
             },
             new CardData {Id = CardId.Tectonic,
