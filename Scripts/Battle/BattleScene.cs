@@ -103,8 +103,8 @@ public class BattleScene : MarginContainer {
     ////////////////
     ///////
 
-    public static async Task DrawCards (byte count) {
-        for (byte i = 0 ; i < count ; i++) {
+    public static async Task DrawCards (int count) {
+        for (int i = 0 ; i < count ; i++) {
             if (!await Instance.Hand.DrawCard()) {
                 break;
             }
@@ -170,7 +170,7 @@ public class BattleScene : MarginContainer {
     ////////////////
     //////
 
-    async public void ClickOnSealSlot (byte id) {
+    async public void ClickOnSealSlot (int id) {
         if (currentState != State.PlayerTurn || Hand.Selected == null) return;
         currentState = State.SomethingHappening;
 
@@ -178,7 +178,7 @@ public class BattleScene : MarginContainer {
         CardData card = visual.Card.Data();
         //Use the card
         if ((Ki >= card.Cost || NextCardFree) &&
-            CardData.CheckPlayable(card.Id, SealSlots[id])) { //Check if we can play the card
+            CardData.CheckPlayable(card.Id, id)) { //Check if we can play the card
             Ki -= (NextCardFree) ? (short) 0 : (short) card.Cost;
             NextCardFree = false;
             await card.Use(id);
@@ -195,12 +195,12 @@ public class BattleScene : MarginContainer {
     ////////////////
     ///////
 
-    public async Task RemoveSeal (byte location) {
+    public async Task RemoveSeal (int location) {
         SealSlots[location] = Element.None;
         await SealCircleField.DisappearSeal(location);
     }
 
-    public async Task SwitchSeal (Element element, byte location) {
+    public async Task SwitchSeal (Element element, int location) {
         bool isEmpty = SealSlots[location] == Element.None;
         SealSlots[location] = element;
         if (isEmpty)
@@ -213,7 +213,7 @@ public class BattleScene : MarginContainer {
         }
     }
 
-    public async Task AddSeal (Element element, byte location) {
+    public async Task AddSeal (Element element, int location) {
         var OldElement = SealSlots[location];
         SealSlots[location] = element;
         Task task;
@@ -232,7 +232,7 @@ public class BattleScene : MarginContainer {
             Task taskMove = null;
             while (moveElement != Element.None) {
                 var newMoveLocation = (moveLocation + 1) % SealSlots.Count;
-                taskMove = SealCircleField.MoveSeal((byte) moveLocation, (byte) newMoveLocation, moveElement);
+                taskMove = SealCircleField.MoveSeal(moveLocation, newMoveLocation, moveElement);
                 moveLocation = newMoveLocation;
                 var tempSwap = SealSlots[moveLocation];
                 SealSlots[moveLocation] = moveElement;
@@ -267,9 +267,8 @@ public class BattleScene : MarginContainer {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire ||
                     SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) { // If there is a fire after or before
                     Ki += 1;
-
-                    await SwitchSeal(Element.Fire, (byte) i);
-                    SealCircleField.DisplaySeals(); //Sanity check
+                    await SwitchSeal(Element.Fire, i);
+                    SealCircleField.DisplaySeals();
                 }
             }
         }
@@ -280,7 +279,7 @@ public class BattleScene : MarginContainer {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water ||
                     SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) { // If there is a water after or before
                     // TODO: show a cute water effect on the wood
-                    await DrawCards((byte) (1 + HarvestBonus));
+                    await DrawCards((1 + HarvestBonus));
                 }
             }
         }
@@ -292,9 +291,9 @@ public class BattleScene : MarginContainer {
         // GetTree().Paused = true;
     }
 
-    //Debug
-    public override void _Input (InputEvent _event) {
-        if (_event.IsActionPressed("win"))
-            Win();
-    }
+    // //Debug
+    // public override void _Input (InputEvent _event) {
+    //     if (_event.IsActionPressed("win"))
+    //         Win();
+    // }
 }

@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using Godot;
 
 public class SealSlot : Control {
-    [Signal] delegate void OnClick (byte id);
+    [Signal] delegate void OnClick (int id);
     public SealingCircle Circle;
     public int id;
 
     public Vector2 initialPosition;
 
     public override void _Ready () {
-        MyBackSprite.Set("z", -1);
+        // MyBackSprite.Set("z", -1);
         Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnSealSlot));
         initialPosition = MySprite.RectPosition;
     }
     public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
     public TextureRect MySprite { get { return GetNode<TextureRect>("Sprite"); } }
-    public TextureRect MyBackSprite { get { return GetNode<TextureRect>("BackSprite"); } }
+    public TextureRect MyBackSprite { get { return GetNode<TextureRect>("Node2D/BackSprite"); } }
 
     public void ShowSlot (Element element) {
         var texture = MySprite.Texture as AtlasTexture;
         var region = texture.Region;
-        region.Position = element switch
-        {
+        region.Position = element switch {
             Element.Fire => new Vector2(0, 400),
             Element.Water => new Vector2(200, 400),
             Element.Earth => new Vector2(400, 400),
@@ -42,6 +41,7 @@ public class SealSlot : Control {
         Color modulate = MySprite.Modulate;
         modulate.a = color.a;
         MySprite.Modulate = modulate;
+        // GD.Print("alpha : ", MyBackSprite.Modulate.a);
     }
     public void ModifySpritePosition (Vector2 position) {
         MySprite.RectPosition = position;

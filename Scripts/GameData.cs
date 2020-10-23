@@ -45,7 +45,7 @@ public class GameData : Node2D {
         Food.JAGAIMO
     };
     public short MaxHealth = 3;
-    public byte CardsPerTurn = 4;
+    public int CardsPerTurn = 4;
     public short MaxKi = 5;
     public int MoneyPercentageBonus = 0;
     public int Money {

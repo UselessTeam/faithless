@@ -132,7 +132,7 @@ public class HandHolder : Container {
             BattleScene.Instance.DisplayDeckAndDiscard();
         }
     }
-    public void SelectCard (byte _, CardVisual visual) {
+    public void SelectCard (int _, CardVisual visual) {
         if (BattleScene.Instance.IsBusy()) {
             return;
         }

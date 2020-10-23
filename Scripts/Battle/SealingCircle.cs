@@ -35,7 +35,7 @@ public class SealingCircle : Node2D {
         RayCircle.SetSlotCount(slotCount);
         CenterPosition = GetNode<Position2D>("Center").Position;
         CenterToSlot = GetNode<Position2D>("FirstSealSlot").Position - GetNode<Position2D>("Center").Position;
-        for (byte i = 0 ; i < SlotCount ; i++) {
+        for (int i = 0 ; i < SlotCount ; i++) {
             var slot = GD.Load<PackedScene>(sealSlotPath).Instance().GetNode<SealSlot>("./");
             slot.Circle = this;
             slot.RectPosition = CenterPosition + CenterToSlot;
@@ -47,24 +47,24 @@ public class SealingCircle : Node2D {
         }
     }
 
-    async public Task AppearSeal (byte index) {
+    async public Task AppearSeal (int index) {
         var currentSeal = SealSlotDisplays.GetChild<SealSlot>(index);
         currentSeal.ShowSlot(BattleScene.SealSlots[index]);
         currentSeal.Change(BattleScene.SealSlots[index]);
         await ToSignal(currentSeal.MyTween, "tween_completed");
     }
-    async public Task DisappearSeal (byte index) {
+    async public Task DisappearSeal (int index) {
         var currentSeal = SealSlotDisplays.GetChild<SealSlot>(index);
         currentSeal.Change(Element.None);
         await ToSignal(currentSeal.MyTween, "tween_completed");
         currentSeal.ShowSlot(Element.None);
         currentSeal.Modulate = new Color(1, 1, 1, 1);
     }
-    async public Task ReplaceSeal (byte index) {
+    async public Task ReplaceSeal (int index) {
         await DisappearSeal(index);
         await AppearSeal(index);
     }
-    async public Task MoveSeal (byte index, byte indexTo, Element element) { //By default, willmove the element that is at index
+    async public Task MoveSeal (int index, int indexTo, Element element) { //By default, willmove the element that is at index
         var fromSeal = SealSlotDisplays.GetChild<SealSlot>(index);
         var toSeal = SealSlotDisplays.GetChild<SealSlot>(indexTo);
         fromSeal.ShowSlot(element);
@@ -75,7 +75,7 @@ public class SealingCircle : Node2D {
     }
 
     public void DisplaySeals () {
-        byte i = 0;
+        int i = 0;
         foreach (var slot in BattleScene.SealSlots) {
             SealSlotDisplays.GetChild<SealSlot>(i).ShowSlot(slot);
             RayCircle.SetSlot(slot, i);
@@ -84,7 +84,7 @@ public class SealingCircle : Node2D {
     }
     public void DisplayActionPlan () {
         ArrowDisplays.QueueFreeChildren();
-        for (byte i = 0 ; i < SlotCount ; i++) {
+        for (int i = 0 ; i < SlotCount ; i++) {
             if (actionPlan[i] != DemonAction.None) {
                 var arrow = GD.Load<PackedScene>(arrowPath).Instance().GetNode<IntentArrow>("./");
                 arrow.GlobalPosition = CenterPosition + CenterToSlot / 2;
@@ -115,7 +115,7 @@ public class SealingCircle : Node2D {
     /////////////
     ///////
 
-    bool AttackOn (byte i) {
+    bool AttackOn (int i) {
         if (BattleScene.SealSlots[i] == Element.Metal) {
             isStaggered = true; //Cool Staggered effect
             return false;
@@ -128,7 +128,7 @@ public class SealingCircle : Node2D {
     }
 
     public async Task PlayDemonTurn () {
-        byte i = 0;
+        int i = 0;
         foreach (var action in actionPlan) {
             switch (action) {
                 case DemonAction.Attack:
@@ -173,8 +173,7 @@ public static class DemonActionExtention {
 
     public static string Description (this DemonAction action) {
         return action
-        switch
-        {
+        switch {
             DemonAction.Attack => "Attack\n\nThe demon will attack this location and remove 1 health\nYou can defend yourself by placing a Seal of any type",
             DemonAction.AttackOrRemove => "Attack and Remove\n\nThe demon will attack and remove the seal in this location",
             DemonAction.AttackPierce => "Pierce Attack\n\nRemove one health",

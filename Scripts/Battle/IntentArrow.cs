@@ -14,6 +14,8 @@ public class IntentArrow : Node2D {
         Area.Connect("focus_exited", this, nameof(FocusExit));
     }
     public void ShowArrow (DemonAction action) {
+        Spatial S = new Spatial();
+        var a = S.Transform.basis.x;
         Intent = action;
         switch (action) {
             case DemonAction.Attack:
