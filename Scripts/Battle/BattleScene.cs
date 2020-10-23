@@ -31,14 +31,16 @@ public class BattleScene : MarginContainer {
     Label hpField;
     Label deckField;
     Label discardField;
-    public HandHolder Hand;
+    HandHolder hand;
+    public static HandHolder Hand { get => Instance.hand; }
     public SealingCircle SealCircleField;
 
     /*** Others ***/
     public static List<Element> SealSlots;
+    public static int SealCount { get { return SealSlots.Count; } }
 
-    public static IEnumerable<CardId> Deck => Instance.Hand.Deck;
-    public static IEnumerable<CardId> Discard => Instance.Hand.Discard;
+    public static IEnumerable<CardId> Deck => Hand.Deck;
+    public static IEnumerable<CardId> Discard => Hand.Discard;
 
     short ki;
     short health;
@@ -82,7 +84,7 @@ public class BattleScene : MarginContainer {
         deckField = GetNode<Label>(deckPath);
         discardField = GetNode<Label>(discardPath);
 
-        Hand = GetNode<HandHolder>(handholderPath);
+        hand = GetNode<HandHolder>(handholderPath);
         SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
@@ -105,7 +107,7 @@ public class BattleScene : MarginContainer {
 
     public static async Task DrawCards (int count) {
         for (int i = 0 ; i < count ; i++) {
-            if (!await Instance.Hand.DrawCard()) {
+            if (!await Hand.DrawCard()) {
                 break;
             }
             Instance.DisplayDeckAndDiscard();
@@ -217,33 +219,28 @@ public class BattleScene : MarginContainer {
         var OldElement = SealSlots[location];
         SealSlots[location] = element;
         Task task;
-        if (element == Element.Earth && SealSlots.Contains(Element.None)) { //Earth related movement
-            int moveLocation = location;
-            var moveElement = OldElement;
-            // if (moveElement == Element.None) {
-            //     OldElement = Element.Earth;
-            //     moveLocation = (moveLocation + 1) % SealSlots.Count;
-            //     moveElement = SealSlots[moveLocation];
-            //     if (!SealSlots.Contains(Element.None))
-            //         moveElement = Element.None;
-            //     else
-            //         SealSlots[moveLocation] = Element.None;
-            // }
-            Task taskMove = null;
-            while (moveElement != Element.None) {
-                var newMoveLocation = (moveLocation + 1) % SealSlots.Count;
-                taskMove = SealCircleField.MoveSeal(moveLocation, newMoveLocation, moveElement);
-                moveLocation = newMoveLocation;
-                var tempSwap = SealSlots[moveLocation];
-                SealSlots[moveLocation] = moveElement;
-                moveElement = tempSwap;
-            }
-            if (taskMove != null) await taskMove;
-        }
 
         if (OldElement == Element.None)
             task = SealCircleField.AppearSeal(location);
         else task = SealCircleField.ReplaceSeal(location);
+
+        if (element == Element.Earth) {
+            int sealCount = BattleScene.SealSlots.Count;
+            int locationBefore = (location + sealCount - 1) % sealCount;
+            int locationAfter = (location + 1) % sealCount;
+
+            // Act the switch
+            var swapElm = BattleScene.SealSlots[locationBefore];
+            BattleScene.SealSlots[locationBefore] = BattleScene.SealSlots[locationAfter];
+            BattleScene.SealSlots[locationAfter] = swapElm;
+
+            // Display the Switch
+            task = BattleScene.Instance.SealCircleField.MoveSeal(locationBefore, locationAfter, BattleScene.SealSlots[locationAfter]);
+            task = BattleScene.Instance.SealCircleField.MoveSeal(locationAfter, locationBefore, BattleScene.SealSlots[locationBefore]);
+
+            await task;
+            BattleScene.Instance.SealCircleField.DisplaySeals();
+        }
 
         if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
             Win();
@@ -262,25 +259,43 @@ public class BattleScene : MarginContainer {
     }
 
     async public Task StartTurnEffects () {
+        List<int> BurnSeals = new List<int>();
         for (int i = 0 ; i < SealSlots.Count ; i++) {
-            if (SealSlots[i] == Element.Wood) {
-                if (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire ||
-                    SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire) { // If there is a fire after or before
-                    Ki += 1;
-                    await SwitchSeal(Element.Fire, i);
-                    SealCircleField.DisplaySeals();
-                }
+            if (SealSlots[i] == Element.Wood &&
+                 (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire ||
+                    SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire)) { // If there is a fire after or before
+                BurnSeals.Add(i);
             }
         }
+        foreach (int i in BurnSeals) {
+            Ki += 1;
+            await SwitchSeal(Element.Fire, i);
+            SealCircleField.DisplaySeals();
+        }
     }
+
     async public Task EndTurnEffects () {
         for (int i = 0 ; i < SealSlots.Count ; i++) {
             if (SealSlots[i] == Element.Wood) {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water ||
                     SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) { // If there is a water after or before
-                    // TODO: show a cute water effect on the wood
+                                                                                               // TODO: show a cute water effect on the wood
                     await DrawCards((1 + HarvestBonus));
                 }
+            }
+        }
+    }
+
+    public const int MaxSeeds = 4;
+    int seeds;
+    public static int Seeds {
+        get => Instance.seeds;
+        set {
+            Instance.seeds = value;
+            //TODO Display new value
+            if (value >= MaxSeeds) {
+                //TODO Plant a Wooden seal
+                Seeds = value - MaxSeeds;
             }
         }
     }
@@ -288,12 +303,6 @@ public class BattleScene : MarginContainer {
     public async void Win () {
         await SealCircleField.RayCircle.Seal();
         SealedScene.Win(GetTree());
-        // GetTree().Paused = true;
     }
 
-    // //Debug
-    // public override void _Input (InputEvent _event) {
-    //     if (_event.IsActionPressed("win"))
-    //         Win();
-    // }
 }

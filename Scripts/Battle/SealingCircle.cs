@@ -103,10 +103,10 @@ public class SealingCircle : Node2D {
     }
 
     public void UnHover (DemonAction _) {
-        if (BattleScene.Instance.Hand.Selected == null) {
+        if (BattleScene.Hand.Selected == null) {
             BattleScene.Instance.DescribeCard(CardId.None);
         } else {
-            BattleScene.Instance.DescribeCard(BattleScene.Instance.Hand.Selected.Card);
+            BattleScene.Instance.DescribeCard(BattleScene.Hand.Selected.Card);
         }
     }
 

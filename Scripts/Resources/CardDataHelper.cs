@@ -4,6 +4,46 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
+public enum CardId {
+    None,
+    BasicFire,
+    BasicWater,
+    BasicWood,
+    BasicEarth,
+    BasicMetal,
+
+    Flood,
+    Watermill,
+    HotSpring,
+    Tsunami,
+    WashAway,
+
+    Recycle,
+    Forge,
+    SteelTools,
+    Stronghold,
+    Rust,
+
+    PineCone,
+    Abundance,
+    Roots,
+    Plantation,
+    RiceField,
+
+    Eruption,
+    Combustion,
+    Phoenix,
+    FireSpread,
+    Cooking,
+
+    Drought,
+    Landslide,
+    Carving,
+    Tectonic,
+    TOTAL, // Leave at the end
+    // Add Free seal
+}
+
 public static class CardIdExtensions {
     public static CardData Data (this CardId id) {
         return CardData.Find(id);
