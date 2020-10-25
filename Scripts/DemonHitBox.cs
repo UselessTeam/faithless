@@ -11,7 +11,7 @@ public class DemonHitBox : Control {
     }
 
     public override void _GuiInput (InputEvent _event) {
-        if (_event is InputEventMouseButton)
+        if (InputHelper.IsClick(_event))
             EmitSignal(nameof(OnClick), -1);
     }
 }

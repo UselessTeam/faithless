@@ -20,8 +20,8 @@ public class StoryPanel : ColorRect {
         text.PercentVisible = progress;
     }
 
-    public override void _Input (InputEvent @event) {
-        if (progress >= 1f && @event is InputEventMouseButton eventMouse && eventMouse.ButtonIndex == (int) ButtonList.Left && eventMouse.Pressed) {
+    public override void _Input (InputEvent _event) {
+        if (progress >= 1f && InputHelper.IsClick(_event)) {
             GetTree().ChangeScene(nextScene);
         }
     }

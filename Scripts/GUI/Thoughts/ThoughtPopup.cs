@@ -16,8 +16,8 @@ public class ThoughtPopup : Popup {
         text.BbcodeText = $"[center]{BB.Format(Help.Explanations[key])}[/center]";
     }
 
-    public override void _GuiInput (InputEvent @event) {
-        if (@event is InputEventMouseButton eventMouse && eventMouse.ButtonIndex == (int) ButtonList.Left && eventMouse.Pressed) {
+    public override void _GuiInput (InputEvent _event) {
+        if (InputHelper.IsClick(_event)) {
             Hide();
         }
     }

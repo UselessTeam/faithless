@@ -43,8 +43,8 @@ public class WantedTable : MarginContainer {
         rewardField.BbcodeText = $"[right]{demon.Reward} {BB.Mon}[/right]  ";
     }
 
-    public override void _Input (InputEvent @event) {
-        if (GetFocusOwner() == this && @event is InputEventMouseButton eventMouse && eventMouse.ButtonIndex == (int) ButtonList.Left && eventMouse.Pressed) {
+    public override void _Input (InputEvent _event) {
+        if (GetFocusOwner() == this && InputHelper.IsClick(_event)) {
             GameData.Instance.Oni = demon;
             GetTree().ChangeScene(combatScenePath);
         }

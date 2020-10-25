@@ -92,7 +92,7 @@ public class CardVisual : Control {
     }
     public override void _GuiInput (InputEvent _event) {
         if (IsDisabled) return;
-        if (_event is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == (int) ButtonList.Left && mouseEvent.Pressed) {
+        if (InputHelper.IsClick(_event)) {
             EmitSignal(nameof(OnClick), GetIndex());
         }
     }
