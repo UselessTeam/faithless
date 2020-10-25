@@ -28,6 +28,19 @@ public class HandHolder : Container {
         AddChild(tween);
         Refresh();
     }
+
+    public async Task MakeCardVisual (CardVisual visualCard, CardId card) {
+        container.AddChild(visualCard);
+        visualCard.Modulate = new Color(1, 1, 1, 0);
+        visualCard.ShowCard(card.Data());
+        visualCard.MoveFrom(new Vector2(1000, 0));
+        await ToSignal(visualCard.MyTween, "tween_completed");
+        Refresh();
+        visualCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard), visualCard.InArray());
+        visualCard.Connect(nameof(CardVisual.FocusEntered), this, nameof(HoverCard));
+        visualCard.Connect(nameof(CardVisual.FocusExited), this, nameof(UnHoverCard));
+    }
+
     public async Task<bool> DrawCard () {
         CardId card;
         CardVisual visualCard;
@@ -41,16 +54,18 @@ public class HandHolder : Container {
             visualCard = CardVisual.Instance();
             visuals.Add(visualCard);
         }
-        container.AddChild(visualCard);
-        visualCard.Modulate = new Color(1, 1, 1, 0);
-        visualCard.ShowCard(card.Data());
-        visualCard.MoveFrom(new Vector2(1000, 0));
-        await ToSignal(visualCard.MyTween, "tween_completed");
-        Refresh();
-        visualCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard), visualCard.InArray());
-        visualCard.Connect(nameof(CardVisual.FocusEntered), this, nameof(HoverCard));
-        visualCard.Connect(nameof(CardVisual.FocusExited), this, nameof(UnHoverCard));
+        await MakeCardVisual(visualCard, card);
         return true;
+    }
+
+    public async Task AddCard (CardId card) {
+        CardVisual visualCard;
+        lock (flowLock) {
+            visualCard = CardVisual.Instance();
+            visuals.Add(visualCard);
+        }
+        await MakeCardVisual(visualCard, card);
+
     }
 
     public async Task<bool> DrawLastDiscard () {

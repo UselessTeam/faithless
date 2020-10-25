@@ -25,6 +25,8 @@ public class BattleScene : MarginContainer {
     [Export] NodePath handholderPath;
     [Export] NodePath sealingCirclePath;
     [Export] NodePath demonsPath;
+    public static NodePath demonHitBoxPath;
+
     SmartText thought;
     Control thoughtBubble;
     Label kiField;
@@ -86,6 +88,8 @@ public class BattleScene : MarginContainer {
 
         hand = GetNode<HandHolder>(handholderPath);
         SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
+
+        GetNode<DemonHitBox>(demonHitBoxPath).Connect(nameof(DemonHitBox.OnClick), this, nameof(ClickOnTarget));
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
@@ -172,7 +176,7 @@ public class BattleScene : MarginContainer {
     ////////////////
     //////
 
-    async public void ClickOnSealSlot (int id) {
+    async public void ClickOnTarget (int id) {
         if (currentState != State.PlayerTurn || Hand.Selected == null) return;
         currentState = State.SomethingHappening;
 
@@ -200,29 +204,26 @@ public class BattleScene : MarginContainer {
     public async Task RemoveSeal (int location) {
         SealSlots[location] = Element.None;
         await SealCircleField.DisappearSeal(location);
+        if (Instance.seeds == MaxSeeds) {//If there was a tree ready to bloom
+            await PlaceSeal(Element.Wood, location);
+        }
     }
 
     public async Task SwitchSeal (Element element, int location) {
         bool isEmpty = SealSlots[location] == Element.None;
         SealSlots[location] = element;
-        if (isEmpty)
-            await SealCircleField.AppearSeal(location);
-        else
-            await SealCircleField.ReplaceSeal(location);
+        await SealCircleField.AppearSeal(location);
 
         if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
             Win();
         }
     }
 
-    public async Task AddSeal (Element element, int location) {
+    public async Task PlaceSeal (Element element, int location) {
         var OldElement = SealSlots[location];
-        SealSlots[location] = element;
-        Task task;
 
-        if (OldElement == Element.None)
-            task = SealCircleField.AppearSeal(location);
-        else task = SealCircleField.ReplaceSeal(location);
+        List<Task> tasks = new List<Task>();
+        tasks.Add(SwitchSeal(element, location));
 
         if (element == Element.Earth) {
             int sealCount = BattleScene.SealSlots.Count;
@@ -235,27 +236,25 @@ public class BattleScene : MarginContainer {
             BattleScene.SealSlots[locationAfter] = swapElm;
 
             // Display the Switch
-            task = BattleScene.Instance.SealCircleField.MoveSeal(locationBefore, locationAfter, BattleScene.SealSlots[locationAfter]);
-            task = BattleScene.Instance.SealCircleField.MoveSeal(locationAfter, locationBefore, BattleScene.SealSlots[locationBefore]);
-
+            if (BattleScene.SealSlots[locationAfter] != Element.None)
+                tasks.Add(BattleScene.Instance.SealCircleField.MoveSeal(locationBefore, locationAfter, BattleScene.SealSlots[locationAfter]));
+            if (BattleScene.SealSlots[locationBefore] != Element.None)
+                tasks.Add(BattleScene.Instance.SealCircleField.MoveSeal(locationAfter, locationBefore, BattleScene.SealSlots[locationBefore]));
+        }
+        foreach (Task task in tasks)
             await task;
-            BattleScene.Instance.SealCircleField.DisplaySeals();
-        }
 
-        if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
-            Win();
-        }
+        SealCircleField.DisplaySeals(); // Sanity check, just in case
 
-        await task;
+        // if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
+        //     Win();
+        // }
 
-        if (element == Element.Water && OldElement == Element.Fire)
-            Health += 1;
         if (element == Element.Fire && OldElement == Element.Wood)
             Ki += 1;
         if (element == Element.Wood && OldElement == Element.Water)
             await DrawCards(1);
 
-        SealCircleField.DisplaySeals(); // Sanity check, just in case
     }
 
     async public Task StartTurnEffects () {
@@ -286,22 +285,30 @@ public class BattleScene : MarginContainer {
         }
     }
 
+    async public static Task AddSeeds (int count) {
+        Instance.seeds += count;
+        //TODO Display new value
+        if (Instance.seeds >= MaxSeeds) {
+            List<int> emptyLocations = new List<int>();
+            for (int i = 0 ; i < SealCount ; i++)
+                if (SealSlots[i] == Element.None) emptyLocations.Add(i);
+            if (emptyLocations.Count > 0) {
+                Instance.seeds -= MaxSeeds;
+                var makeWoodLoc = emptyLocations[RNG.rng.Next(0, emptyLocations.Count)];
+                await Instance.PlaceSeal(Element.Wood, makeWoodLoc);
+            } else Instance.seeds = MaxSeeds;
+        }
+    }
+
     public const int MaxSeeds = 4;
     int seeds;
     public static int Seeds {
         get => Instance.seeds;
-        set {
-            Instance.seeds = value;
-            //TODO Display new value
-            if (value >= MaxSeeds) {
-                //TODO Plant a Wooden seal
-                Seeds = value - MaxSeeds;
-            }
-        }
     }
 
     public async void Win () {
         await SealCircleField.RayCircle.Seal();
+        SealCircleField.ZIndex = 0;
         SealedScene.Win(GetTree());
     }
 

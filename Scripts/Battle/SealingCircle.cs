@@ -60,10 +60,10 @@ public class SealingCircle : Node2D {
         currentSeal.ShowSlot(Element.None);
         currentSeal.Modulate = new Color(1, 1, 1, 1);
     }
-    async public Task ReplaceSeal (int index) {
-        await DisappearSeal(index);
-        await AppearSeal(index);
-    }
+    // async public Task ReplaceSeal (int index) {
+    //     // await DisappearSeal(index);
+    //     await AppearSeal(index);
+    // }
     async public Task MoveSeal (int index, int indexTo, Element element) { //By default, willmove the element that is at index
         var fromSeal = SealSlotDisplays.GetChild<SealSlot>(index);
         var toSeal = SealSlotDisplays.GetChild<SealSlot>(indexTo);
@@ -71,7 +71,7 @@ public class SealingCircle : Node2D {
         fromSeal.MoveTo(toSeal.RectPosition - fromSeal.RectPosition);
         await ToSignal(fromSeal.MyTween, "tween_completed");
         toSeal.ShowSlot(element);
-        fromSeal.ShowSlot(Element.None);
+        // fromSeal.ShowSlot(Element.None);
     }
 
     public void DisplaySeals () {
@@ -115,16 +115,16 @@ public class SealingCircle : Node2D {
     /////////////
     ///////
 
-    bool AttackOn (int i) {
+    async Task<bool> AttackOn (int i) {
         if (BattleScene.SealSlots[i] == Element.Metal) {
             isStaggered = true; //Cool Staggered effect
+            await BattleScene.Instance.SwitchSeal(Element.Earth, i);
             return false;
         } else if (BattleScene.SealSlots[i] != Element.None) {
             return false;
         }
         BattleScene.Health -= 1;
         return true;
-
     }
 
     public async Task PlayDemonTurn () {
@@ -133,14 +133,16 @@ public class SealingCircle : Node2D {
             switch (action) {
                 case DemonAction.Attack:
                 case DemonAction.AttackPierce:
-                    AttackOn(i);
+                    await AttackOn(i);
                     break;
                 case DemonAction.AttackOrRemove:
-                    AttackOn(i);
-                    await BattleScene.Instance.RemoveSeal(i);
-                    break;
+                    await AttackOn(i);
+                    goto case DemonAction.Remove;
                 case DemonAction.Remove:
-                    await BattleScene.Instance.RemoveSeal(i);
+                    if (BattleScene.SealSlots[i] == Element.Water)
+                        await BattleScene.Instance.SwitchSeal(Element.Earth, i);
+                    else
+                        await BattleScene.Instance.RemoveSeal(i);
                     break;
             }
             i++;
@@ -175,7 +177,7 @@ public static class DemonActionExtention {
         return action
         switch {
             DemonAction.Attack => "Attack\n\nThe demon will attack this location and remove 1 health\nYou can defend yourself by placing a Seal of any type",
-            DemonAction.AttackOrRemove => "Attack and Remove\n\nThe demon will attack and remove the seal in this location",
+            DemonAction.AttackOrRemove => "Attack and Remove\n\nThe demon will attack, then remove the seal in this location",
             DemonAction.AttackPierce => "Pierce Attack\n\nRemove one health",
             DemonAction.Remove => "Remove\n\nThe demon will remove the seal in this location",
             _ => "ERROR"

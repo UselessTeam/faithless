@@ -2,7 +2,7 @@ using System;
 using Godot;
 
 public class CardVisual : Control {
-    [Signal] public delegate void OnClick (int id);
+    [Signal] public delegate void OnClick (byte id);
     public CardId Card { get; private set; }
     [Export] NodePath backgroundPath;
     [Export] NodePath namePath;

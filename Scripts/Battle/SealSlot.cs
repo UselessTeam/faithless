@@ -11,12 +11,12 @@ public class SealSlot : Control {
 
     public override void _Ready () {
         // MyBackSprite.Set("z", -1);
-        Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnSealSlot));
+        Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnTarget));
         initialPosition = MySprite.RectPosition;
     }
     public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
     public TextureRect MySprite { get { return GetNode<TextureRect>("Sprite"); } }
-    public TextureRect MyBackSprite { get { return GetNode<TextureRect>("Node2D/BackSprite"); } }
+    // public TextureRect MyBackSprite { get { return GetNode<TextureRect>("Node2D/BackSprite"); } }
 
     public void ShowSlot (Element element) {
         var texture = MySprite.Texture as AtlasTexture;
