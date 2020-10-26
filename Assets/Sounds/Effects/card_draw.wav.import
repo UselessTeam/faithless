@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/card_draw.wav-41bcca6f746ed6542906835ff19efda2.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Effects/card_draw.wav"
+dest_files=[ "res://.import/card_draw.wav-41bcca6f746ed6542906835ff19efda2.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

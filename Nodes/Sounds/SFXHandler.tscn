@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/GUI/SFXHandler.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Sounds/Effects/card_draw.wav" type="AudioStream" id=2]
+[ext_resource path="res://Assets/Sounds/Effects/place.wav" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Sounds/Effects/bell_sound.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sounds/Effects/card_grab.wav" type="AudioStream" id=5]
 
 [node name="SFXHandler" type="AudioStreamPlayer"]
 volume_db = -10.0
@@ -8,3 +12,15 @@ autoplay = true
 script = ExtResource( 1 )
 battleMusicPath = "res://Assets/Sounds/Musics/the_stone_prison.ogg"
 villageMusicPath = "res://Assets/Sounds/Musics/dark_world.ogg"
+
+[node name="DrawGrab" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+
+[node name="GrabCard" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="PlaceSeal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="GenericEffect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )

@@ -64,7 +64,7 @@ public class BattleScene : MarginContainer {
         }
     }
 
-    public enum State { PlayerTurn, CardSelected, SomethingHappening, EnemyTurn }
+    public enum State { PlayerTurn, CardSelected, SomethingHappening, EnemyTurn, SealingYokai }
     State currentState = State.EnemyTurn;
 
     ///////Battle effects
@@ -193,7 +193,8 @@ public class BattleScene : MarginContainer {
                 await Hand.DiscardCard(visual, card.BanishAfterUse);
             }
         }
-        currentState = State.PlayerTurn;
+        if (currentState != State.SealingYokai)
+            currentState = State.PlayerTurn;
     }
 
     ///////////////////
@@ -307,9 +308,16 @@ public class BattleScene : MarginContainer {
     }
 
     public async void Win () {
+        currentState = State.SealingYokai;
         await SealCircleField.RayCircle.Seal();
         SealCircleField.ZIndex = 0;
         SealedScene.Win(GetTree());
+    }
+
+    //Debug
+    public override void _Input (InputEvent _event) {
+        if (OS.IsDebugBuild() && _event.IsActionPressed("win"))
+            Win();
     }
 
 }

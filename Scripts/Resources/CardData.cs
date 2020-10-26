@@ -49,7 +49,9 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 2,
                 Description = "Click on a slot to place a [fire-seal]\nAt the start of your turn, a [fire-seal] burns any surrounding [wood-seal], turning them into [fire-seal]s, and producing 1 Ki",
-                Use =  async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation); }
+                Use =  async (useLocation) => {
+                    SFXHandler.PlaySFX("PlaceSeal");
+                    await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation); }
             },
             new CardData {
                 Id = CardId.BasicWater,
@@ -58,7 +60,8 @@ public class CardData : Resource {
                 Element = Element.Water,
                 Cost = 2,
                 Description = "Click on a slot to place a [water-seal]\nIf an enemy tries to remove this Seal, it will turn into an [earth-seal] instead",
-                Use =  async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
+                Use =  async (useLocation) => {SFXHandler.PlaySFX("PlaceSeal");
+                     await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
             },
             new CardData {
                 Id = CardId.BasicWood,
@@ -67,7 +70,9 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 2,
                 Description = "Click on a slot to place a [wood-seal] and gain one Seed\nIf a [wood-seal] is next to at least one [water-seal], harvest (draw 1 card)",
-                Use = async (useLocation) => { await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation); await BattleScene.AddSeeds(1); }
+                Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("PlaceSeal");
+                    await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation); await BattleScene.AddSeeds(1); }
             },
             new CardData {
                 Id = CardId.BasicEarth,
@@ -76,7 +81,8 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 2,
                 Description = "Click on a slot to place a [earth-seal]\nSwitch the positions of the two surrounding Seals",
-                Use = async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Earth, useLocation); }
+                Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal");
+                    await BattleScene.Instance.PlaceSeal(Element.Earth, useLocation); }
             },
             new CardData {Id = CardId.BasicMetal, // Metal becomes en metal
                 Name = "Metal Seal",
@@ -84,7 +90,8 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 2,
                 Description = "Click on a slot to place a [metal-seal]\nWhen a Yokai attacks this Seal, he becomes staggered for the next turn, and this Seal turns into an [earth-seal]",
-                Use = async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Metal, useLocation); }
+                Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal");
+                     await BattleScene.Instance.PlaceSeal(Element.Metal, useLocation); }
             },
 
 
@@ -96,6 +103,7 @@ public class CardData : Resource {
                 Target = CardTarget.EarthSeal,
                 Description = "Replace a group of continuous [earth-seal]s by [water-seal]s",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     var area = CardEffectHelper.GetArea(useLocation, Element.Earth);
                     List<Task> tasks = new List<Task>();
                     for (int i = area.Item1; i != area.Item2; i = CardEffectHelper.NextLocation(i)){
@@ -112,6 +120,7 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Discard all your cards\nDraw as many cards +1",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     int cardCount =  BattleScene.Hand.Cards.Count();
                     await BattleScene.Hand.DiscardAll();
                     await BattleScene.DrawCards(cardCount);
@@ -125,6 +134,7 @@ public class CardData : Resource {
                 Target = CardTarget.EmptySeal,
                 Description = "Target an empty area\nDiscard all your cards\nPlace one [water-seal] in the area for each card you discarded\nBanish this card",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
                     var area = CardEffectHelper.GetArea(useLocation, Element.None);
                     var cardCount = BattleScene.Hand.Cards.Count() - 1;
@@ -148,6 +158,7 @@ public class CardData : Resource {
                 Description = "Replace a [water-seal] it by a random other element\nIf is replaced by an [earth-seal], gain 1 Ki",
                 Target = CardTarget.WaterSeal,
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     var elmIdx = Utils.RNG.rng.Next(0,4);
                     await BattleScene.Instance.SwitchSeal(elmIdx switch {
                             0 => Element.Fire,
@@ -167,6 +178,7 @@ public class CardData : Resource {
                 Cost = 2,
                 Description = "Place a [water-seal]\nGain one health of each [fire-seal] adjacent to it",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     int sealCount =  BattleScene.SealSlots.Count;
                     await BattleScene.Instance.PlaceSeal(Element.Water, useLocation);
                     if (BattleScene.SealSlots[(useLocation+1)%sealCount] == Element.Fire)           BattleScene.Health += 1;
@@ -183,6 +195,7 @@ public class CardData : Resource {
                 Description = "Remove one [metal-seal]. The next card you play will be free",
                 Target = CardTarget.MetalSeal,
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     BattleScene.Instance.NextCardFree = true;
                     await BattleScene.Instance.RemoveSeal(useLocation);
                 }
@@ -194,6 +207,7 @@ public class CardData : Resource {
                 Cost = 3,
                 Description = "Place one [metal-seal] on the selected location, and another one on the opposite side of the circle",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     Task task = BattleScene.Instance.PlaceSeal(Element.Metal, useLocation);
                     await BattleScene.Instance.PlaceSeal(Element.Metal, ((useLocation + BattleScene.SealSlots.Count/2) % BattleScene.SealSlots.Count));
                     await task;
@@ -207,6 +221,7 @@ public class CardData : Resource {
                 BanishAfterUse = true,
                 Description = "Harvesting from [wood-seal] grants one more hand\nBanish this card until the end of the combat",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     BattleScene.Instance.HarvestBonus +=1;
                 }
             },
@@ -218,6 +233,7 @@ public class CardData : Resource {
                 Target = CardTarget.MetalSeal,
                 Description = "Place [metal-seal] on the selected location and the two adjacent locations",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     int sealCount =  BattleScene.SealSlots.Count;
                     Task t1 = BattleScene.Instance.PlaceSeal(Element.Metal, useLocation);
                     Task t2 = BattleScene.Instance.PlaceSeal(Element.Metal, ((useLocation+1)%sealCount));
@@ -230,10 +246,11 @@ public class CardData : Resource {
                 Name = "Rust",
                 Kanji = "",
                 Element = Element.Metal,
-                Cost = 0,
+                Cost = 2,
                 Target = CardTarget.MetalSeal,
                 Description = "Surrond a [metal-seal] by 2 [water-seal]",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     int sealCount =  BattleScene.SealSlots.Count;
                     Task task = BattleScene.Instance.PlaceSeal(Element.Water, (useLocation+1)%sealCount);
                     await BattleScene.Instance.PlaceSeal(Element.Water, (useLocation+sealCount-1)%sealCount);
@@ -250,6 +267,7 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Gain 2 seeds",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     await BattleScene.AddSeeds(2);
                 }
             },
@@ -261,6 +279,7 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Discard all cards in your hand\nGain 1 seed per card",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     int cardCount =  BattleScene.Hand.Cards.Count() - 1;
                     await BattleScene.Hand.DiscardAll();
                     await BattleScene.AddSeeds(cardCount);
@@ -274,6 +293,7 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Draw the last card your discarded (if the discard is empty, draw one card instead)\nIf you drew a Water or Earth card, gain one seed",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     if(!await BattleScene.Hand.DrawLastDiscard()) {
                         await BattleScene.Hand.DrawCard();
                     }
@@ -291,6 +311,7 @@ public class CardData : Resource {
                 Target = CardTarget.EarthSeal,
                 Description = "Replace a group of continuous [earth-seal]s by [wood-seal]s\nGain one seed per Seal replaced",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     var area = CardEffectHelper.GetArea(useLocation, Element.Earth);
                     List<Task> tasks = new List<Task>();
                     int seedCount = 0;
@@ -310,6 +331,7 @@ public class CardData : Resource {
                 Description = "Select one [water-seal], and place one [wood-seal] in a random empty space next to it\nGain one Seed",
                 Target = CardTarget.WaterSeal,
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     int sealCount =  BattleScene.SealSlots.Count;
                     int sealBefore = ((useLocation+sealCount-1)%sealCount);
                     int sealAfter = ((useLocation+1)%sealCount);
@@ -338,6 +360,7 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Replace all [earth-seal] by [metal-seal]",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     for (int i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if (BattleScene.SealSlots[i] == Element.Earth) { await BattleScene.Instance.SwitchSeal(Element.Metal, i); }
                     }
@@ -351,6 +374,7 @@ public class CardData : Resource {
                 Target = CardTarget.NonEmptySeal,
                 Description = "Destroy a Seal\nDraw 3 Cards",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     Task task = BattleScene.Instance.RemoveSeal(useLocation);
                     await BattleScene.DrawCards(3);
                     await task;
@@ -364,6 +388,7 @@ public class CardData : Resource {
                 Target = CardTarget.FireSeal,
                 Description = "Select one [fire-seal]\nPlace a [fire-seal] on surrounding locations",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     Task t = BattleScene.Instance.PlaceSeal(Element.Fire, CardEffectHelper.NextLocation(useLocation));
                     await BattleScene.Instance.PlaceSeal(Element.Fire, CardEffectHelper.PrevLocation(useLocation));
                     await t;
@@ -376,6 +401,7 @@ public class CardData : Resource {
                 Cost = 4,
                 Description = "Destroy all Seals\nGain 2 Chi for each Seal destroyed\nDiscard all cards\nDraw new Cards (as a new turn)\nHeal to full health",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
                     for (int i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if(BattleScene.SealSlots[i] != Element.None){
@@ -397,6 +423,7 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Remove all seeds\n Gain 1 Ki for each seed burned",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     BattleScene.Ki += (short) BattleScene.Seeds;
                     await BattleScene.AddSeeds(-BattleScene.Seeds);
                 }
@@ -411,6 +438,7 @@ public class CardData : Resource {
                 Target  = CardTarget.Yokai,
                 Description = "Discard all your Water and Wood talismans\n Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 Chi for each [water-seal] replaced\nDraw 1 card for each [wood-seal] replaced",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
                     for (int i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
                         if (BattleScene.SealSlots[i] == Element.Water) { tasks.Add(BattleScene.Instance.SwitchSeal(Element.Earth, i)); BattleScene.Ki += 1; }
@@ -427,6 +455,7 @@ public class CardData : Resource {
                 Description = "Rotate the sealing circle counter-clockwise\n",
                 Use = async (useLocation) => {
                 var lastElement = BattleScene.SealSlots[0];
+                    SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
                     for (int i = 0 ; i < BattleScene.SealCount - 1; i++) {
                         tasks.Add(BattleScene.Instance.SealCircleField.MoveSeal(i+1, i, BattleScene.SealSlots[i+1]));
@@ -451,6 +480,7 @@ public class CardData : Resource {
                 },
                 Description = "Place an [earth-seal] adjacent to another [earth-seal]\nDoes not apply the ",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     await BattleScene.Instance.SwitchSeal(Element.Earth, useLocation);
                 }
             },
@@ -462,6 +492,7 @@ public class CardData : Resource {
                 Target = CardTarget.NonEmptySeal,
                 Description = "Remove a Seal and turn it into a card that costs 0 Ki\nTODO: Do not use this card yet",
                 Use = async (useLocation) => {
+                    SFXHandler.PlaySFX("GenericEffect");
                     var getCard = BattleScene.SealSlots[useLocation] switch {
                             Element.Fire => CardId.FreeFire,
                             Element.Water => CardId.FreeWater,
@@ -484,7 +515,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 0,
                 Description = "Click on a slot to place a [fire-seal]\nAt the start of your turn, a [fire-seal] burns any surrounding [wood-seal], turning them into [fire-seal]s, and producing 1 Ki",
-                Use =  async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation); }
+                Use =  async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation); }
             },
             new CardData {
                 Id = CardId.FreeWater,
@@ -493,7 +524,7 @@ public class CardData : Resource {
                 Element = Element.Water,
                 Cost = 0,
                 Description = "Click on a slot to place a [metal-seal]\nWhen a Yokai attacks this Seal, he becomes staggered for the next turn, and this Seal turns into an [earth-seal]",
-                Use =  async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
+                Use =  async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
             },
             new CardData {
                 Id = CardId.FreeWood,
@@ -502,7 +533,7 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 0,
                 Description = "Click on a slot to place a [wood-seal] and gain one Seed\nIf a [wood-seal] is next to at least one [water-seal], harvest (draw 1 card)",
-                Use = async (useLocation) => { await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation); await BattleScene.AddSeeds(1); }
+                Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation); await BattleScene.AddSeeds(1); }
             },
             new CardData {
                 Id = CardId.FreeEarth,
@@ -511,7 +542,7 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 0,
                 Description = "Click on a slot to place a [earth-seal]\nSwitch the positions of the two surrounding Seals",
-                Use = async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Earth, useLocation); }
+                Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Earth, useLocation); }
             },
             new CardData {Id = CardId.FreeMetal, // Metal becomes en metal
                 Name = "Metal Seal",
@@ -519,7 +550,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 0,
                 Description = "Click on a slot to place a [metal-seal]\nWhen an enemy attacks this Seal, he becomes staggered for the next turn, and this Seal turns into an [earth-seal]",
-                Use = async (useLocation) => { await BattleScene.Instance.PlaceSeal(Element.Metal, useLocation); }
+                Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Metal, useLocation); }
             },
 
 
