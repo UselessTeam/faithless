@@ -8,20 +8,12 @@
 
 config_version=4
 
-_global_script_classes=[  ]
-_global_script_class_icons={
-
-}
-
 [application]
 
 config/name="Faithless"
 run/main_scene="res://Scenes/IntroductionScene.tscn"
 boot_splash/image="res://Assets/Meta/cover.png"
-boot_splash/bg_color=Color( 0.054902, 0.054902, 0.054902, 1 )
 config/icon="res://Assets/Meta/icon.png"
-config/macos_native_icon="res://Assets/Meta/icon.icns"
-config/windows_native_icon="res://Assets/Meta/icon.ico"
 
 [autoload]
 
@@ -35,11 +27,6 @@ SfxHandler="*res://Nodes/Sounds/SFXHandler.tscn"
 window/size/width=1280
 window/size/height=800
 
-[gui]
-
-theme/custom="res://Assets/Theme/theme.tres"
-theme/custom_font="res://Assets/Theme/Fonts/andika_16.tres"
-
 [input]
 
 win={
@@ -47,10 +34,3 @@ win={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
  ]
 }
-
-[rendering]
-
-quality/intended_usage/framebuffer_allocation=1
-quality/intended_usage/framebuffer_allocation.mobile=1
-environment/default_clear_color=Color( 0.109804, 0.145098, 0.192157, 1 )
-quality/depth/hdr=false

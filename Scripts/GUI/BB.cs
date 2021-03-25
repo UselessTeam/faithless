@@ -20,13 +20,13 @@ public static class BB {
             .Replace("[/url]", "[/url][/color]")
             .Replace("[kanji]", "[font=res://Assets/Theme/Fonts/riiltf_22.tres]")
             .Replace("[/kanji]", "[/font]")
-            .Replace("[mon]", BB.Mon)
-            .Replace("[ki]", BB.Ki)
-            .Replace("[fire-seal]", BB.FireSeal)
-            .Replace("[water-seal]", BB.WaterSeal)
-            .Replace("[wood-seal]", BB.WoodSeal)
-            .Replace("[metal-seal]", BB.MetalSeal)
-            .Replace("[earth-seal]", BB.EarthSeal)
-            .Replace("[empty-seal]", BB.EmptySeal);
+            .Replace("[mon]", "Mon" + BB.Mon)
+            .Replace("[ki]", "Ki " + BB.Ki)
+            .Replace("[fire-seal]", "Fire Seal " + BB.FireSeal)
+            .Replace("[water-seal]", "Water Seal " + BB.WaterSeal)
+            .Replace("[wood-seal]", "Wood Seal " + BB.WoodSeal)
+            .Replace("[metal-seal]", "Metal Seal " + BB.MetalSeal)
+            .Replace("[earth-seal]", "Earth Seal " + BB.EarthSeal)
+            .Replace("[empty-seal]", "Empty Seal " + BB.EmptySeal);
     }
 }
