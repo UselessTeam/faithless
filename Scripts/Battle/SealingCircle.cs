@@ -117,12 +117,14 @@ public class SealingCircle : Node2D {
 
     async Task<bool> AttackOn (int i) {
         if (BattleScene.SealSlots[i] == Element.Metal) {
+            BattleScene.Instance.LogPanel.Log($"Your [metal-seal] staggers the demon, and turns into an [earth-seal]");
             isStaggered = true; //Cool Staggered effect
             await BattleScene.Instance.SwitchSeal(Element.Earth, i);
             return false;
         } else if (BattleScene.SealSlots[i] != Element.None) {
             return false;
         }
+        BattleScene.Instance.LogPanel.Log($"The demon attacks you for a damage");
         BattleScene.Health -= 1;
         return true;
     }
@@ -139,9 +141,10 @@ public class SealingCircle : Node2D {
                     await AttackOn(i);
                     goto case DemonAction.Remove;
                 case DemonAction.Remove:
-                    if (BattleScene.SealSlots[i] == Element.Water)
+                    if (BattleScene.SealSlots[i] == Element.Water) {
+                        BattleScene.Instance.LogPanel.Log($"The demon tries to remove a [water-seal], but it turns into an [earth-seal]");
                         await BattleScene.Instance.SwitchSeal(Element.Earth, i);
-                    else
+                    } else
                         await BattleScene.Instance.RemoveSeal(i);
                     break;
             }

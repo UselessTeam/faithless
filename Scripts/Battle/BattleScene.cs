@@ -20,6 +20,7 @@ public class BattleScene : MarginContainer {
     [Export] NodePath endTurnPath;
     [Export] NodePath kiPath;
     [Export] NodePath hpPath;
+    [Export] NodePath logPanelPath;
     [Export] NodePath deckPath;
     [Export] NodePath discardPath;
     [Export] NodePath handholderPath;
@@ -35,7 +36,8 @@ public class BattleScene : MarginContainer {
     Label discardField;
     HandHolder hand;
     public static HandHolder Hand { get => Instance.hand; }
-    public SealingCircle SealCircleField;
+    public SealingCircle SealCircleField { get; private set; }
+    public LogPanel LogPanel { get; private set; }
 
     /*** Others ***/
     public static List<Element> SealSlots;
@@ -83,6 +85,7 @@ public class BattleScene : MarginContainer {
 
         kiField = GetNode<Label>(kiPath);
         hpField = GetNode<Label>(hpPath);
+        LogPanel = GetNode<LogPanel>(logPanelPath);
         deckField = GetNode<Label>(deckPath);
         discardField = GetNode<Label>(discardPath);
 
@@ -268,6 +271,7 @@ public class BattleScene : MarginContainer {
             }
         }
         foreach (int i in BurnSeals) {
+            LogPanel.Log($"Your [wood-seal] burns, you gain 1 [ki]");
             Ki += 1;
             await SwitchSeal(Element.Fire, i);
             SealCircleField.DisplaySeals();
@@ -280,6 +284,7 @@ public class BattleScene : MarginContainer {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water ||
                     SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) { // If there is a water after or before
                                                                                                // TODO: show a cute water effect on the wood
+                    LogPanel.Log($"Your [wood-seal] harversts, you draw {Utils.SmartText.Concatenate(1 + HarvestBonus, "card")}");
                     await DrawCards((1 + HarvestBonus));
                 }
             }

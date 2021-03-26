@@ -22,20 +22,20 @@ banishPath = NodePath("VBox/HBox/Inspect/VBox/Banish")
 pricePath = NodePath("VBox/HBox/Inspect/VBox/Banish/Text")
 
 [node name="VBox" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1280.0
+margin_bottom = 800.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBox" type="HBoxContainer" parent="VBox"]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1280.0
+margin_bottom = 800.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Deck" type="ScrollContainer" parent="VBox/HBox"]
-margin_right = 720.0
-margin_bottom = 600.0
+margin_right = 976.0
+margin_bottom = 800.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -48,25 +48,26 @@ script = ExtResource( 3 )
 margin = 20.0
 
 [node name="Inspect" type="MarginContainer" parent="VBox/HBox"]
-margin_left = 724.0
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = 980.0
+margin_right = 1280.0
+margin_bottom = 800.0
 rect_min_size = Vector2( 300, 0 )
 mouse_filter = 2
 
 [node name="VBox" type="VBoxContainer" parent="VBox/HBox/Inspect"]
 margin_right = 300.0
-margin_bottom = 600.0
+margin_bottom = 800.0
 alignment = 2
 
 [node name="Text" parent="VBox/HBox/Inspect/VBox" instance=ExtResource( 5 )]
+margin_bottom = 754.0
 bbcode_enabled = true
 
 [node name="Banish" parent="VBox/HBox/Inspect/VBox" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 558.0
+margin_top = 758.0
 margin_right = 300.0
-margin_bottom = 600.0
+margin_bottom = 800.0
 
 [editable path="VBox/HBox/Inspect/VBox/Banish"]

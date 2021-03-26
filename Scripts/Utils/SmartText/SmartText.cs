@@ -24,5 +24,10 @@ namespace Utils {
                     break;
             }
         }
+
+        public static string Concatenate (int number, string element, string pluralSuffix = "s") {
+            if (number == 0) return $"no {element}";
+            return $"{number} {element}{((number > 1) ? pluralSuffix : "")}";
+        }
     }
 }

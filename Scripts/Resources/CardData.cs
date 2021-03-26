@@ -490,7 +490,7 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 0,
                 Target = CardTarget.NonEmptySeal,
-                Description = "Remove a Seal and turn it into a card that costs 0 Ki\nTODO: Do not use this card yet",
+                Description = "Remove a Seal and turn it into a card that costs 0 Ki",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     var getCard = BattleScene.SealSlots[useLocation] switch {
