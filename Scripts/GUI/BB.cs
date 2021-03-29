@@ -27,6 +27,12 @@ public static class BB {
             .Replace("[wood-seal]", "Wood Seal " + BB.WoodSeal)
             .Replace("[metal-seal]", "Metal Seal " + BB.MetalSeal)
             .Replace("[earth-seal]", "Earth Seal " + BB.EarthSeal)
-            .Replace("[empty-seal]", "Empty Seal " + BB.EmptySeal);
+            .Replace("[empty-seal]", "Empty Seal " + BB.EmptySeal)
+            .Replace("[fire-seals]", "Fire Seals " + BB.FireSeal)
+            .Replace("[water-seals]", "Water Seals " + BB.WaterSeal)
+            .Replace("[wood-seals]", "Wood Seals " + BB.WoodSeal)
+            .Replace("[metal-seals]", "Metal Seals " + BB.MetalSeal)
+            .Replace("[earth-seals]", "Earth Seals " + BB.EarthSeal)
+            .Replace("[empty-seals]", "Empty Seals " + BB.EmptySeal);
     }
 }
