@@ -124,7 +124,7 @@ public class SealingCircle : Node2D {
         } else if (BattleScene.SealSlots[i] != Element.None) {
             return false;
         }
-        BattleScene.Instance.LogPanel.Log($"The demon attacks you for a damage");
+        BattleScene.Instance.LogPanel.Log($"The demon attacks you for 1 damage");
         BattleScene.Health -= 1;
         return true;
     }

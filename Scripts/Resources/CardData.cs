@@ -155,7 +155,7 @@ public class CardData : Resource {
                 Kanji = "津",
                 Element = Element.Water,
                 Cost = 0,
-                Description = "Replace a [water-seal] it by a random other element\nIf is replaced by an [earth-seal], gain 1 Ki",
+                Description = "Replace a [water-seal] it by a random other element\nIf it is replaced by an [earth-seal], gain 1 Ki",
                 Target = CardTarget.WaterSeal,
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
@@ -219,7 +219,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 3,
                 BanishAfterUse = true,
-                Description = "Harvesting from [wood-seal] grants one more hand\nBanish this card until the end of the combat",
+                Description = "The harvest effect of [wood-seals] grants one more card\nBanish this card until the end of the combat",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     BattleScene.Instance.HarvestBonus +=1;
@@ -358,7 +358,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 1,
                 Target = CardTarget.Yokai,
-                Description = "Replace all [earth-seal] by [metal-seal]",
+                Description = "Replace all [earth-seals] by [metal-seals]",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     for (int i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
@@ -372,7 +372,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 0,
                 Target = CardTarget.NonEmptySeal,
-                Description = "Destroy a Seal\nDraw 3 Cards",
+                Description = "Destroy any Seal\nDraw 3 Cards",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     Task task = BattleScene.Instance.RemoveSeal(useLocation);
@@ -421,7 +421,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 0,
                 Target = CardTarget.Yokai,
-                Description = "Remove all seeds\n Gain 1 Ki for each seed burned",
+                Description = "Remove all seeds\n Gain 1 Ki for each seed removed",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     BattleScene.Ki += (short) BattleScene.Seeds;
@@ -436,7 +436,7 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 1,
                 Target  = CardTarget.Yokai,
-                Description = "Discard all your Water and Wood talismans\n Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 Chi for each [water-seal] replaced\nDraw 1 card for each [wood-seal] replaced",
+                Description = "Discard all your Water and Wood cards\n Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 Chi for each [water-seal] replaced\nDraw 1 card for each [wood-seal] replaced",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
@@ -474,11 +474,11 @@ public class CardData : Resource {
                 Kanji = "彫",
                 Element = Element.Earth,
                 Cost = 1,
-                Target = new CardTarget{ TargetDescription = "An empty Seal location adjacent to an [earth-seal], WITHOUT switching the position of the surrounding Seals",
+                Target = new CardTarget{ TargetDescription = "An [empty-seal] adjacent to an [earth-seal]",
                     CheckTargetableFunc = (int loc) => { return (loc == -1) ? false : BattleScene.SealSlots[CardEffectHelper.NextLocation(loc)] == Element.Earth ||
                     BattleScene.SealSlots[CardEffectHelper.PrevLocation(loc)] == Element.Earth; }
                 },
-                Description = "Place an [earth-seal] adjacent to another [earth-seal]\nDoes not apply the ",
+                Description = "Place an [earth-seal] adjacent to another [earth-seal]\n",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     await BattleScene.Instance.SwitchSeal(Element.Earth, useLocation);
