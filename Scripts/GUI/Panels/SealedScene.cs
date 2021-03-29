@@ -15,7 +15,7 @@ public class SealedScene : ColorRect {
     [Export] NodePath continuePath;
     public override void _Ready () {
         GameData.Instance.State = GameData.GameState.Narration;
-        Demon oni = GameData.Instance.Oni;
+        Yokai oni = GameData.Instance.Oni;
         GameData.Instance.Oni = null;
         int money = (100 + GameData.Instance.MoneyPercentageBonus) * oni.Reward / 100;
         GetNode<Label>(moneyPath).Text = $"+{money}";

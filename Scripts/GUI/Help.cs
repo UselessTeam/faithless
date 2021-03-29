@@ -14,7 +14,7 @@ public static class Help {
 {"help-village",
 @"Help
 
-Seal the Demons, earn Mon ([mon] coins), acquire new Talismans, and bright back peace
+Seal the Yokai, earn Mon ([mon] coins), acquire new Talismans, and bright back peace
 "},
 {"retry",
 @"Give Up
@@ -27,7 +27,7 @@ Are you sure you want to give up?
 {"battle",
 @"Help
 
-Surround the demon by seals to seal it.
+Surround the Yokai by seals to seal it.
 Hover a talisman to see its effect.
 Select a talisman and a seal-slot to activate the effect.
 "},

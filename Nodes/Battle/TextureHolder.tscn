@@ -1,25 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Scripts/Resources/CardTextures.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Battle/Cards/CardTextures.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Talismans/card_wood.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sprites/Talismans/card_fire.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Sprites/Talismans/card_water.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/Talismans/card_metal.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Sprites/Talismans/card_earth.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Sprites/Oni/jorogumo.png" type="Texture" id=7]
-[ext_resource path="res://Assets/Sprites/Oni/kasaobake.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Sprites/Oni/hitotsumekozo.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Sprites/Oni/chochinobake.png" type="Texture" id=10]
-
-[sub_resource type="AtlasTexture" id=1]
-flags = 4
-atlas = ExtResource( 9 )
-region = Rect2( 0, 0, 700, 800 )
-
-[sub_resource type="AtlasTexture" id=2]
-flags = 4
-atlas = ExtResource( 10 )
-region = Rect2( 0, 0, 700, 800 )
 
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
@@ -28,25 +14,3 @@ WaterTexture = ExtResource( 4 )
 WoodTexture = ExtResource( 2 )
 EarthTexture = ExtResource( 6 )
 MetalTexture = ExtResource( 5 )
-
-[node name="Demons" type="Node2D" parent="."]
-
-[node name="Hitotsumekozo" type="Sprite" parent="Demons"]
-visible = false
-scale = Vector2( 0.2, 0.2 )
-texture = SubResource( 1 )
-
-[node name="Kasa-Obake" type="Sprite" parent="Demons"]
-visible = false
-scale = Vector2( 0.2, 0.2 )
-texture = ExtResource( 8 )
-
-[node name="Chochi-No-Bake" type="Sprite" parent="Demons"]
-visible = false
-scale = Vector2( 0.2, 0.2 )
-texture = SubResource( 2 )
-
-[node name="Joro-Gumo" type="Sprite" parent="Demons"]
-visible = false
-scale = Vector2( 0.2, 0.2 )
-texture = ExtResource( 7 )

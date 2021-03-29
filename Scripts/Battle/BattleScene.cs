@@ -25,8 +25,8 @@ public class BattleScene : MarginContainer {
     [Export] NodePath discardPath;
     [Export] NodePath handholderPath;
     [Export] NodePath sealingCirclePath;
-    [Export] NodePath demonsPath;
-    public static NodePath demonHitBoxPath;
+    [Export] NodePath yokaiSpritePath;
+    public static NodePath yokaiHitBoxPath;
 
     SmartText thought;
     Control thoughtBubble;
@@ -92,11 +92,11 @@ public class BattleScene : MarginContainer {
         hand = GetNode<HandHolder>(handholderPath);
         SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
 
-        GetNode<DemonHitBox>(demonHitBoxPath).Connect(nameof(DemonHitBox.OnClick), this, nameof(ClickOnTarget));
+        GetNode<YokaiHitBox>(yokaiHitBoxPath).Connect(nameof(YokaiHitBox.OnClick), this, nameof(ClickOnTarget));
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
-        GetNode<Node2D>(demonsPath).GetNode<AnimatedSprite>(GameData.Instance.Oni.Name).Visible = true;
+        GetNode<Node2D>(yokaiSpritePath).GetNode<AnimatedSprite>(GameData.Instance.Oni.Name).Visible = true;
 
         SealCircleField.InitializeSlots(GameData.Instance.Oni.SealSlots);
         Health = GameData.Instance.MaxHealth;
@@ -104,7 +104,7 @@ public class BattleScene : MarginContainer {
 
         // GD.Print("~~~~~~~");
         DisplayDeckAndDiscard();
-        SealCircleField.PlanNextDemonTurn(); // This function will start the player's turn once it's done
+        SealCircleField.PlanNextYokaiTurn(); // This function will start the player's turn once it's done
     }
 
     ///////////////////
@@ -133,7 +133,7 @@ public class BattleScene : MarginContainer {
         currentState = State.EnemyTurn;
         await Hand.DiscardAll();
         await EndTurnEffects();
-        await SealCircleField.PlayDemonTurn();
+        await SealCircleField.PlayYokaiTurn();
     }
 
     public bool IsBusy () {
@@ -147,7 +147,7 @@ public class BattleScene : MarginContainer {
             thought.BbcodeText = BB.Format(card.Data().Description);
         }
     }
-    public void DescribeAction (DemonAction action) {
+    public void DescribeAction (YokaiAction action) {
         thoughtBubble.Show();
         thought.BbcodeText = BB.Format(action.Description());
     }

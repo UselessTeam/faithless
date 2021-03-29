@@ -21,7 +21,7 @@ public class WantedTable : MarginContainer {
     RichTextLabel rewardField;
     Label huntField;
 
-    Demon demon;
+    Yokai yokai;
     public override void _Ready () {
         nameField = GetNode<Label>(namePath);
         difficultyField = GetNode<Label>(difficultyPath);
@@ -34,18 +34,18 @@ public class WantedTable : MarginContainer {
         Connect("focus_exited", this, nameof(FocusExited));
     }
 
-    public void Load (Demon _demon) {
-        demon = _demon;
-        nameField.Text = demon.Name;
-        difficultyField.Text = demon.Difficulty;
-        weaknessField.Text = demon.Weaknesses;
-        GetNode<TextureRect>(imagePath).Texture = CardTextures.Instance.GetNode<Node2D>("Demons").GetNode<Sprite>(demon.Name).Texture;
-        rewardField.BbcodeText = $"[right]{demon.Reward} {BB.Mon}[/right]  ";
+    public void Load (Yokai _yokai) {
+        yokai = _yokai;
+        nameField.Text = yokai.Name;
+        difficultyField.Text = yokai.Difficulty;
+        weaknessField.Text = yokai.Weaknesses;
+        GetNode<TextureRect>(imagePath).Texture = CardTextures.Instance.GetNode<Node2D>("Yokais").GetNode<Sprite>(yokai.Name).Texture;
+        rewardField.BbcodeText = $"[right]{yokai.Reward} {BB.Mon}[/right]  ";
     }
 
     public override void _Input (InputEvent _event) {
         if (GetFocusOwner() == this && InputHelper.IsClick(_event)) {
-            GameData.Instance.Oni = demon;
+            GameData.Instance.Oni = yokai;
             GetTree().ChangeScene(combatScenePath);
         }
     }

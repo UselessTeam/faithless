@@ -34,7 +34,7 @@ public class GameData : Node2D {
     public void DeckChange () {
         EmitSignal(nameof(DeckChanged));
     }
-    public Demon Oni = HuntPanel.DemonList[0];
+    public Yokai Oni = HuntPanel.YokaiList[0];
 
     [Signal] public delegate void MoneyChanged (int value);
 
