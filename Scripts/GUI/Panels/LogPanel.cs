@@ -12,7 +12,7 @@ public class LogPanel : VBoxContainer {
 
     public void Log (string logText) {
         var textItem = new Label();
-        textItem.Text = logText;
+        textItem.Text = BB.Format(logText);
         AddChild(textItem);
         GD.Print("Logging :\n" + logText);
     }

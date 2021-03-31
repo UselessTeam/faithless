@@ -169,6 +169,12 @@ public class BattleScene : MarginContainer {
         thoughtBubble.Show();
         thought.BbcodeText = BB.Format(action.Description());
     }
+    public void DescribeSeal (Element element) {
+        thoughtBubble.Show();
+        if (element == Element.None) DescribeCard();
+        else
+            thought.BbcodeText = BB.Format(element.Description());
+    }
 
     //////////////////
     ////////  Display
@@ -189,7 +195,6 @@ public class BattleScene : MarginContainer {
     public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count().ToString();
         discardField.Text = Discard.Count().ToString();
-        // GD.Print($"=============\nDiscard {DebugCards(Discard)}\nHand {DebugCards(Hand.Cards)}\nPile {DebugCards(Deck)}");
     }
 
     //////////////////////
@@ -315,6 +320,7 @@ public class BattleScene : MarginContainer {
             if (emptyLocations.Count > 0) {
                 Instance.seeds -= MaxSeeds;
                 var makeWoodLoc = emptyLocations[RNG.rng.Next(0, emptyLocations.Count)];
+                Instance.LogPanel.Log($"You have gathered {MaxSeeds} seeds. A [wood-seal] appears");
                 await Instance.PlaceSeal(Element.Wood, makeWoodLoc);
             } else Instance.seeds = MaxSeeds;
         }

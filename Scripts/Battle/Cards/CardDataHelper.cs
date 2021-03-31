@@ -78,6 +78,17 @@ public static class CardIdExtensions {
 
 public enum Element { None, Fire, Water, Wood, Earth, Metal }
 
+public static class ElementExtensions {
+    public static string Description (this Element element) => element switch {
+        Element.Fire => "[fire-seal]\n\nAt the start of your turn, a [fire-seal] burns any surrounding [wood-seal], turning them into [fire-seals], and producing 1 Ki",
+        Element.Wood => "[wood-seal]\n\nIf a [wood-seal] is next to at least one [water-seal], harvest (draw 1 card)",
+        Element.Water => "[water-seal]\n\nIf an enemy tries to remove this Seal, it will turn into an [earth-seal] instead",
+        Element.Metal => "[metal-seal]\n\nWhen a Yokai attacks this Seal, he becomes staggered for the next turn, and this Seal turns into an [earth-seal]",
+        Element.Earth => "[earth-seal]\n\nThis has no particular effect by itself",
+        _ => "",
+    };
+}
+
 public class CardTarget {
     public string TargetDescription;
     public Func<int, bool> CheckTargetableFunc = (int id) => { return false; };

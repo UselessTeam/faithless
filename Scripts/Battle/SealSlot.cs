@@ -10,13 +10,16 @@ public class SealSlot : Control {
     public Vector2 initialPosition;
 
     public override void _Ready () {
-        // MyBackSprite.Set("z", -1);
+        Connect("mouse_entered", this, nameof(MouseEntered));
+        Connect("mouse_exited", this, nameof(MouseExited));
+        Connect("focus_entered", this, nameof(FocusEnter));
+        Connect("focus_exited", this, nameof(FocusExit));
+
         Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnTarget));
         initialPosition = MySprite.RectPosition;
     }
     public Tween MyTween { get { return GetNode<Tween>("Tween"); } }
     public TextureRect MySprite { get { return GetNode<TextureRect>("Sprite"); } }
-    // public TextureRect MyBackSprite { get { return GetNode<TextureRect>("Node2D/BackSprite"); } }
 
     public void ShowSlot (Element element) {
         var texture = MySprite.Texture as AtlasTexture;
@@ -41,7 +44,6 @@ public class SealSlot : Control {
         Color modulate = MySprite.Modulate;
         modulate.a = color.a;
         MySprite.Modulate = modulate;
-        // GD.Print("alpha : ", MyBackSprite.Modulate.a);
     }
     public void ModifySpritePosition (Vector2 position) {
         MySprite.RectPosition = position;
@@ -58,8 +60,31 @@ public class SealSlot : Control {
 
 
     public override void _GuiInput (InputEvent _event) {
+        base._GuiInput(_event);
         if (InputHelper.IsClick(_event))
             EmitSignal(nameof(OnClick), id);
+    }
+
+    private void MouseEntered () {
+        GrabFocus();
+    }
+    private void MouseExited () {
+        ReleaseFocus();
+    }
+
+    Color keptColor;
+    private void FocusEnter () {
+        keptColor = Modulate;
+        Color m = keptColor;
+        m.r *= 1.2f;
+        m.g *= 1.2f;
+        m.b *= 1.2f;
+        Modulate = m;
+        BattleScene.Instance.DescribeSeal(BattleScene.SealSlots[id]);
+    }
+    private void FocusExit () {
+        Modulate = keptColor;
+        BattleScene.Instance.DescribeCard();
     }
 
 }
