@@ -21,7 +21,7 @@ public class WantedTable : MarginContainer {
     RichTextLabel rewardField;
     Label huntField;
 
-    Yokai yokai;
+    YokaiData yokai;
     public override void _Ready () {
         nameField = GetNode<Label>(namePath);
         difficultyField = GetNode<Label>(difficultyPath);
@@ -34,7 +34,7 @@ public class WantedTable : MarginContainer {
         Connect("focus_exited", this, nameof(FocusExited));
     }
 
-    public void Load (Yokai _yokai) {
+    public void Load (YokaiData _yokai) {
         yokai = _yokai;
         nameField.Text = yokai.Name;
         difficultyField.Text = yokai.Difficulty;
@@ -45,7 +45,7 @@ public class WantedTable : MarginContainer {
 
     public override void _Input (InputEvent _event) {
         if (GetFocusOwner() == this && InputHelper.IsClick(_event)) {
-            GameData.Instance.Oni = yokai;
+            GameData.Instance.yokai = yokai.Id;
             GetTree().ChangeScene(combatScenePath);
         }
     }

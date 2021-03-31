@@ -36,16 +36,20 @@ public class BattleScene : MarginContainer {
     Label discardField;
     HandHolder hand;
     public static HandHolder Hand { get => Instance.hand; }
-    public SealingCircle SealCircleField { get; private set; }
+    public static SealingCircle SealingCircle { get; private set; }
     public LogPanel LogPanel { get; private set; }
 
-    /*** Others ***/
+    ////// Seals
+    ///
     public static List<Element> SealSlots;
     public static int SealCount { get { return SealSlots.Count; } }
 
+    ////// Cards
+    ///
     public static IEnumerable<CardId> Deck => Hand.Deck;
     public static IEnumerable<CardId> Discard => Hand.Discard;
 
+    ////// Health, Ki and Stats 
     short ki;
     short health;
     public static short Ki {
@@ -66,6 +70,18 @@ public class BattleScene : MarginContainer {
         }
     }
 
+    public const int MaxSeeds = 4;
+    int seeds;
+    public static int Seeds {
+        get => Instance.seeds;
+    }
+
+    ////// Yokai
+    ///
+    public static YokaiAI YokaiAI;
+
+    /////// Battle State
+    ///
     public enum State { PlayerTurn, CardSelected, SomethingHappening, EnemyTurn, SealingYokai }
     State currentState = State.EnemyTurn;
 
@@ -90,21 +106,23 @@ public class BattleScene : MarginContainer {
         discardField = GetNode<Label>(discardPath);
 
         hand = GetNode<HandHolder>(handholderPath);
-        SealCircleField = GetNode<SealingCircle>(sealingCirclePath);
+        SealingCircle = GetNode<SealingCircle>(sealingCirclePath);
 
         GetNode<YokaiHitBox>(yokaiHitBoxPath).Connect(nameof(YokaiHitBox.OnClick), this, nameof(ClickOnTarget));
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
-        GetNode<Node2D>(yokaiSpritePath).GetNode<AnimatedSprite>(GameData.Instance.Oni.Name).Visible = true;
+        var yokai = GameData.Instance.yokai.Data();
+        GetNode<Node2D>(yokaiSpritePath).GetNode<AnimatedSprite>(yokai.Name).Visible = true;
 
-        SealCircleField.InitializeSlots(GameData.Instance.Oni.SealSlots);
+        SealingCircle.InitializeSlots(yokai.SealSlots);
         Health = GameData.Instance.MaxHealth;
-        SealSlots = Enumerable.Repeat(Element.None, GameData.Instance.Oni.SealSlots).ToList(); ;
+        SealSlots = Enumerable.Repeat(Element.None, yokai.SealSlots).ToList(); ;
 
         // GD.Print("~~~~~~~");
         DisplayDeckAndDiscard();
-        SealCircleField.PlanNextYokaiTurn(); // This function will start the player's turn once it's done
+        YokaiAI = new YokaiAI(yokai.Id);
+        YokaiAI.PlanNextTurn(); // This function will start the player's turn once it's done
     }
 
     ///////////////////
@@ -133,7 +151,7 @@ public class BattleScene : MarginContainer {
         currentState = State.EnemyTurn;
         await Hand.DiscardAll();
         await EndTurnEffects();
-        await SealCircleField.PlayYokaiTurn();
+        await YokaiAI.PlayTurn();
     }
 
     public bool IsBusy () {
@@ -207,7 +225,7 @@ public class BattleScene : MarginContainer {
 
     public async Task RemoveSeal (int location) {
         SealSlots[location] = Element.None;
-        await SealCircleField.DisappearSeal(location);
+        await SealingCircle.DisappearSeal(location);
         if (Instance.seeds == MaxSeeds) {//If there was a tree ready to bloom
             await PlaceSeal(Element.Wood, location);
         }
@@ -216,9 +234,9 @@ public class BattleScene : MarginContainer {
     public async Task SwitchSeal (Element element, int location) {
         bool isEmpty = SealSlots[location] == Element.None;
         SealSlots[location] = element;
-        await SealCircleField.AppearSeal(location);
+        await SealingCircle.AppearSeal(location);
 
-        if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
+        if (!SealSlots.Contains(Element.None) && YokaiAI.CheckWinCondition()) {
             Win();
         }
     }
@@ -241,18 +259,14 @@ public class BattleScene : MarginContainer {
 
             // Display the Switch
             if (BattleScene.SealSlots[locationAfter] != Element.None)
-                tasks.Add(BattleScene.Instance.SealCircleField.MoveSeal(locationBefore, locationAfter, BattleScene.SealSlots[locationAfter]));
+                tasks.Add(BattleScene.SealingCircle.MoveSeal(locationBefore, locationAfter, BattleScene.SealSlots[locationAfter]));
             if (BattleScene.SealSlots[locationBefore] != Element.None)
-                tasks.Add(BattleScene.Instance.SealCircleField.MoveSeal(locationAfter, locationBefore, BattleScene.SealSlots[locationBefore]));
+                tasks.Add(BattleScene.SealingCircle.MoveSeal(locationAfter, locationBefore, BattleScene.SealSlots[locationBefore]));
         }
         foreach (Task task in tasks)
             await task;
 
-        SealCircleField.DisplaySeals(); // Sanity check, just in case
-
-        // if (!SealSlots.Contains(Element.None) && GameData.Instance.Oni.CheckWinCondition()) {
-        //     Win();
-        // }
+        SealingCircle.DisplaySeals(); // Sanity check, just in case
 
         if (element == Element.Fire && OldElement == Element.Wood)
             Ki += 1;
@@ -274,7 +288,7 @@ public class BattleScene : MarginContainer {
             LogPanel.Log($"Your [wood-seal] burns, you gain 1 [ki]");
             Ki += 1;
             await SwitchSeal(Element.Fire, i);
-            SealCircleField.DisplaySeals();
+            SealingCircle.DisplaySeals();
         }
     }
 
@@ -306,16 +320,10 @@ public class BattleScene : MarginContainer {
         }
     }
 
-    public const int MaxSeeds = 4;
-    int seeds;
-    public static int Seeds {
-        get => Instance.seeds;
-    }
-
     public async void Win () {
         currentState = State.SealingYokai;
-        await SealCircleField.RayCircle.Seal();
-        SealCircleField.ZIndex = 0;
+        await SealingCircle.RayCircle.Seal();
+        SealingCircle.ZIndex = 0;
         SealedScene.Win(GetTree());
     }
 

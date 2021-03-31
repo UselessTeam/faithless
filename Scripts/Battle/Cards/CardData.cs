@@ -458,15 +458,15 @@ public class CardData : Resource {
                     SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
                     for (int i = 0 ; i < BattleScene.SealCount - 1; i++) {
-                        tasks.Add(BattleScene.Instance.SealCircleField.MoveSeal(i+1, i, BattleScene.SealSlots[i+1]));
+                        tasks.Add(BattleScene.SealingCircle.MoveSeal(i+1, i, BattleScene.SealSlots[i+1]));
                         BattleScene.SealSlots[i]= BattleScene.SealSlots[i+1];
                     }
-                    tasks.Add( BattleScene.Instance.SealCircleField.MoveSeal(0, BattleScene.SealSlots.Count -1, lastElement));
+                    tasks.Add( BattleScene.SealingCircle.MoveSeal(0, BattleScene.SealSlots.Count -1, lastElement));
                     foreach (Task task in tasks) {
                         await task;
                     }
                     BattleScene.SealSlots[BattleScene.SealSlots.Count -1] = lastElement;
-                    BattleScene.Instance.SealCircleField.DisplaySeals();
+                    BattleScene.SealingCircle.DisplaySeals();
                 }
             },
             new CardData {Id = CardId.Carving,

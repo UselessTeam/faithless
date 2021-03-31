@@ -28,6 +28,9 @@ public class IntentArrow : Node2D {
             case YokaiAction.Remove:
                 (GetNode<Sprite>("Sprite").Texture as AtlasTexture).Region = new Rect2(new Vector2(120, 0), new Vector2(120, 120));
                 break;
+            default:
+                GD.PrintErr($"{action} : This action's display has not been set");
+                break;
 
         }
     }

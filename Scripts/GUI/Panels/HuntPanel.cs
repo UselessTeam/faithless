@@ -9,51 +9,17 @@ public class HuntPanel : MarginContainer {
 
     public override void _Ready () {
         containerField = GetNode<Control>(containerPath);
-        LoadRandomYokai();
+        LoadAllYokai();
     }
 
-    private void LoadRandomYokai () {
-        Load(YokaiList);
-    }
-
-    public void Load (List<Yokai> yokais) {
+    private void LoadAllYokai () {
         containerField.QueueFreeChildren();
-        foreach (Yokai yokai in yokais) {
+        for (YokaiId yokai = YokaiId.Hitotsumekozo ; yokai != YokaiId.TOTAL ; yokai++) {
             WantedTable wanted = WantedTable.Instance();
             containerField.AddChild(wanted);
-            wanted.Load(yokai);
+            wanted.Load(yokai.Data());
         }
     }
 
-    public static List<Yokai> YokaiList = new List<Yokai> {
-        new Yokai(){
-            Name = "Hitotsumekozo",
-            Difficulty  = "EASY",
-            DifficultyValue = 2,
-            Reward = 100,
-            SealSlots = 6,
-        },
-        new Yokai(){
-            Name = "Kasa-Obake",
-            Difficulty  = "MEDIUM",
-            DifficultyValue = 3,
-            Reward = 200,
-            SealSlots = 8,
-        },
-        new Yokai(){
-            Name = "Chochi-No-Bake",
-            Difficulty  = "HARD",
-            DifficultyValue = 4,
-            Reward = 300,
-            SealSlots = 10,
 
-        },
-        new Yokai(){
-            Name = "Joro-Gumo",
-            Difficulty  = "LEGENDARY",
-            DifficultyValue = 5,
-            Reward = 600,
-            SealSlots = 12
-        },
-     };
 }
