@@ -68,7 +68,8 @@ public class BattleScene : MarginContainer {
             Instance.health = value;
             Instance.hpField.Text = $"{value} / {GameData.Instance.MaxHealth}";
             if (Health <= 0) {
-                LostScene.Loose(Instance.GetTree());
+                SealingCircle.ZIndex = 0;
+                LostScene.Lose(Instance.GetTree());
             }
         }
     }
@@ -128,7 +129,6 @@ public class BattleScene : MarginContainer {
         Health = GameData.Instance.MaxHealth;
         SealSlots = Enumerable.Repeat(Element.None, yokai.SealSlots).ToList(); ;
 
-        // GD.Print("~~~~~~~");
         DisplayDeckAndDiscard();
         YokaiAI = new YokaiAI(yokai.Id);
         YokaiAI.PlanNextTurn(); // This function will start the player's turn once it's done

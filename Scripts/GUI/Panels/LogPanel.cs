@@ -15,14 +15,14 @@ public class LogPanel : VBoxContainer {
     }
 
     public void Log (string logText) {
-        SmartText label = (SmartText)smartTextTemplate.Duplicate();
+        SmartText label = (SmartText) smartTextTemplate.Duplicate();
         label.BbcodeText = BB.Format(logText);
         AddChild(label);
         // GD.Print("Logging :\n" + logText);
     }
 
-    public void Separate() {
-        HSeparator separator = (HSeparator)separatorTemplate.Duplicate();
+    public void Separate () {
+        HSeparator separator = (HSeparator) separatorTemplate.Duplicate();
         separator.Show();
         AddChild(separator);
     }

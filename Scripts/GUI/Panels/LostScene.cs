@@ -2,7 +2,7 @@ using System;
 using Godot;
 
 public class LostScene : ColorRect {
-    public static void Loose (SceneTree tree) {
+    public static void Lose (SceneTree tree) {
         LostScene instance = (LostScene) ResourceLoader.Load<PackedScene>("res://Scenes/LostScene.tscn").Instance();
         tree.Root.AddChild(instance);
     }

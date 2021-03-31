@@ -68,6 +68,22 @@ public static class CardEffectHelper {
     public static int NextLocation (int loc) { return (loc + 1) % BattleScene.SealCount; }
     public static int PrevLocation (int loc) { return (loc + BattleScene.SealCount - 1) % BattleScene.SealCount; }
 
+    public static List<int> GetNonEmptySeals () {
+        var nonempty = new List<int>();
+        for (int i = 0 ; i < BattleScene.SealCount ; i++)
+            if (BattleScene.SealSlots[i] != Element.None) nonempty.Add(i);
+        return nonempty;
+    }
+    public static int NonEmptySealsCount () {
+        return NonEmptySealsCount(0, BattleScene.SealCount);
+    }
+    public static int NonEmptySealsCount (int start, int end) {
+        int count = 0;
+        for (int i = start ; i < end ; i++)
+            count += (BattleScene.SealSlots[i] == Element.None) ? 0 : 1;
+        return count;
+    }
+
 }
 
 public static class CardIdExtensions {

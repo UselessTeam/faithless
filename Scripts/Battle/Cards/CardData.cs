@@ -191,7 +191,7 @@ public class CardData : Resource {
                 Name = "Recycle",
                 Kanji = "再",
                 Element = Element.Metal,
-                Cost = 1,
+                Cost = 0,
                 Target = CardTarget.MetalSeal,
                 Description = "Remove one [metal-seal]. The next card you play will be free",
                 Use = async (useLocation) => {
