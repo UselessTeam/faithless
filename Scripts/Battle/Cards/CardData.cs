@@ -132,7 +132,7 @@ public class CardData : Resource {
                 Element = Element.Water,
                 Cost = 2,
                 Target = CardTarget.EmptySeal,
-                Description = "Target an empty area\nDiscard all your cards\nPlace one [water-seal] in the area for each card you discarded\nBanish this card",
+                Description = "Target an empty area\nDiscard all your cards\nPlace one [water-seal] in the area for each card you discarded\nBanish this card until the end of the combat",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
@@ -515,7 +515,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 0,
                 BanishAfterUse = true,
-                Description = "Click on a slot to place a [fire-seal]\nBanish this card afterwards",
+                Description = "Click on a slot to place a [fire-seal]\nBanish this card",
                 Use =  async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation);}
             },
             new CardData {
@@ -525,7 +525,7 @@ public class CardData : Resource {
                 Element = Element.Water,
                 Cost = 0,
                 BanishAfterUse = true,
-                Description = "Click on a slot to place a [metal-seal]\nBanish this card afterwards",
+                Description = "Click on a slot to place a [metal-seal]\nBanish this card",
                 Use =  async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
             },
             new CardData {
@@ -535,7 +535,7 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 0,
                 BanishAfterUse = true,
-                Description = "Click on a slot to place a [wood-seal] and gain one Seed\nBanish this card afterwards",
+                Description = "Click on a slot to place a [wood-seal] and gain one Seed\nBanish this card",
                 Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation); await BattleScene.AddSeeds(1); }
             },
             new CardData {
@@ -545,7 +545,7 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 0,
                 BanishAfterUse = true,
-                Description = "Click on a slot to place a [earth-seal]\nBanish this card afterwards",
+                Description = "Click on a slot to place a [earth-seal]\nBanish this card",
                 Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Earth, useLocation); }
             },
             new CardData {Id = CardId.FreeMetal, // Metal becomes en metal
@@ -554,7 +554,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 0,
                 BanishAfterUse = true,
-                Description = "Click on a slot to place a [metal-seal]\nBanish this card afterwards",
+                Description = "Click on a slot to place a [metal-seal]\nBanish this card",
                 Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal"); await BattleScene.Instance.PlaceSeal(Element.Metal, useLocation); }
             },
 

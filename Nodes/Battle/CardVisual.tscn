@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Sprites/Talismans/card_wood.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/Battle/CardVisual.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/Battle/Cards/CardVisual.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Theme/Fonts/shojumaru_20.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Assets/Theme/Fonts/riiltf_84.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=5]

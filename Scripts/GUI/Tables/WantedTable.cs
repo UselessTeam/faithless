@@ -39,7 +39,7 @@ public class WantedTable : MarginContainer {
         nameField.Text = yokai.Name;
         difficultyField.Text = yokai.Difficulty;
         weaknessField.Text = yokai.Weaknesses;
-        GetNode<TextureRect>(imagePath).Texture = CardTextures.Instance.GetNode<Node2D>("Yokais").GetNode<Sprite>(yokai.Name).Texture;
+        GetNode<TextureRect>(imagePath).Texture = YokaiTextures.Instance.GetTexture(yokai.Id);
         rewardField.BbcodeText = $"[right]{yokai.Reward} {BB.Mon}[/right]  ";
     }
 

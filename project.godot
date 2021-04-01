@@ -18,9 +18,9 @@ config/icon="res://Assets/Meta/icon.png"
 [autoload]
 
 GameData="*res://Nodes/GameData.tscn"
-TextureHolder="*res://Nodes/Battle/TextureHolder.tscn"
+TextureHolder="*res://Nodes/Textures/TextureHolder.tscn"
 ThoughtPopup="*res://Nodes/GUI/Thoughts/ThoughtPopup.tscn"
-SfxHandler="*res://Nodes/Sounds/SFXHandler.tscn"
+SfxHandler="*res://Nodes/SFXHandler.tscn"
 
 [display]
 
