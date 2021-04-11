@@ -27,6 +27,7 @@ public class BattleScene : MarginContainer {
     [Export] NodePath sealingCirclePath;
     [Export] NodePath yokaiSpritePath;
     public static NodePath yokaiHitBoxPath;
+    public YokaiHitBox Yokai;
 
     SmartText thought;
     Control thoughtBubble;
@@ -108,7 +109,8 @@ public class BattleScene : MarginContainer {
         hand = GetNode<HandHolder>(handholderPath);
         SealingCircle = GetNode<SealingCircle>(sealingCirclePath);
 
-        GetNode<YokaiHitBox>(yokaiHitBoxPath).Connect(nameof(YokaiHitBox.OnClick), this, nameof(ClickOnTarget));
+        Yokai = GetNode<YokaiHitBox>(yokaiHitBoxPath);
+        Yokai.Connect(nameof(YokaiHitBox.OnClick), this, nameof(ClickOnTarget));
 
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
@@ -229,6 +231,11 @@ public class BattleScene : MarginContainer {
     ///////
 
     public void SealGlow(CardTarget target = null) {
+        if (target != null && target.CheckTargetableFunc(-1)) {
+            Yokai.StartGlow();
+        } else {
+            Yokai.StopGlow();
+        }
         for (int i = 0 ; i < SealSlots.Count ; i++) {
             if (target != null && target.CheckTargetableFunc(i)) {
                 SealingCircle.GetSeal(i).StartGlow();
