@@ -80,6 +80,9 @@ public class SealingCircle : Node2D {
             i++;
         }
     }
+    public SealSlot GetSeal (int i) {
+        return SealSlotDisplays.GetChild<SealSlot>(i);
+    }
     public void DisplayActionPlan (List<YokaiAction> actionPlan) {
         ArrowDisplays.QueueFreeChildren();
         for (int i = 0 ; i < SlotCount ; i++) {

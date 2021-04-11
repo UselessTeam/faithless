@@ -5,6 +5,7 @@ using Godot;
 public class SealSlot : Control {
     [Signal] delegate void OnClick (int id);
     public SealingCircle Circle;
+    public TextureRect Glow;
     public int id;
 
     public Vector2 initialPosition;
@@ -14,6 +15,8 @@ public class SealSlot : Control {
         Connect("mouse_exited", this, nameof(MouseExited));
         Connect("focus_entered", this, nameof(FocusEnter));
         Connect("focus_exited", this, nameof(FocusExit));
+
+        Glow = GetNode<TextureRect>("Glow");
 
         Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnTarget));
         initialPosition = MySprite.RectPosition;
@@ -58,6 +61,12 @@ public class SealSlot : Control {
         MyTween.Start();
     }
 
+    public void StartGlow() {
+        Glow.Show();
+    }
+    public void StopGlow() {
+        Glow.Hide();
+    }
 
     public override void _GuiInput (InputEvent _event) {
         base._GuiInput(_event);

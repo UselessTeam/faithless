@@ -228,6 +228,16 @@ public class BattleScene : MarginContainer {
     ////////////////
     ///////
 
+    public void SealGlow(CardTarget target = null) {
+        for (int i = 0 ; i < SealSlots.Count ; i++) {
+            if (target != null && target.CheckTargetableFunc(i)) {
+                SealingCircle.GetSeal(i).StartGlow();
+            } else {
+                SealingCircle.GetSeal(i).StopGlow();
+            }
+        }
+    }
+
     public async Task RemoveSeal (int location) {
         SealSlots[location] = Element.None;
         await SealingCircle.DisappearSeal(location);

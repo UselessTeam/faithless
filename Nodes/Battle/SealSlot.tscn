@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Sprites/Talismans/seals.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Battle/SealSlot.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Sprites/GUI/icons/seal_glow.png" type="Texture" id=3]
 
 [sub_resource type="AtlasTexture" id=1]
 resource_local_to_scene = true
@@ -48,6 +49,20 @@ margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 80, 80 )
 texture = SubResource( 2 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Glow" type="TextureRect" parent="."]
+visible = false
+margin_left = -61.0
+margin_top = -59.0
+margin_right = 59.0
+margin_bottom = 61.0
+rect_min_size = Vector2( 80, 80 )
+texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
 __meta__ = {

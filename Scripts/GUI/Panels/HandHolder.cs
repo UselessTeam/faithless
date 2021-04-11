@@ -102,6 +102,7 @@ public class HandHolder : Container {
         if (Selected != null) {
             Selected.Pull(0f);
             Selected = null;
+            BattleScene.Instance.SealGlow();
         }
     }
 
@@ -169,6 +170,8 @@ public class HandHolder : Container {
         if (Selected.Card.Data().Cost > BattleScene.Ki) {
             GD.Print("Not enough Chi"); //Might be usefull?
         }
+
+        BattleScene.Instance.SealGlow(visual.Card.Data().Target);
     }
 
     /*** Display ***/
