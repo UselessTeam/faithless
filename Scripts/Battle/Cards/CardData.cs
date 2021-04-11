@@ -231,7 +231,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 2,
                 Target = CardTarget.MetalSeal,
-                Description = "Place [metal-seals] on the 2 locations surounding the selected [metal-seal]",
+                Description = "Place [metal-seals] on the 2 locations surrounding the selected [metal-seal]",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     int sealCount =  BattleScene.SealSlots.Count;
@@ -248,7 +248,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 2,
                 Target = CardTarget.MetalSeal,
-                Description = "Surrond a [metal-seal] by 2 [water-seal]",
+                Description = "Surround a [metal-seal] by 2 [water-seal]",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     int sealCount =  BattleScene.SealSlots.Count;
