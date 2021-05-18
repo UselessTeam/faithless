@@ -231,7 +231,7 @@ public class BattleScene : MarginContainer {
     ////////////////
     ///////
 
-    public void SealGlow(CardTarget target = null) {
+    public void SealGlow (CardTarget target = null) {
         if (target != null && target.CheckTargetableFunc(-1)) {
             Yokai.StartGlow();
         } else {
@@ -321,7 +321,7 @@ public class BattleScene : MarginContainer {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water ||
                     SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) { // If there is a water after or before
                                                                                                // TODO: show a cute water effect on the wood
-                    LogPanel.Log($"Your [wood-seal] harversts, you draw {Utils.SmartText.Concatenate(1 + HarvestBonus, "card")}");
+                    LogPanel.Log($"Your [wood-seal] [?harvest]harversts[/?], you draw {Utils.SmartText.Concatenate(1 + HarvestBonus, "card")}");
                     await DrawCards((1 + HarvestBonus));
                 }
             }

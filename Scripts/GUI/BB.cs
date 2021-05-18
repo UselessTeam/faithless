@@ -4,7 +4,7 @@ using Godot;
 public static class BB {
 
     public static readonly string Mon = "[img]res://Assets/Sprites/GUI/mon.png[/img]";
-    public static readonly string Ki = "[img=24]res://Assets/Sprites/Combat/Talismans/ki.png[/img]";
+    public static readonly string Ki = "[img=24]res://Assets/Sprites/Talismans/ki.png[/img]";
     public static readonly string FireSeal = "[img=24]res://Assets/Sprites/GUI/icons/fire_seal.png[/img]";
     public static readonly string WaterSeal = "[img=24]res://Assets/Sprites/GUI/icons/water_seal.png[/img]";
     public static readonly string WoodSeal = "[img=24]res://Assets/Sprites/GUI/icons/wood_seal.png[/img]";

@@ -35,5 +35,23 @@ Select a talisman and a seal-slot to activate the effect.
 @"Fire Spread
 
 At the beginning of your turn, each [wood-seal] adjacent to [fire-seal] will be turned into [fire-seal] and give one [ki]
-"}};
+"},
+{"harvest",
+@"Harvest
+
+At the beginning of your turn, each [wood-seal] adjacent to [water-seal] will let you draw an additional talisman
+"},
+{"seed",
+@"Seeds
+
+Certain wood talismans give seeds as an effect.
+Once you have obtained 4 of them, they are consumed and a [wood-seal] is placed in a random [empty-seal]
+"},
+{"stagger",
+@"Staggered
+
+Yokai will become staggered if they attack a [metal-seal].
+If so, they will attack less their next turn
+"}
+    };
 }

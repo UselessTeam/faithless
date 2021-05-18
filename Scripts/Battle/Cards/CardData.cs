@@ -48,7 +48,7 @@ public class CardData : Resource {
                 Kanji = "火",
                 Element = Element.Fire,
                 Cost = 2,
-                Description = "Click on a slot to place a [fire-seal]\nAt the start of your turn, a [fire-seal] burns any surrounding [wood-seal], turning them into [fire-seals], and producing 1 Ki",
+                Description = "Place a [fire-seal] on the selected slot \nAt the start of your turn, a [fire-seal] burns any surrounding [wood-seal], turning them into [fire-seals] and producing 1 [ki]",
                 Use =  async (useLocation) => {
                     SFXHandler.PlaySFX("PlaceSeal");
                     await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation); }
@@ -59,7 +59,7 @@ public class CardData : Resource {
                 Kanji = "水",
                 Element = Element.Water,
                 Cost = 2,
-                Description = "Click on a slot to place a [water-seal]\nIf an enemy tries to remove this Seal, it will turn into an [earth-seal] instead",
+                Description = "Place a [water-seal] on the selected slot \nIf an enemy tries to remove this Seal, it will turn into an [earth-seal] instead",
                 Use =  async (useLocation) => {SFXHandler.PlaySFX("PlaceSeal");
                      await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
             },
@@ -69,7 +69,7 @@ public class CardData : Resource {
                 Kanji = "木",
                 Element = Element.Wood,
                 Cost = 2,
-                Description = "Click on a slot to place a [wood-seal] and gain one Seed\nIf a [wood-seal] is next to at least one [water-seal], harvest (draw 1 card)",
+                Description = "Place a [wood-seal] on the selected slot and receive one [?seed]Seed[/?]\n[wood-seal] [?harvest]harvest[/?] (draws one card) at the beginning of your turn if next to a [water-seal]",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("PlaceSeal");
                     await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation); await BattleScene.AddSeeds(1); }
@@ -80,7 +80,7 @@ public class CardData : Resource {
                 Kanji = "土",
                 Element = Element.Earth,
                 Cost = 2,
-                Description = "Click on a slot to place a [earth-seal]\nSwitch the positions of the two surrounding Seals",
+                Description = "Place a [earth-seal] on the selected slot\nSwap the position of the two adjacent Seals",
                 Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal");
                     await BattleScene.Instance.PlaceSeal(Element.Earth, useLocation); }
             },
@@ -89,7 +89,7 @@ public class CardData : Resource {
                 Kanji = "金",
                 Element = Element.Metal,
                 Cost = 2,
-                Description = "Click on a slot to place a [metal-seal]\nWhen a Yokai attacks this Seal, he becomes staggered for the next turn, and this Seal turns into an [earth-seal]",
+                Description = "Place a [metal-seal] on the selected slot\nWhen a Yokai attacks this Seal, they become [?stagger]staggered[/?] for the next turn, and this Seal turns into an [earth-seal]",
                 Use = async (useLocation) => { SFXHandler.PlaySFX("PlaceSeal");
                      await BattleScene.Instance.PlaceSeal(Element.Metal, useLocation); }
             },
@@ -155,7 +155,7 @@ public class CardData : Resource {
                 Kanji = "津",
                 Element = Element.Water,
                 Cost = 0,
-                Description = "Replace a [water-seal] it by a random other element\nIf it is replaced by an [earth-seal], gain 1 Ki",
+                Description = "Replace a [water-seal] it by a random other element\nIf it is replaced by an [earth-seal], gain 1 [ki]",
                 Target = CardTarget.WaterSeal,
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
@@ -219,7 +219,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 3,
                 BanishAfterUse = true,
-                Description = "The harvest effect of [wood-seals] grants one more card\nBanish this card until the end of the combat",
+                Description = "The [?harvest]harvest[/?] effect of [wood-seals] grants one more card\nBanish this card until the end of the combat",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     BattleScene.Instance.HarvestBonus +=1;
@@ -265,7 +265,7 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 0,
                 Target = CardTarget.Yokai,
-                Description = "Gain 2 seeds",
+                Description = "Gain 2 [?seed]seeds[/?]",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     await BattleScene.AddSeeds(2);
@@ -277,7 +277,7 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 1,
                 Target = CardTarget.Yokai,
-                Description = "Discard all cards in your hand\nGain 1 seed per card",
+                Description = "Discard all cards in your hand\nGain 1 [?seed]seed[/?] per card",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     int cardCount =  BattleScene.Hand.Cards.Count() - 1;
@@ -291,7 +291,7 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 0,
                 Target = CardTarget.Yokai,
-                Description = "Draw the last card your discarded (if the discard is empty, draw one card instead)\nIf you drew a Water or Earth card, gain one seed",
+                Description = "Draw the last card your discarded (if the discard is empty, draw one card instead)\nIf you drew a Water or Earth card, gain one [?seed]seed[/?]",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     if(!await BattleScene.Hand.DrawLastDiscard()) {
@@ -309,7 +309,7 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 1,
                 Target = CardTarget.EarthSeal,
-                Description = "Replace a group of continuous [earth-seals] by [wood-seals]\nGain one seed per Seal replaced",
+                Description = "Replace a group of continuous [earth-seals] by [wood-seals]\nGain one [?seed]seed[/?] per Seal replaced",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     var area = CardEffectHelper.GetArea(useLocation, Element.Earth);
@@ -328,7 +328,7 @@ public class CardData : Resource {
                 Kanji = "田",
                 Element = Element.Wood,
                 Cost = 1,
-                Description = "Select one [water-seal], and place one [wood-seal] in a random empty space next to it\nGain one Seed",
+                Description = "Select one [water-seal], and place one [wood-seal] in a random empty space next to it\nGain one [?seed]seed[/?]",
                 Target = CardTarget.WaterSeal,
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
@@ -399,7 +399,7 @@ public class CardData : Resource {
                 Kanji = "鵬",
                 Element = Element.Fire,
                 Cost = 4,
-                Description = "Destroy all Seals\nGain 2 Chi for each Seal destroyed\nDiscard all cards\nDraw new Cards (as a new turn)\nHeal to full health",
+                Description = "Destroy all Seals\nGain 2 [ki] for each Seal destroyed\nDiscard all cards\nDraw new Cards (as a new turn)\nHeal to full health",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
@@ -421,7 +421,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 0,
                 Target = CardTarget.Yokai,
-                Description = "Remove all seeds\n Gain 1 Ki for each seed removed",
+                Description = "Remove all [?seed]seeds[/?]\n Gain 1 [ki] for each [?seed]seed[/?] removed",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     BattleScene.Ki += (short) BattleScene.Seeds;
@@ -436,7 +436,7 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 1,
                 Target  = CardTarget.Yokai,
-                Description = "Discard all your Water and Wood cards\n Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 Chi for each [water-seal] replaced\nDraw 1 card for each [wood-seal] replaced",
+                Description = "Discard all your Water and Wood cards\n Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 [ki] for each [water-seal] replaced\nDraw 1 card for each [wood-seal] replaced",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();
@@ -490,7 +490,7 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 0,
                 Target = CardTarget.NonEmptySeal,
-                Description = "Remove a Seal and turn it into a one-time use card that costs 0 Ki",
+                Description = "Remove a Seal and turn it into a one-time use card that costs 0 [ki]",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     var getCard = BattleScene.SealSlots[useLocation] switch {
