@@ -142,6 +142,7 @@ public class BattleScene : MarginContainer {
     }
 
     async public void StartPlayerTurn () {
+        BattleScene.Instance.LogPanel.Separate();
         Ki = GameData.Instance.MaxKi;
         await DrawCards(GameData.Instance.CardsPerTurn);
         await StartTurnEffects();
