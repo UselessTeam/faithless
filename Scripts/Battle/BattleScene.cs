@@ -20,6 +20,7 @@ public class BattleScene : MarginContainer {
     [Export] NodePath endTurnPath;
     [Export] NodePath kiPath;
     [Export] NodePath hpPath;
+    [Export] NodePath seedsPath;
     [Export] NodePath logPanelPath;
     [Export] NodePath deckPath;
     [Export] NodePath discardPath;
@@ -33,6 +34,7 @@ public class BattleScene : MarginContainer {
     Control thoughtBubble;
     Label kiField;
     Label hpField;
+    SeedIcon seedsFiled;
     Label deckField;
     Label discardField;
     HandHolder hand;
@@ -75,6 +77,10 @@ public class BattleScene : MarginContainer {
     int seeds;
     public static int Seeds {
         get => Instance.seeds;
+        set {
+            Instance.seeds = value;
+            Instance.seedsFiled.UpdateValue(value);
+        }
     }
 
     ////// Yokai
@@ -102,6 +108,7 @@ public class BattleScene : MarginContainer {
 
         kiField = GetNode<Label>(kiPath);
         hpField = GetNode<Label>(hpPath);
+        seedsFiled = GetNode<SeedIcon>(seedsPath);
         LogPanel = GetNode<LogPanel>(logPanelPath);
         deckField = GetNode<Label>(deckPath);
         discardField = GetNode<Label>(discardPath);
@@ -249,7 +256,7 @@ public class BattleScene : MarginContainer {
     public async Task RemoveSeal (int location) {
         SealSlots[location] = Element.None;
         await SealingCircle.DisappearSeal(location);
-        if (Instance.seeds == MaxSeeds) {//If there was a tree ready to bloom
+        if (Seeds == MaxSeeds) {//If there was a tree ready to bloom
             await PlaceSeal(Element.Wood, location);
         }
     }
@@ -329,18 +336,18 @@ public class BattleScene : MarginContainer {
     }
 
     async public static Task AddSeeds (int count) {
-        Instance.seeds += count;
+        Seeds += count;
         //TODO Display new value
-        if (Instance.seeds >= MaxSeeds) {
+        if (Seeds >= MaxSeeds) {
             List<int> emptyLocations = new List<int>();
             for (int i = 0 ; i < SealCount ; i++)
                 if (SealSlots[i] == Element.None) emptyLocations.Add(i);
             if (emptyLocations.Count > 0) {
-                Instance.seeds -= MaxSeeds;
+                Seeds -= MaxSeeds;
                 var makeWoodLoc = emptyLocations[RNG.rng.Next(0, emptyLocations.Count)];
                 Instance.LogPanel.Log($"You have gathered {MaxSeeds} seeds. A [wood-seal] appears");
                 await Instance.PlaceSeal(Element.Wood, makeWoodLoc);
-            } else Instance.seeds = MaxSeeds;
+            } else Seeds = MaxSeeds;
         }
     }
 
