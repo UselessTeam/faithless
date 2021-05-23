@@ -31,8 +31,8 @@ Surround the Yokai by seals to seal it.
 Hover a talisman to see its effect.
 Select a talisman and a seal-slot to activate the effect.
 "},
-{"fire",
-@"Fire Spread
+{"ignite",
+@"Ignition
 
 At the beginning of your turn, each [wood-seal] adjacent to [fire-seal] will be turned into [fire-seal] and give one [ki]
 "},
@@ -43,6 +43,8 @@ At the beginning of your turn, each [wood-seal] adjacent to [water-seal] will le
 "},
 {"seed",
 @"Seeds
+
+[center][img=48]res://Assets/Sprites/GUI/icons/seeds.png[/img][/center]
 
 Certain wood talismans give seeds as an effect.
 Once you have obtained 4 of them, they are consumed and a [wood-seal] is placed in a random [empty-seal]
