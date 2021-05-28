@@ -351,7 +351,13 @@ public class BattleScene : MarginContainer {
         }
     }
 
+    bool WinCalled = false;
     public async void Win () {
+        if (WinCalled) {
+            if (OS.IsDebugBuild()) GD.Print("Win already called");
+            return;
+        }
+        WinCalled = true;
         currentState = State.SealingYokai;
         await SealingCircle.RayCircle.Seal();
         SealingCircle.ZIndex = 0;

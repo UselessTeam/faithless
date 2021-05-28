@@ -15,6 +15,10 @@ public class SealedScene : ColorRect {
     [Export] NodePath continuePath;
     public override void _Ready () {
         GameData.Instance.State = GameData.GameState.Narration;
+        if (GameData.Instance.yokai == YokaiId.None) {
+            Continue();
+            return;
+        } // Sanity check to avoid the infamous win-crash
         int money = (100 + GameData.Instance.MoneyPercentageBonus) * GameData.Instance.yokai.Data().Reward / 100;
         GameData.Instance.yokai = YokaiId.None;
         GetNode<Label>(moneyPath).Text = $"+{money}";
