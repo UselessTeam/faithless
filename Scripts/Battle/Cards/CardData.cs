@@ -131,6 +131,7 @@ public class CardData : Resource {
                 Kanji = "波",
                 Element = Element.Water,
                 Cost = 2,
+                BanishAfterUse = true,
                 Target = CardTarget.EmptySeal,
                 Description = "Target an empty area\nDiscard all your cards\nPlace one [water-seal] in the area for each card you discarded\nBanish this card until the end of the combat",
                 Use = async (useLocation) => {
@@ -436,7 +437,7 @@ public class CardData : Resource {
                 Element = Element.Earth,
                 Cost = 1,
                 Target  = CardTarget.Yokai,
-                Description = "Discard all your Water and Wood cards\n Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 [ki] for each [water-seal] replaced\nDraw 1 card for each [wood-seal] replaced",
+                Description = "Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 [ki] for each [water-seal] replaced\nDraw 1 card for each [wood-seal] replaced",
                 Use = async (useLocation) => {
                     SFXHandler.PlaySFX("GenericEffect");
                     List<Task> tasks = new List<Task>();

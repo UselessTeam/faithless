@@ -51,7 +51,7 @@ public class ShopPanel : ScaleContainer {
     public void Init () {
         bubbleText.Text = WELCOME_MESSAGES.Random();
         buyButton.Hide();
-        List<CardId> all = new List<CardId>(CardData.All);
+        List<CardId> all = CardData.AllSpecial;
         Load(all.PopRandom(), all.PopRandom(), all.PopRandom(), GameData.Instance.LeftInShop.Count == 0 ? null : GameData.Instance.LeftInShop.Random());
     }
 
@@ -75,8 +75,7 @@ public class ShopPanel : ScaleContainer {
     int selected = -2;
 
     private CardId GetCard (int index) {
-        return index switch
-        {
+        return index switch {
             0 => left,
             1 => middle,
             2 => right,

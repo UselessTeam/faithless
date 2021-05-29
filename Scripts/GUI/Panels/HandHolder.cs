@@ -46,6 +46,10 @@ public class HandHolder : Container {
         CardVisual visualCard;
         lock (flowLock) {
             if (Deck.Count == 0) {
+                if (Discard.Count == 0) {
+                    BattleScene.Instance.LogPanel.Log("There is no more cards to draw");
+                    return false;
+                }
                 Deck = Discard.RandomOrder().ToList();
                 Discard = new List<CardId>();
             }

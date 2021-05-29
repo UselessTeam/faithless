@@ -353,7 +353,7 @@ public class BattleScene : MarginContainer {
 
     bool WinCalled = false;
     public async void Win () {
-        if (WinCalled) {
+        if (WinCalled || currentState == State.SealingYokai) {
             if (OS.IsDebugBuild()) GD.Print("Win already called");
             return;
         }
@@ -366,8 +366,11 @@ public class BattleScene : MarginContainer {
 
     //Debug
     public override void _Input (InputEvent _event) {
-        if (OS.IsDebugBuild() && _event.IsActionPressed("win"))
-            Win();
+        if (OS.IsDebugBuild()) {
+            if (_event.IsActionPressed("win"))
+                Win();
+            if (OS.IsDebugBuild() && _event.IsActionPressed("draw"))
+                DrawCards(1);
+        }
     }
-
 }
