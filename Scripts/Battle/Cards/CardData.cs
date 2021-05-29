@@ -106,9 +106,13 @@ public class CardData : Resource {
                     SFXHandler.PlaySFX("GenericEffect");
                     var area = CardEffectHelper.GetArea(useLocation, Element.Earth);
                     List<Task> tasks = new List<Task>();
-                    for (int i = area.Item1; i != area.Item2; i = CardEffectHelper.NextLocation(i)){
+
+                    int i = area.Item1;
+                    do{
                         tasks.Add(BattleScene.Instance.PlaceSeal(Element.Water, i));
-                    }
+                        i = CardEffectHelper.NextLocation(i);
+                    }while ( i != area.Item2);
+                    
                     foreach(var task in tasks) await task;
                 }
             },
@@ -140,9 +144,14 @@ public class CardData : Resource {
                     var area = CardEffectHelper.GetArea(useLocation, Element.None);
                     var cardCount = BattleScene.Hand.Cards.Count() - 1;
                     tasks.Add(BattleScene.Hand.DiscardAll());
+
                     List<int> possibleLocations = new List<int>();
-                    for (int i = area.Item1; i != area.Item2; i = CardEffectHelper.NextLocation(i))
-                        possibleLocations.Add(i);
+                    {   int i = area.Item1;
+                        do{
+                            possibleLocations.Add(i);
+                            i = CardEffectHelper.NextLocation(i);
+                        }while ( i != area.Item2);
+                    }
                     possibleLocations = Utils.RNG.RandomOrder(possibleLocations).ToList();
                     for (int i =0; i< possibleLocations.Count && cardCount>0; i++){
                         tasks.Add(BattleScene.Instance.PlaceSeal(Element.Water, possibleLocations[i]) );
@@ -315,10 +324,13 @@ public class CardData : Resource {
                     var area = CardEffectHelper.GetArea(useLocation, Element.Earth);
                     List<Task> tasks = new List<Task>();
                     int seedCount = 0;
-                    for (int i = area.Item1; i != area.Item2; i = CardEffectHelper.NextLocation(i)){
+                    int i = area.Item1;
+                    do{                        
                         tasks.Add(BattleScene.Instance.PlaceSeal(Element.Wood, i));
                         seedCount ++;
-                    }
+                        i = CardEffectHelper.NextLocation(i);
+                    }while ( i != area.Item2);
+                    
                     foreach(var task in tasks) await task;
                     await BattleScene.AddSeeds(seedCount);
                 }

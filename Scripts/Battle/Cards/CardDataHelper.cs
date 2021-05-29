@@ -56,7 +56,7 @@ public static class CardEffectHelper {
         int i = loc;
         while (BattleScene.SealSlots[PrevLocation(i)] == element) {
             i = PrevLocation(i);
-            if (i == loc) return new Tuple<int, int>(NextLocation(loc), loc);
+            if (i == loc) return new Tuple<int, int>(loc, loc);
         }
         int j = loc;
         while (BattleScene.SealSlots[j] == element) {
