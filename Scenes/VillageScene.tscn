@@ -20,6 +20,7 @@ deckButtonPath = NodePath("Panel/VBox/HBoxContainer/Talisman")
 shopButtonPath = NodePath("Panel/VBox/HBoxContainer/Shop")
 huntButtonPath = NodePath("Panel/VBox/HBoxContainer/Hunt")
 moneyPath = NodePath("Panel/VBox/HBoxContainer/Right/Money")
+deckPanelPath = NodePath("Panel/VBox/Board/Deck")
 
 [node name="Background" type="TextureRect" parent="."]
 anchor_right = 1.0
@@ -136,8 +137,6 @@ margin_left = 5.0
 margin_top = 5.0
 margin_right = -5.0
 margin_bottom = -5.0
-inspectPath = NodePath("../../../../Panel/VBox/Board/Deck/VBox/HBox/Inspect/VBox/Text")
-banishPath = NodePath("../../../../Panel/VBox/Board/Deck/VBox/HBox/Inspect/VBox/Banish")
 
 [node name="Shop" parent="Panel/VBox/Board" instance=ExtResource( 10 )]
 visible = false

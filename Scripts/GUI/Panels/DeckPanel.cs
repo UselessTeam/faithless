@@ -19,7 +19,6 @@ public class DeckPanel : MarginContainer {
         banishField = GetNode<Button>(banishPath);
         banishField.Connect("pressed", this, nameof(Banish));
         priceField = GetNode<SmartText>(pricePath);
-        GameData.Instance.Connect(nameof(GameData.DeckChanged), this, nameof(ShowDeck));
         ShowDeck();
     }
 
@@ -35,6 +34,7 @@ public class DeckPanel : MarginContainer {
             visual.ShowCard(id.Data());
             index++;
         }
+        GD.Print("Deck shown");
     }
 
     public void UpdateDeck () {

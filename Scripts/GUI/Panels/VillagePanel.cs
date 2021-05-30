@@ -9,12 +9,17 @@ public class VillagePanel : CanvasLayer {
     [Export] NodePath shopButtonPath;
     [Export] NodePath huntButtonPath;
     [Export] NodePath moneyPath;
+    [Export] NodePath deckPanelPath;
     TabContainer board;
     Label money;
     public override void _Ready () {
         string save = FileEncoder.Read();
         Loader load = new Loader();
         GameData.Instance = (GameData) load.FromData(save);
+
+        var deckPanel = GetNode<DeckPanel>(deckPanelPath);
+        GameData.Instance.Connect(nameof(GameData.DeckChanged), deckPanel, nameof(DeckPanel.ShowDeck));
+        GameData.Instance.DeckChange();
 
         GameData.Instance.State = GameData.GameState.Village;
         board = GetNode<TabContainer>(boardPath);

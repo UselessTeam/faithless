@@ -5,6 +5,7 @@ using Utils;
 
 public class GameData : Node2D, ISaveable {
     public static GameData Instance;
+    [Signal] public delegate void InstanceLoaded (int value);
 
     public enum GameState {
         Narration,
@@ -25,6 +26,9 @@ public class GameData : Node2D, ISaveable {
     }
 
     [Signal] public delegate void DeckChanged (int value);
+    public void DeckChange () {
+        EmitSignal(nameof(DeckChanged));
+    }
     [Save]
     public List<CardId> Deck = new List<CardId>() {
         CardId.BasicEarth, CardId.BasicEarth,
@@ -33,9 +37,6 @@ public class GameData : Node2D, ISaveable {
         CardId.BasicWater, CardId.BasicWater,
         CardId.BasicWood, CardId.BasicWood,
     };
-    public void DeckChange () {
-        EmitSignal(nameof(DeckChanged));
-    }
     public YokaiId yokai = YokaiId.Hitotsumekozo;
 
     [Signal] public delegate void MoneyChanged (int value);
