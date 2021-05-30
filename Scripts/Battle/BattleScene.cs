@@ -103,6 +103,7 @@ public class BattleScene : CanvasLayer {
     public override void _Ready () {
         instance = this;
         GameData.Instance.State = GameData.GameState.Battle;
+        SFXHandler.Instance.Change(GameData.GameState.Battle);
 
         thought = GetNode<SmartText>(thoughtPath);
         thoughtBubble = GetNode<Control>(thoughtBubblePath);

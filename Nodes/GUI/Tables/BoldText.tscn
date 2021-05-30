@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Scripts/Utils/SmartText/SmartText.cs" type="Script" id=1]
+[ext_resource path="res://GodotCommonUtils/Scripts/Utils/SmartText/SmartText.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Theme/Fonts/andika_20.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/Theme/empty_box.tres" type="StyleBox" id=3]
 

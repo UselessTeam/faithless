@@ -1,0 +1,3 @@
+[submodule "GodotCommonUtils"]
+	path = GodotCommonUtils
+	url = ./GodotCommonUtils

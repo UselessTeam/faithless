@@ -186,10 +186,10 @@ position = Vector2( 0, 151 )
 [node name="YokaiSprites" parent="Holder/Top/Circle/Center/Ping" instance=ExtResource( 1 )]
 
 [node name="Hitotsumekozo" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="0"]
-frame = 1
+frame = 15
 
 [node name="Chochi-No-Bake" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="2"]
-frame = 1
+frame = 6
 
 [node name="Debug" type="ColorRect" parent="Holder/Top/Circle"]
 visible = false

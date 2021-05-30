@@ -34,7 +34,6 @@ public class DeckPanel : MarginContainer {
             visual.ShowCard(id.Data());
             index++;
         }
-        GD.Print("Deck shown");
     }
 
     public void UpdateDeck () {

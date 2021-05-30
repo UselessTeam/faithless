@@ -14,7 +14,7 @@ public class SFXHandler : AudioStreamPlayer {
 
     public override void _Ready () {
         Instance = this;
-        GameData.Instance.Connect(nameof(GameData.ChangeGameState), this, nameof(Change));
+        // GameData.Instance.Connect(nameof(GameData.ChangeGameState), this, nameof(Change));
         battleMusic = ResourceLoader.Load<AudioStream>(battleMusicPath);
         villageMusic = ResourceLoader.Load<AudioStream>(villageMusicPath);
 
@@ -22,6 +22,7 @@ public class SFXHandler : AudioStreamPlayer {
     }
 
     public void Change (GameData.GameState state) {
+        GD.Print("State: " + state.ToString());
         switch (state) {
             case GameData.GameState.Battle:
                 Stream = battleMusic;

@@ -22,6 +22,7 @@ public class VillagePanel : CanvasLayer {
         GameData.Instance.DeckChange();
 
         GameData.Instance.State = GameData.GameState.Village;
+        SFXHandler.Instance.Change(GameData.GameState.Village);
         board = GetNode<TabContainer>(boardPath);
         money = GetNode<Label>(moneyPath);
         GetNode<Button>(deckButtonPath).Connect("pressed", board, "set_current_tab", 0.InArray());
