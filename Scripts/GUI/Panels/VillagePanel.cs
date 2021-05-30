@@ -12,6 +12,10 @@ public class VillagePanel : Control {
     TabContainer board;
     Label money;
     public override void _Ready () {
+        string save = FileEncoder.Read();
+        Loader load = new Loader();
+        GameData.Instance = (GameData) load.FromData(save);
+
         GameData.Instance.State = GameData.GameState.Village;
         board = GetNode<TabContainer>(boardPath);
         money = GetNode<Label>(moneyPath);

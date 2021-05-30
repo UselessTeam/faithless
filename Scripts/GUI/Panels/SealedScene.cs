@@ -33,8 +33,10 @@ public class SealedScene : ColorRect {
 
     public void Continue () {
         GetTree().ChangeScene("res://Scenes/VillageScene.tscn");
+        string save = Utils.Saver.SaveSingle(GameData.Instance);
+        FileEncoder.Write(save);
+
         this.QueueFree();
-        // GetTree().Paused = false;
     }
 
     public void AddToDeck (CardId card) {

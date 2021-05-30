@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Utils;
 
-public class GameData : Node2D {
+public class GameData : Node2D, ISaveable {
     public static GameData Instance;
 
     public enum GameState {
@@ -24,6 +25,7 @@ public class GameData : Node2D {
     }
 
     [Signal] public delegate void DeckChanged (int value);
+    [Save]
     public List<CardId> Deck = new List<CardId>() {
         CardId.BasicEarth, CardId.BasicEarth,
         CardId.BasicFire, CardId.BasicFire,
@@ -44,10 +46,10 @@ public class GameData : Node2D {
         Food.DANGO,
         Food.JAGAIMO
     };
-    public short MaxHealth = 3;
-    public int CardsPerTurn = 4;
-    public short MaxKi = 5;
-    public int MoneyPercentageBonus = 0;
+    [Save] public short MaxHealth = 3;
+    [Save] public int CardsPerTurn = 4;
+    [Save] public short MaxKi = 5;
+    [Save] public int MoneyPercentageBonus = 0;
     public int Money {
         get => _money;
         set {
@@ -55,7 +57,7 @@ public class GameData : Node2D {
             _money = value;
         }
     }
-    private int _money = 300;
+    [Save] private int _money = 300;
 
     public override void _Ready () {
         Instance = this;
