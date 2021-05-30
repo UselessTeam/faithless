@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using Utils;
 
-public class VillagePanel : Control {
+public class VillagePanel : CanvasLayer {
     [Export] NodePath boardPath;
     [Export] NodePath deckButtonPath;
     [Export] NodePath shopButtonPath;

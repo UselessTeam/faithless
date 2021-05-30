@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Godot;
 using Utils;
 
-public class BattleScene : MarginContainer {
+public class BattleScene : CanvasLayer {
     static BattleScene instance;
     public static BattleScene Instance {
         get {
@@ -361,7 +361,7 @@ public class BattleScene : MarginContainer {
         currentState = State.SealingYokai;
         await SealingCircle.RayCircle.Seal();
         SealingCircle.ZIndex = 0;
-        SealedScene.Win(GetTree());
+        SealedScene.Win(this);
     }
 
     //Debug

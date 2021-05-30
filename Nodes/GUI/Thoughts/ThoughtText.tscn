@@ -17,8 +17,8 @@ __meta__ = {
 }
 
 [node name="ShadowContainer" type="Control" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1600.0
+margin_bottom = 900.0
 
 [node name="Panel" type="TextureRect" parent="ShadowContainer"]
 material = SubResource( 1 )
@@ -35,8 +35,8 @@ __meta__ = {
 }
 
 [node name="Margin" type="MarginContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1600.0
+margin_bottom = 900.0
 custom_constants/margin_right = 24
 custom_constants/margin_top = 24
 custom_constants/margin_left = 24
@@ -45,8 +45,8 @@ custom_constants/margin_bottom = 24
 [node name="Text" type="RichTextLabel" parent="Margin"]
 margin_left = 24.0
 margin_top = 24.0
-margin_right = 1000.0
-margin_bottom = 576.0
+margin_right = 1576.0
+margin_bottom = 876.0
 custom_styles/normal = ExtResource( 5 )
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true

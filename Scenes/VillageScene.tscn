@@ -13,14 +13,8 @@
 [ext_resource path="res://Assets/Theme/Fonts/andika_20.tres" type="DynamicFont" id=12]
 [ext_resource path="res://Assets/Sprites/GUI/mon_icon.png" type="Texture" id=13]
 
-[node name="VillageScene" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="VillageScene" type="CanvasLayer"]
 script = ExtResource( 9 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
 boardPath = NodePath("Panel/VBox/Board")
 deckButtonPath = NodePath("Panel/VBox/HBoxContainer/Talisman")
 shopButtonPath = NodePath("Panel/VBox/HBoxContainer/Shop")
@@ -55,8 +49,8 @@ __meta__ = {
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 margin_left = 24.0
 margin_top = 24.0
-margin_right = 1256.0
-margin_bottom = 776.0
+margin_right = 1576.0
+margin_bottom = 876.0
 mouse_filter = 2
 size_flags_vertical = 3
 custom_constants/separation = 24
@@ -65,42 +59,42 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBox"]
-margin_right = 1232.0
+margin_right = 1552.0
 margin_bottom = 48.0
 theme = ExtResource( 6 )
 custom_constants/separation = 24
 alignment = 1
 
 [node name="Left" type="HBoxContainer" parent="Panel/VBox/HBoxContainer"]
-margin_right = 399.0
+margin_right = 559.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 alignment = 2
 
 [node name="Talisman" type="Button" parent="Panel/VBox/HBoxContainer"]
-margin_left = 423.0
-margin_right = 565.0
+margin_left = 583.0
+margin_right = 725.0
 margin_bottom = 48.0
 text = "Talismans"
 icon = ExtResource( 5 )
 
 [node name="Shop" type="Button" parent="Panel/VBox/HBoxContainer"]
-margin_left = 589.0
-margin_right = 688.0
+margin_left = 749.0
+margin_right = 848.0
 margin_bottom = 48.0
 text = "Shop"
 icon = ExtResource( 7 )
 
 [node name="Hunt" type="Button" parent="Panel/VBox/HBoxContainer"]
-margin_left = 712.0
-margin_right = 809.0
+margin_left = 872.0
+margin_right = 969.0
 margin_bottom = 48.0
 text = "Hunt"
 icon = ExtResource( 8 )
 
 [node name="Right" type="HBoxContainer" parent="Panel/VBox/HBoxContainer"]
-margin_left = 833.0
-margin_right = 1232.0
+margin_left = 993.0
+margin_right = 1552.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
@@ -110,17 +104,17 @@ __meta__ = {
 }
 
 [node name="Money" type="Label" parent="Panel/VBox/HBoxContainer/Right"]
-margin_left = 331.0
+margin_left = 491.0
 margin_top = 5.0
-margin_right = 375.0
+margin_right = 535.0
 margin_bottom = 42.0
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "999"
 
 [node name="Mon" type="TextureRect" parent="Panel/VBox/HBoxContainer/Right"]
-margin_left = 375.0
-margin_right = 399.0
+margin_left = 535.0
+margin_right = 559.0
 margin_bottom = 48.0
 texture = ExtResource( 13 )
 stretch_mode = 4
@@ -131,8 +125,8 @@ __meta__ = {
 [node name="Board" type="TabContainer" parent="Panel/VBox"]
 self_modulate = Color( 0, 0, 0, 0.498039 )
 margin_top = 72.0
-margin_right = 1232.0
-margin_bottom = 752.0
+margin_right = 1552.0
+margin_bottom = 852.0
 mouse_filter = 1
 size_flags_vertical = 3
 tabs_visible = false

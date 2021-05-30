@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Faithless"
-run/main_scene="res://Scenes/IntroductionScene.tscn"
+run/main_scene="res://GodotCommonUtils/Scenes/IntroMenu.tscn"
 boot_splash/image="res://Assets/Meta/cover.png"
 config/icon="res://Assets/Meta/icon.png"
 config/macos_native_icon="res://Assets/Meta/icon.icns"
@@ -26,8 +26,8 @@ SfxHandler="*res://Nodes/SFXHandler.tscn"
 
 [display]
 
-window/size/width=1280
-window/size/height=800
+window/size/width=1600
+window/size/height=900
 
 [input]
 
