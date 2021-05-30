@@ -368,9 +368,9 @@ public class BattleScene : CanvasLayer {
     //Debug
     public override void _Input (InputEvent _event) {
         if (OS.IsDebugBuild()) {
-            if (_event.IsActionPressed("win"))
+            if (_event.IsActionPressed("debug_win"))
                 Win();
-            if (OS.IsDebugBuild() && _event.IsActionPressed("draw"))
+            if (OS.IsDebugBuild() && _event.IsActionPressed("debug_draw"))
                 DrawCards(1);
         }
     }
