@@ -1,10 +1,19 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/GUI/SFXHandler.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Sounds/Effects/card_draw.wav" type="AudioStream" id=2]
 [ext_resource path="res://Assets/Sounds/Effects/place.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/Effects/bell_sound.wav" type="AudioStream" id=4]
 [ext_resource path="res://Assets/Sounds/Effects/card_grab.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Sounds/Jap Effects/yooo.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Sounds/Jap Effects/mini-taiko.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Sounds/Jap Effects/Suspense.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sounds/Jap Effects/shamisen.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Sounds/Jap Effects/funny-taiko.wav" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Sounds/Jap Effects/yo.wav" type="AudioStream" id=11]
+[ext_resource path="res://Assets/Sounds/Jap Effects/big-taiko.wav" type="AudioStream" id=12]
+[ext_resource path="res://Assets/Sounds/Jap Effects/wow.wav" type="AudioStream" id=13]
+[ext_resource path="res://Assets/Sounds/Jap Effects/moyen-taiko.wav" type="AudioStream" id=14]
 
 [node name="SFXHandler" type="AudioStreamPlayer"]
 volume_db = -10.0
@@ -12,6 +21,7 @@ autoplay = true
 script = ExtResource( 1 )
 battleMusicPath = "res://Assets/Sounds/Musics/the_stone_prison.ogg"
 villageMusicPath = "res://Assets/Sounds/Musics/dark_world.ogg"
+titleScreenMusicPath = "res://Assets/Sounds/Musics/Scorched earth.wav"
 
 [node name="DrawGrab" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
@@ -24,3 +34,38 @@ stream = ExtResource( 3 )
 
 [node name="GenericEffect" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+volume_db = -10.651
+
+[node name="TaikoSmall" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -15.036
+
+[node name="TaikoMedium" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = -15.0
+
+[node name="TaikoLarge" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+volume_db = -15.0
+
+[node name="TaikoFunky" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = -5.0
+
+[node name="YoLong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -5.0
+
+[node name="Yo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="Wow" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+
+[node name="SuspensePercussion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -15.0
+
+[node name="Shamisen" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.0

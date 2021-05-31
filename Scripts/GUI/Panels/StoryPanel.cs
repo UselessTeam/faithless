@@ -10,6 +10,8 @@ public class StoryPanel : ColorRect {
     SmartText text;
     public override void _Ready () {
         text = GetNode<SmartText>(textPath);
+        SFXHandler.Instance.Change(GameData.GameState.None);
+        SFXHandler.PlaySFX("Shamisen");
     }
 
     float progress;

@@ -7,6 +7,8 @@ public class SFXHandler : AudioStreamPlayer {
     public static SFXHandler Instance;
     [Export(PropertyHint.File)] string battleMusicPath;
     [Export(PropertyHint.File)] string villageMusicPath;
+    [Export(PropertyHint.File)] string titleScreenMusicPath;
+    AudioStream titleScreenMusic;
     AudioStream battleMusic;
     AudioStream villageMusic;
 
@@ -17,15 +19,22 @@ public class SFXHandler : AudioStreamPlayer {
         // GameData.Instance.Connect(nameof(GameData.ChangeGameState), this, nameof(Change));
         battleMusic = ResourceLoader.Load<AudioStream>(battleMusicPath);
         villageMusic = ResourceLoader.Load<AudioStream>(villageMusicPath);
+        titleScreenMusic = ResourceLoader.Load<AudioStream>(titleScreenMusicPath);
 
         SoundHolder = GetChildren().Cast<AudioStreamPlayer>().ToDictionary((player) => player.Name);
+
+        Change(GameData.GameState.TitleScreen);
     }
 
     public void Change (GameData.GameState state) {
-        GD.Print("State: " + state.ToString());
         switch (state) {
             case GameData.GameState.Battle:
                 Stream = battleMusic;
+                Play();
+                Playing = true;
+                break;
+            case GameData.GameState.TitleScreen:
+                Stream = titleScreenMusic;
                 Play();
                 Playing = true;
                 break;
@@ -33,6 +42,9 @@ public class SFXHandler : AudioStreamPlayer {
                 Stream = villageMusic;
                 Play();
                 Playing = true;
+                break;
+            case GameData.GameState.None:
+                Playing = false;
                 break;
         }
     }

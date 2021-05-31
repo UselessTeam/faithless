@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Suspense.wav-62442abb7ceb852e9d83fed3cac6833b.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Jap Effects/Suspense.wav"
+dest_files=[ "res://.import/Suspense.wav-62442abb7ceb852e9d83fed3cac6833b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

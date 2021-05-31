@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Utils;
 
@@ -8,13 +9,15 @@ public class GameData : Node2D, ISaveable {
     [Signal] public delegate void InstanceLoaded (int value);
 
     public enum GameState {
+        None,
+        TitleScreen,
         Narration,
         Village,
         Battle
     }
 
     [Signal] public delegate void ChangeGameState (GameState value);
-    private GameState _state = GameState.Narration;
+    private GameState _state = GameState.TitleScreen;
     public GameState State {
         get => _state;
         set {

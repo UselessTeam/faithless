@@ -6,29 +6,16 @@ using Godot;
 
 public enum CardId {
     None,
+    BasicEarth,
     BasicFire,
     BasicWater,
     BasicWood,
-    BasicEarth,
     BasicMetal,
 
-    Flood,
-    Watermill,
-    HotSpring,
-    Tsunami,
-    WashAway,
-
-    Recycle,
-    Forge,
-    SteelTools,
-    Stronghold,
-    Rust,
-
-    PineCone,
-    Abundance,
-    Roots,
-    Plantation,
-    RiceField,
+    Drought,
+    Landslide,
+    Carving,
+    Tectonic,
 
     Eruption,
     Combustion,
@@ -36,19 +23,31 @@ public enum CardId {
     FireSpread,
     Cooking,
 
-    Drought,
-    Landslide,
-    Carving,
-    Tectonic,
+    Flood,
+    Watermill,
+    HotSpring,
+    Tsunami,
+    WashAway,
+
+    PineCone,
+    Abundance,
+    Roots,
+    Plantation,
+    RiceField,
+
+    Recycle,
+    Forge,
+    SteelTools,
+    Stronghold,
+    Rust,
     TOTAL, // Leave at the end
 
     // Cards created in combat
+    FreeEarth,
     FreeFire,
     FreeWater,
     FreeWood,
-    FreeEarth,
     FreeMetal,
-
 }
 
 public static class CardEffectHelper {

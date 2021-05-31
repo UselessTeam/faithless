@@ -221,9 +221,10 @@ public class BattleScene : CanvasLayer {
         CardData card = visual.Card.Data();
         //Use the card
         if ((Ki >= card.Cost || NextCardFree) &&
-            CardData.CheckPlayable(card.Id, id)) { //Check if we can play the card
+                    CardData.CheckPlayable(card.Id, id)) { //Check if we can play the card
             Ki -= (NextCardFree) ? (short) 0 : (short) card.Cost;
             NextCardFree = false;
+            SFXHandler.PlaySFX(card.SFX);
             await card.Use(id);
             // Discard the Card
             if (IsInstanceValid(visual) && !visual.IsDisabled) {

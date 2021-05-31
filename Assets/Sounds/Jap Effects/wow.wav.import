@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/wow.wav-fad63c9bfe730f8991ec3f3706d0ef9e.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Jap Effects/wow.wav"
+dest_files=[ "res://.import/wow.wav-fad63c9bfe730f8991ec3f3706d0ef9e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

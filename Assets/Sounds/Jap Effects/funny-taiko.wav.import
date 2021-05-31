@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/funny-taiko.wav-3855433cb7b33c4f69dcd2ae5c9933ab.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Jap Effects/funny-taiko.wav"
+dest_files=[ "res://.import/funny-taiko.wav-3855433cb7b33c4f69dcd2ae5c9933ab.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/yooo.mp3-ae14a11e7948d669af379a42c699a7ad.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sounds/Jap Effects/yooo.mp3"
+dest_files=[ "res://.import/yooo.mp3-ae14a11e7948d669af379a42c699a7ad.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Gates of the dark manor.wav-ab0896979de034964e7d13c2ebd90c78.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Musics/Gates of the dark manor.wav"
+dest_files=[ "res://.import/Gates of the dark manor.wav-ab0896979de034964e7d13c2ebd90c78.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

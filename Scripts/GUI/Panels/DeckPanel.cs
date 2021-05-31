@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Utils;
 
@@ -24,6 +25,7 @@ public class DeckPanel : MarginContainer {
 
     public void ShowDeck () {
         CloseCard();
+        GameData.Instance.Deck = GameData.Instance.Deck.OrderBy(card => (int) card).ToList();
         gridField.QueueFreeChildren();
         int index = 0;
         foreach (CardId id in GameData.Instance.Deck) {
