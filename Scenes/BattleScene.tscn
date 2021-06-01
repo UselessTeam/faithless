@@ -280,12 +280,6 @@ position = Vector2( 0, 151 )
 
 [node name="YokaiSprites" parent="Holder/Top/Circle/Center/Ping" instance=ExtResource( 18 )]
 
-[node name="Hitotsumekozo" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="0"]
-frame = 5
-
-[node name="Chochi-No-Bake" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="2"]
-frame = 6
-
 [node name="Debug" type="ColorRect" parent="Holder/Top/Circle"]
 visible = false
 margin_right = 40.0
@@ -558,12 +552,12 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="Holder/Bottom/HBox/BottomLeft/Discard/Margin"]
-margin_right = 295.0
+margin_right = 294.0
 margin_bottom = 66.0
 color = Color( 1, 1, 1, 0.152941 )
 
 [node name="Margin" type="MarginContainer" parent="Holder/Bottom/HBox/BottomLeft/Discard/Margin"]
-margin_right = 295.0
+margin_right = 294.0
 margin_bottom = 66.0
 custom_constants/margin_right = 14
 custom_constants/margin_top = 12

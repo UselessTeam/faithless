@@ -21,6 +21,9 @@ public class YokaiAI {
         }
     }
 
+    //Card effects
+    public bool Incinerate = false;
+
     public async Task PlayTurn () {
         int i = 0;
         foreach (var action in ActionPlan) {
@@ -52,7 +55,7 @@ public class YokaiAI {
                     1 => 0,
                     _ => 1,
                 };
-                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) actionCount += level;
+                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) actionCount += 1;
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 2) actionCount += 1;
                 actionCount -= StaggerLevel;
 
@@ -112,6 +115,7 @@ public class YokaiAI {
 
         }
         staggerLevel = 0;
+        Incinerate = false;
         BattleScene.SealingCircle.DisplayActionPlan(ActionPlan);
     }
 

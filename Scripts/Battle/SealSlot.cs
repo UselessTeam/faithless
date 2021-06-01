@@ -61,10 +61,10 @@ public class SealSlot : Control {
         MyTween.Start();
     }
 
-    public void StartGlow() {
+    public void StartGlow () {
         Glow.Show();
     }
-    public void StopGlow() {
+    public void StopGlow () {
         Glow.Hide();
     }
 

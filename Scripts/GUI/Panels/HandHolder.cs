@@ -173,10 +173,6 @@ public class HandHolder : Container {
         Selected = visual;
         Selected.Pull(-50f);
 
-        if (Selected.Card.Data().Cost > BattleScene.Ki) {
-            GD.Print("Not enough Chi"); //Might be usefull?
-        }
-
         BattleScene.Instance.SealGlow(visual.Card.Data().Target);
     }
 

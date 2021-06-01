@@ -27,14 +27,14 @@ public class YokaiData {
             Id = YokaiId.Kasaobake,
             Name = "Kasa-Obake",
             Difficulty  = "MEDIUM",
-            Reward = 200,
+            Reward = 250,
             SealSlots = 8,
         },
         new YokaiData(){
             Id = YokaiId.Chochinobake,
             Name = "Chochi-No-Bake",
             Difficulty  = "HARD",
-            Reward = 300,
+            Reward = 500,
             SealSlots = 10,
 
         },
@@ -42,7 +42,7 @@ public class YokaiData {
             Id = YokaiId.Jorogumo,
             Name = "Joro-Gumo",
             Difficulty  = "LEGENDARY",
-            Reward = 600,
+            Reward = 1000,
             SealSlots = 12
         },
      }).ToDictionary((yokai) => yokai?.Id ?? YokaiId.None);

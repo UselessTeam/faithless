@@ -41,7 +41,10 @@ public static class YokaiActionExtention {
             case YokaiAction.Remove:
                 if (BattleScene.SealSlots[i] == Element.Water) {
                     BattleScene.Instance.LogPanel.Log($"The Yokai tries to remove a [water-seal], but it turns into an [earth-seal]");
-                    await BattleScene.Instance.SwitchSeal(Element.Earth, i);
+                    await BattleScene.Instance.PlaceSeal(Element.Earth, i);
+                } else if (yokai.Incinerate && BattleScene.SealSlots[i] == Element.Fire) {
+                    yokai.StaggerLevel += 1;
+                    await BattleScene.Instance.RemoveSeal(i);
                 } else
                     await BattleScene.Instance.RemoveSeal(i);
                 break;
@@ -52,7 +55,10 @@ public static class YokaiActionExtention {
         if (BattleScene.SealSlots[i] == Element.Metal) {
             BattleScene.Instance.LogPanel.Log($"Your [metal-seal] staggers the Yokai, and turns into an [earth-seal]");
             yokai.StaggerLevel += 1;
-            await BattleScene.Instance.SwitchSeal(Element.Earth, i);
+            await BattleScene.Instance.PlaceSeal(Element.Earth, i);
+            return false;
+        } else if (yokai.Incinerate && BattleScene.SealSlots[i] == Element.Fire) {
+            yokai.StaggerLevel += 1;
             return false;
         } else if (BattleScene.SealSlots[i] != Element.None) {
             return false;

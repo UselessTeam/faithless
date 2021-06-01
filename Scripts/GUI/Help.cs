@@ -60,8 +60,13 @@ Once you have obtained 4 of them, they are consumed and a [wood-seal] is placed 
 {"stagger",
 @"Staggered
 
-Yokai will become staggered if they attack a [metal-seal].
-If so, they will attack less their next turn
+A Yokai will be staggered if they attack a [metal-seal].
+If so, they will attack less on their next turn
+"},
+{"push",
+@"Push a Seal
+
+When a Seal is pushed, it pushes all subsequent Seals in the same direction.  
 "}
 };
 }

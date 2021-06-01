@@ -96,7 +96,8 @@ public class BattleScene : CanvasLayer {
     State currentState = State.EnemyTurn;
 
     ///////Battle effects
-    public bool NextCardFree = false;
+    public Dictionary<Element, bool> NextCardFree = new List<Element>() { Element.Fire, Element.Water, Element.Wood, Element.Earth, Element.Metal, Element.None }
+                .ToDictionary(element => element, element => false);
     public short HarvestBonus = 0;
 
     /////Initialization
@@ -157,7 +158,7 @@ public class BattleScene : CanvasLayer {
         BattleScene.Instance.LogPanel.Separate();
         Ki = GameData.Instance.MaxKi;
         await DrawCards(GameData.Instance.CardsPerTurn);
-        await StartTurnEffects();
+        await TriggerFireSpread();
         currentState = State.PlayerTurn;
     }
 
@@ -165,7 +166,7 @@ public class BattleScene : CanvasLayer {
         if (currentState != State.PlayerTurn) return;
         currentState = State.EnemyTurn;
         await Hand.DiscardAll();
-        await EndTurnEffects();
+        await TriggerHarvest();
         await YokaiAI.PlayTurn();
         StartPlayerTurn();
     }
@@ -226,10 +227,14 @@ public class BattleScene : CanvasLayer {
         CardVisual visual = Hand.Selected;
         CardData card = visual.Card.Data();
         //Use the card
-        if ((Ki >= card.Cost || NextCardFree) &&
+        if ((Ki >= card.Cost || NextCardFree[card.Element] || NextCardFree[Element.None]) &&
                     CardData.CheckPlayable(card.Id, id)) { //Check if we can play the card
-            Ki -= (NextCardFree) ? (short) 0 : (short) card.Cost;
-            NextCardFree = false;
+            if (NextCardFree[card.Element])
+                NextCardFree[card.Element] = false;
+            else if (NextCardFree[Element.None])
+                NextCardFree[Element.None] = false;
+            else
+                Ki -= (NextCardFree[card.Element]) ? (short) 0 : (short) card.Cost;
             SFXHandler.PlaySFX(card.SFX);
             await card.Use(id);
             // Discard the Card
@@ -271,7 +276,7 @@ public class BattleScene : CanvasLayer {
         }
     }
 
-    public async Task SwitchSeal (Element element, int location) {
+    public async Task PlaceSeal (Element element, int location) {
         bool isEmpty = SealSlots[location] == Element.None;
         SealSlots[location] = element;
         await SealingCircle.AppearSeal(location);
@@ -279,30 +284,11 @@ public class BattleScene : CanvasLayer {
         if (!SealSlots.Contains(Element.None) && YokaiAI.CheckWinCondition()) {
             Win();
         }
-    }
 
-    public async Task PlaceSeal (Element element, int location) {
-        var OldElement = SealSlots[location];
-
-        List<Task> tasks = new List<Task>();
-        tasks.Add(SwitchSeal(element, location));
-
-        if (element == Element.Earth) {
-            int sealCount = BattleScene.SealSlots.Count;
-            int locationBefore = (location + sealCount - 1) % sealCount;
-            int locationAfter = (location + 1) % sealCount;
-
-            tasks.Add(SwapSeals(locationBefore, locationAfter));
-        }
-        foreach (Task task in tasks)
-            await task;
-
-        SealingCircle.DisplaySeals(); // Sanity check, just in case
-
-        if (element == Element.Fire && OldElement == Element.Wood)
-            Ki += 1;
-        if (element == Element.Wood && OldElement == Element.Water)
-            await DrawCards(1);
+        // if (element == Element.Fire && OldElement == Element.Wood)
+        //     Ki += 1;
+        // if (element == Element.Wood && OldElement == Element.Water)
+        //     await DrawCards(1);
     }
 
     public async Task SwapSeals (int location1, int location2) {
@@ -322,7 +308,7 @@ public class BattleScene : CanvasLayer {
         SealingCircle.DisplaySeals();
     }
 
-    async public Task StartTurnEffects () {
+    async public Task TriggerFireSpread () {
         List<int> BurnSeals = new List<int>();
         for (int i = 0 ; i < SealSlots.Count ; i++) {
             if (SealSlots[i] == Element.Wood &&
@@ -334,12 +320,12 @@ public class BattleScene : CanvasLayer {
         foreach (int i in BurnSeals) {
             LogPanel.Log($"Your [wood-seal] burns, you gain 1 [ki]");
             Ki += 1;
-            await SwitchSeal(Element.Fire, i);
+            await PlaceSeal(Element.Fire, i);
             SealingCircle.DisplaySeals();
         }
     }
 
-    async public Task EndTurnEffects () {
+    async public Task TriggerHarvest () {
         for (int i = 0 ; i < SealSlots.Count ; i++) {
             if (SealSlots[i] == Element.Wood) {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water ||

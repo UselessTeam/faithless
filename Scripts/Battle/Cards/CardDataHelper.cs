@@ -14,17 +14,21 @@ public enum CardId {
 
     Drought,
     Landslide,
-    Carving,
+    Transport,
+    Volcano,
     Tectonic,
+    Earthquake,
 
-    Eruption,
-    Combustion,
-    Phoenix,
-    FireSpread,
+    Armaments,
+    Furnace,
+    //Phoenix,
     Cooking,
+    FireSpread,
+    Incineration,
 
     Flood,
-    Watermill,
+    //Watermill,
+    Irrigation,
     HotSpring,
     Tsunami,
     WashAway,
@@ -35,7 +39,7 @@ public enum CardId {
     Plantation,
     RiceField,
 
-    Recycle,
+    Smelt,
     Forge,
     SteelTools,
     Stronghold,
@@ -64,8 +68,9 @@ public static class CardEffectHelper {
         return new Tuple<int, int>(i, j);
     }
 
-    public static int NextLocation (int loc) { return (loc + 1) % BattleScene.SealCount; }
-    public static int PrevLocation (int loc) { return (loc + BattleScene.SealCount - 1) % BattleScene.SealCount; }
+    public static int NextLocation (this int loc) { return (loc + 1) % BattleScene.SealCount; }
+    public static int PrevLocation (this int loc) { return (loc + BattleScene.SealCount - 1) % BattleScene.SealCount; }
+    public static int AdjacentLocation (this int loc, bool clockwise) { return (clockwise) ? NextLocation(loc) : PrevLocation(loc); }
 
     public static List<int> GetNonEmptySeals () {
         var nonempty = new List<int>();
@@ -83,6 +88,36 @@ public static class CardEffectHelper {
         return count;
     }
 
+    public static Task Push (int useLocation, bool clockwise, bool forcePush) {
+        if (BattleScene.SealSlots[useLocation] == Element.None)
+            return Task.Delay(0); //Nothing to push empty
+
+        int pushUntil = AdjacentLocation(useLocation, clockwise);
+        while (BattleScene.SealSlots[pushUntil] != Element.None && pushUntil != useLocation) {
+            pushUntil = AdjacentLocation(useLocation, clockwise);
+        }
+
+        if (!forcePush && pushUntil == useLocation)
+            return Task.Delay(0); //Don't push if the board is already full
+
+        var selectedElement = BattleScene.SealSlots[useLocation];
+        List<Task> tasks = new List<Task>();
+        int i = pushUntil;
+        while (AdjacentLocation(i, !clockwise) != useLocation) {
+            int j = AdjacentLocation(i, !clockwise);
+            tasks.Add(BattleScene.SealingCircle.MoveSeal(j, i, BattleScene.SealSlots[j]));
+            BattleScene.SealSlots[i] = BattleScene.SealSlots[j];
+            i = j;
+        }
+
+        var location = AdjacentLocation(useLocation, !clockwise);
+        tasks.Add(BattleScene.SealingCircle.MoveSeal(useLocation, location, selectedElement));
+        BattleScene.SealSlots[location] = selectedElement;
+        if (pushUntil != useLocation)
+            BattleScene.SealSlots[useLocation] = Element.None;
+
+        return Task.WhenAll(tasks);
+    }
 }
 
 public static class CardIdExtensions {
@@ -101,47 +136,5 @@ public static class ElementExtensions {
         Element.Metal => "[metal-seal]\n\nWhen a Yokai attacks this Seal, he becomes [?stagger]staggered[/?] for the next turn, and this Seal turns into an [earth-seal]",
         Element.Earth => "[earth-seal]\n\nThis has no particular effect by itself",
         _ => "",
-    };
-}
-
-public class CardTarget {
-    public string TargetDescription;
-    public Func<int, bool> CheckTargetableFunc = (int id) => { return false; };
-
-    public static CardTarget Yokai = new CardTarget {
-        TargetDescription = "Yokai",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? true : false; }
-    };
-    public static CardTarget AnySeal = new CardTarget {
-        TargetDescription = "Any Location",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : true; }
-    };
-    public static CardTarget EmptySeal = new CardTarget {
-        TargetDescription = "Empty Seal Location",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : BattleScene.SealSlots[id] == Element.None; }
-    };
-    public static CardTarget NonEmptySeal = new CardTarget {
-        TargetDescription = "Any Non-Empty Seal",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : BattleScene.SealSlots[id] != Element.None; }
-    };
-    public static CardTarget FireSeal = new CardTarget {
-        TargetDescription = "[fire-seal]",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : BattleScene.SealSlots[id] == Element.Fire; }
-    };
-    public static CardTarget WaterSeal = new CardTarget {
-        TargetDescription = "[water-seal]",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : BattleScene.SealSlots[id] == Element.Water; }
-    };
-    public static CardTarget WoodSeal = new CardTarget {
-        TargetDescription = "[wood-seal]",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : BattleScene.SealSlots[id] == Element.Wood; }
-    };
-    public static CardTarget EarthSeal = new CardTarget {
-        TargetDescription = "[earth-seal]",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : BattleScene.SealSlots[id] == Element.Earth; }
-    };
-    public static CardTarget MetalSeal = new CardTarget {
-        TargetDescription = "[metal-seal]",
-        CheckTargetableFunc = (int id) => { return (id == -1) ? false : BattleScene.SealSlots[id] == Element.Metal; }
     };
 }
