@@ -13,11 +13,11 @@ public class YokaiAI {
     List<YokaiAction> ActionPlan;
     int TurnCount = 0;
 
-    bool isStaggered = false;
-    public bool IsStaggered {
-        get { return isStaggered; }
+    int staggerLevel = 0;
+    public int StaggerLevel {
+        get { return staggerLevel; }
         set {
-            isStaggered = value;  //Cool Staggered effect}
+            staggerLevel = value;  //Cool Staggered effect}
         }
     }
 
@@ -47,20 +47,22 @@ public class YokaiAI {
                     YokaiId.Chochinobake => 2,
                     _ => 0
                 };
-                if (IsStaggered)
-                    level -= 1;
-                ActionPlan[0] = level switch {
-                    0 => YokaiAction.None,
-                    1 => YokaiAction.Attack,
-                    _ => YokaiAction.AttackOrRemove,
-                };
                 actionCount = level switch {
                     0 => 0,
                     1 => 0,
                     _ => 1,
                 };
-                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) actionCount += 1;
+                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) actionCount += level;
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 2) actionCount += 1;
+                actionCount -= StaggerLevel;
+
+                if (actionCount < 0) level = Mathf.Max(0, level + actionCount);
+                ActionPlan[0] = level switch {
+                    0 => YokaiAction.None,
+                    1 => YokaiAction.Attack,
+                    _ => YokaiAction.AttackOrRemove,
+                };
+
                 actionCount = Math.Min(actionCount,
                                           CardEffectHelper.NonEmptySealsCount(1, BattleScene.SealCount)); //Prevent infinite loop
                 var nonempty = CardEffectHelper.GetNonEmptySeals();
@@ -81,29 +83,36 @@ public class YokaiAI {
                     _ => 0
                 };
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) level += 1;
+                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 3) level += 1;
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 2) level += 1;
                 actionCount = level switch {
                     0 => 1,
                     1 => 2,
                     2 => (Yokai == YokaiId.Kasaobake) ? 2 : 3,
                     3 => 4,
+                    4 => 6,
                     _ => 6,
                 };
-
+                int nAttackRemove = level switch {
+                    0 => 1,
+                    1 => 1,
+                    2 => 2,
+                    3 => 2,
+                    4 => 3,
+                    _ => 4,
+                };
+                nAttackRemove -= staggerLevel;
                 action = (TurnCount % 2 == 0) ? YokaiAction.Attack : YokaiAction.Remove;
-
                 location = RNG.rng.Next(0, BattleScene.SealCount / actionCount);
-                for (int i = 0 ; i < actionCount ; i++)
+                for (int i = 0 ; i < actionCount - staggerLevel ; i++)
                     ActionPlan[location + i * BattleScene.SealCount / actionCount] = action;
-                if (!IsStaggered)
+                for (int i = 0 ; i < nAttackRemove ; i++) // Upgrade some of the previous actions into AttackAndRemove
                     ActionPlan[location + RNG.rng.Next(0, actionCount) * BattleScene.SealCount / actionCount] = YokaiAction.AttackOrRemove;
-
                 break;
 
         }
-        isStaggered = false;
+        staggerLevel = 0;
         BattleScene.SealingCircle.DisplayActionPlan(ActionPlan);
-        BattleScene.Instance.StartPlayerTurn();
     }
 
     public bool CheckWinCondition () {

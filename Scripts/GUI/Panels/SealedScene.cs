@@ -23,6 +23,9 @@ public class SealedScene : ColorRect {
         GameData.Instance.yokai = YokaiId.None;
         GetNode<Label>(moneyPath).Text = $"+{money}";
         GameData.Instance.Money += money;
+
+        Global.SaveGame();
+
         CardId card = CardData.AllSpecial.Random();
         GetNode<CardVisual>(cardPath).ShowCard(card.Data());
         GetNode<CardVisual>(cardPath).IsDisabled = true;
@@ -33,8 +36,6 @@ public class SealedScene : ColorRect {
 
     public void Continue () {
         GetTree().ChangeScene("res://Scenes/VillageScene.tscn");
-        string save = Utils.Saver.SaveSingle(GameData.Instance);
-        FileEncoder.Write(save);
 
         this.QueueFree();
     }
@@ -42,5 +43,6 @@ public class SealedScene : ColorRect {
     public void AddToDeck (CardId card) {
         GetNode<Button>(addCardbuttonPath).Disabled = true;
         GameData.Instance.Deck.Add(card);
+        Global.SaveGame();
     }
 }

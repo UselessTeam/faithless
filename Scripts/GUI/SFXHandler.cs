@@ -22,8 +22,6 @@ public class SFXHandler : AudioStreamPlayer {
         titleScreenMusic = ResourceLoader.Load<AudioStream>(titleScreenMusicPath);
 
         SoundHolder = GetChildren().Cast<AudioStreamPlayer>().ToDictionary((player) => player.Name);
-
-        Change(GameData.GameState.TitleScreen);
     }
 
     public void Change (GameData.GameState state) {

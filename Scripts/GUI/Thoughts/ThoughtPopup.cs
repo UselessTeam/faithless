@@ -16,6 +16,11 @@ public class ThoughtPopup : Popup {
         text.BbcodeText = $"[center]{BB.Format(Help.Explanations[key])}[/center]";
     }
 
+    public void OpenCustomMessage (string message) {
+        PopupCentered();
+        text.BbcodeText = $"[center]{BB.Format(message)}[/center]";
+    }
+
     public override void _GuiInput (InputEvent _event) {
         if (InputHelper.IsClick(_event)) {
             Hide();

@@ -69,7 +69,7 @@ public class BattleScene : CanvasLayer {
             Instance.hpField.Text = $"{value} / {GameData.Instance.MaxHealth}";
             if (Health <= 0) {
                 SealingCircle.ZIndex = 0;
-                LostScene.Lose(Instance.GetTree());
+                LostScene.Lose(Instance);
             }
         }
     }
@@ -132,7 +132,8 @@ public class BattleScene : CanvasLayer {
 
         DisplayDeckAndDiscard();
         YokaiAI = new YokaiAI(yokai.Id);
-        YokaiAI.PlanNextTurn(); // This function will start the player's turn once it's done
+        YokaiAI.PlanNextTurn();
+        BattleScene.Instance.StartPlayerTurn();
     }
 
     ///////////////////
@@ -163,6 +164,7 @@ public class BattleScene : CanvasLayer {
         await Hand.DiscardAll();
         await EndTurnEffects();
         await YokaiAI.PlayTurn();
+        StartPlayerTurn();
     }
 
     public bool IsBusy () {
@@ -284,16 +286,7 @@ public class BattleScene : CanvasLayer {
             int locationBefore = (location + sealCount - 1) % sealCount;
             int locationAfter = (location + 1) % sealCount;
 
-            // Act the switch
-            var swapElm = BattleScene.SealSlots[locationBefore];
-            BattleScene.SealSlots[locationBefore] = BattleScene.SealSlots[locationAfter];
-            BattleScene.SealSlots[locationAfter] = swapElm;
-
-            // Display the Switch
-            if (BattleScene.SealSlots[locationAfter] != Element.None)
-                tasks.Add(BattleScene.SealingCircle.MoveSeal(locationBefore, locationAfter, BattleScene.SealSlots[locationAfter]));
-            if (BattleScene.SealSlots[locationBefore] != Element.None)
-                tasks.Add(BattleScene.SealingCircle.MoveSeal(locationAfter, locationBefore, BattleScene.SealSlots[locationBefore]));
+            tasks.Add(SwapSeals(locationBefore, locationAfter));
         }
         foreach (Task task in tasks)
             await task;
@@ -304,7 +297,23 @@ public class BattleScene : CanvasLayer {
             Ki += 1;
         if (element == Element.Wood && OldElement == Element.Water)
             await DrawCards(1);
+    }
 
+    public async Task SwapSeals (int location1, int location2) {
+        List<Task> tasks = new List<Task>();
+        // Act the switch
+        var swapElm = BattleScene.SealSlots[location1];
+        BattleScene.SealSlots[location1] = BattleScene.SealSlots[location2];
+        BattleScene.SealSlots[location2] = swapElm;
+
+        // Display the Switch
+        if (BattleScene.SealSlots[location2] != Element.None)
+            tasks.Add(BattleScene.SealingCircle.MoveSeal(location1, location2, BattleScene.SealSlots[location2]));
+        if (BattleScene.SealSlots[location1] != Element.None)
+            tasks.Add(BattleScene.SealingCircle.MoveSeal(location2, location1, BattleScene.SealSlots[location1]));
+        foreach (Task task in tasks)
+            await task;
+        SealingCircle.DisplaySeals();
     }
 
     async public Task StartTurnEffects () {
@@ -371,8 +380,10 @@ public class BattleScene : CanvasLayer {
         if (OS.IsDebugBuild()) {
             if (_event.IsActionPressed("debug_win"))
                 Win();
-            if (OS.IsDebugBuild() && _event.IsActionPressed("debug_draw"))
+            if (_event.IsActionPressed("debug_draw"))
                 DrawCards(1);
+            if (_event.IsActionPressed("debug_ki"))
+                Ki += 1;
         }
     }
 }

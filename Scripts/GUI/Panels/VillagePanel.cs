@@ -13,7 +13,16 @@ public class VillagePanel : CanvasLayer {
     TabContainer board;
     Label money;
     public override void _Ready () {
-        string save = FileEncoder.Read();
+        string save = "";
+        try {
+            save = FileEncoder.Read();
+        } catch (Utils.WrongVersionException e) {
+            // GetNode<PopupMessage>("PopupMessage").ShowMessage(e.GetMessage(), () => GetTree().ChangeScene("res://Scenes/TitleScreen.tscn"));
+            ThoughtPopup.Instance.OpenCustomMessage(e.GetMessage() + "\n\n[url=~title]Back to the title screen[/url]");
+            var callback = Callback.Connect(ThoughtPopup.Instance, "popup_hide", () => GetTree().ChangeScene("res://Scenes/TitleScreen.tscn"));
+            callback.CallOnce = true;
+            return;
+        }
         Loader load = new Loader();
         GameData.Instance = (GameData) load.FromData(save);
 

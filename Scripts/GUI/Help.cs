@@ -15,6 +15,8 @@ public static class Help {
 @"Help
 
 Seal the Yokai, earn Mon ([mon] coins), acquire new Talismans, and bright back peace
+
+[?save-quit]Save and quit[/?]
 "},
 {"retry",
 @"Give Up
@@ -30,6 +32,12 @@ Are you sure you want to give up?
 Surround the Yokai by seals to seal it.
 Hover a talisman to see its effect.
 Select a talisman and a seal-slot to activate the effect.
+"},
+{"save-quit",
+@"Would you like to save and quit the game?
+
+[url=~title]Save and quit[/url]
+[?help-village]Cancel[/?]
 "},
 {"ignite",
 @"Ignition
@@ -55,5 +63,5 @@ Once you have obtained 4 of them, they are consumed and a [wood-seal] is placed 
 Yokai will become staggered if they attack a [metal-seal].
 If so, they will attack less their next turn
 "}
-    };
+};
 }

@@ -21,16 +21,16 @@ anchor_right = 0.8
 anchor_bottom = 0.8
 
 [node name="ShadowContainer" parent="ThoughtPopup/ThoughtText" index="0"]
-margin_right = 768.0
-margin_bottom = 480.0
+margin_right = 960.0
+margin_bottom = 540.0
 
 [node name="Margin" parent="ThoughtPopup/ThoughtText" index="1"]
-margin_right = 768.0
-margin_bottom = 480.0
+margin_right = 960.0
+margin_bottom = 540.0
 
 [node name="Text" parent="ThoughtPopup/ThoughtText/Margin" index="0"]
-margin_right = 744.0
-margin_bottom = 456.0
+margin_right = 936.0
+margin_bottom = 516.0
 bbcode_text = "[font=res://Assets/Theme/Fonts/riiltf_22.tres]火[/font]
 
 [Fire] At the beginning of your turn, adjacent Wood are turned into Fire and make you draw a card"

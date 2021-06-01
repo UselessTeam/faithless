@@ -51,7 +51,7 @@ public static class YokaiActionExtention {
     static async Task<bool> AttackOn (this YokaiAI yokai, int i) {
         if (BattleScene.SealSlots[i] == Element.Metal) {
             BattleScene.Instance.LogPanel.Log($"Your [metal-seal] staggers the Yokai, and turns into an [earth-seal]");
-            yokai.IsStaggered = true;
+            yokai.StaggerLevel += 1;
             await BattleScene.Instance.SwitchSeal(Element.Earth, i);
             return false;
         } else if (BattleScene.SealSlots[i] != Element.None) {
