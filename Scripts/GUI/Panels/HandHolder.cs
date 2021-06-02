@@ -142,9 +142,11 @@ public class HandHolder : Container {
         visual.QueueFree();
         BattleScene.Instance.DisplayDeckAndDiscard();
     }
-    public async Task DiscardAll () {
+    public async Task DiscardAll (bool excludeSelected = false) {
         List<Task> tasks = new List<Task>();
         foreach (CardVisual card in visuals.ToList()) {
+            if (excludeSelected && card == Selected)
+                continue;
             tasks.Add(DiscardCard(card));
         }
         foreach (Task task in tasks) {

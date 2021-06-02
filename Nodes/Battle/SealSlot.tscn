@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Sprites/Talismans/seals.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Battle/SealSlot.cs" type="Script" id=2]
@@ -16,7 +16,11 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 200, 600, 200, 200 )
 
+[sub_resource type="CircleShape2D" id=3]
+radius = 37.9333
+
 [node name="SealSlot" type="Control"]
+rect_scale = Vector2( 0.8, 0.8 )
 focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -35,6 +39,7 @@ margin_left = -40.0
 margin_top = -40.0
 margin_right = 40.0
 margin_bottom = 40.0
+mouse_filter = 2
 texture = SubResource( 1 )
 expand = true
 stretch_mode = 6
@@ -48,6 +53,7 @@ margin_top = -40.0
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 80, 80 )
+mouse_filter = 2
 texture = SubResource( 2 )
 expand = true
 stretch_mode = 6
@@ -62,9 +68,76 @@ margin_top = -59.0
 margin_right = 59.0
 margin_bottom = 61.0
 rect_min_size = Vector2( 80, 80 )
+mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StaticBody2D" type="Area2D" parent="."]
+scale = Vector2( 1, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+scale = Vector2( 1, 1 )
+shape = SubResource( 3 )
+
+[node name="InputDetect" type="Control" parent="."]
+margin_left = -28.0
+margin_top = -28.0
+margin_right = 28.0
+margin_bottom = 28.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputDetect2" type="Control" parent="InputDetect"]
+margin_left = 5.26601
+margin_top = -3.7001
+margin_right = 61.266
+margin_bottom = 52.2999
+rect_rotation = 9.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputDetect4" type="Control" parent="InputDetect"]
+margin_left = 10.6888
+margin_top = -7.45433
+margin_right = 66.6888
+margin_bottom = 48.5457
+rect_rotation = 18.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputDetect5" type="Control" parent="InputDetect"]
+margin_left = 15.903
+margin_top = -9.74859
+margin_right = 71.903
+margin_bottom = 46.2514
+rect_rotation = 27.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputDetect6" type="Control" parent="InputDetect"]
+margin_left = 22.7858
+margin_top = -11.4171
+margin_right = 78.7858
+margin_bottom = 44.5829
+rect_rotation = 36.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

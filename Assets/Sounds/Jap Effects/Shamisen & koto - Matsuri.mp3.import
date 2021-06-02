@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Shamisen & koto - Matsuri.mp3-5ae4b1f91b7de18d95dbc9f493dffdb9.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sounds/Jap Effects/Shamisen & koto - Matsuri.mp3"
+dest_files=[ "res://.import/Shamisen & koto - Matsuri.mp3-5ae4b1f91b7de18d95dbc9f493dffdb9.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

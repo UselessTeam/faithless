@@ -24,6 +24,7 @@ public class BattleScene : CanvasLayer {
     [Export] NodePath logPanelPath;
     [Export] NodePath deckPath;
     [Export] NodePath discardPath;
+    [Export] NodePath discardDisplayPath;
     [Export] NodePath handholderPath;
     [Export] NodePath sealingCirclePath;
     [Export] NodePath yokaiSpritePath;
@@ -37,6 +38,7 @@ public class BattleScene : CanvasLayer {
     SeedIcon seedsFiled;
     Label deckField;
     Label discardField;
+    Discard discardDisplay;
     HandHolder hand;
     public static HandHolder Hand { get => Instance.hand; }
     public static SealingCircle SealingCircle { get; private set; }
@@ -114,6 +116,7 @@ public class BattleScene : CanvasLayer {
         LogPanel = GetNode<LogPanel>(logPanelPath);
         deckField = GetNode<Label>(deckPath);
         discardField = GetNode<Label>(discardPath);
+        discardDisplay = GetNode<Discard>(discardDisplayPath);
 
         hand = GetNode<HandHolder>(handholderPath);
         SealingCircle = GetNode<SealingCircle>(sealingCirclePath);
@@ -208,6 +211,7 @@ public class BattleScene : CanvasLayer {
     public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count().ToString();
         discardField.Text = Discard.Count().ToString();
+        discardDisplay.UpdateDiscard();
     }
 
     //////////////////////
@@ -232,6 +236,8 @@ public class BattleScene : CanvasLayer {
             if (IsInstanceValid(visual) && !visual.IsDisabled) {
                 await Hand.DiscardCard(visual, card.BanishAfterUse);
             }
+        } else {
+            LogPanel.Log("You don't have enough [ki] to play this talisman");
         }
         if (currentState != State.SealingYokai)
             currentState = State.PlayerTurn;

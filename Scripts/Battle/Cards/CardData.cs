@@ -131,7 +131,7 @@ public class CardData : Resource {
                 Description = "Discard all your cards\nDraw as many cards +1",
                 Use = async (useLocation) => {
                      int cardCount =  BattleScene.Hand.Cards.Count();
-                    await BattleScene.Hand.DiscardAll();
+                    await BattleScene.Hand.DiscardAll(true);
                     await BattleScene.DrawCards(cardCount);
                 }
             },
@@ -148,7 +148,7 @@ public class CardData : Resource {
                      List<Task> tasks = new List<Task>();
                     var area = CardEffectHelper.GetArea(useLocation, Element.None);
                     var cardCount = BattleScene.Hand.Cards.Count() - 1;
-                    tasks.Add(BattleScene.Hand.DiscardAll());
+                    tasks.Add(BattleScene.Hand.DiscardAll(true));
 
                     List<int> possibleLocations = new List<int>();
                     {   int i = area.Item1;
@@ -295,7 +295,7 @@ public class CardData : Resource {
                 Description = "Discard all cards in your hand\nGain 1 [seed] per card",
                 Use = async (useLocation) => {
                      int cardCount =  BattleScene.Hand.Cards.Count() - 1;
-                    await BattleScene.Hand.DiscardAll();
+                    await BattleScene.Hand.DiscardAll(true);
                     await BattleScene.AddSeeds(cardCount);
                 }
             },
@@ -427,7 +427,7 @@ public class CardData : Resource {
                             BattleScene.Ki += 2;
                         }
                     }
-                    await BattleScene.Hand.DiscardAll();
+                    await BattleScene.Hand.DiscardAll(true);
                     foreach(var task in tasks) await task;
                     await BattleScene.DrawCards(GameData.Instance.CardsPerTurn);
                     BattleScene.Health = GameData.Instance.MaxHealth;

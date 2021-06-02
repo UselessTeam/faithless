@@ -8,7 +8,7 @@ public class WantedTable : MarginContainer {
         return (WantedTable) ResourceLoader.Load<PackedScene>("res://Nodes/GUI/Tables/WantedTable.tscn").Instance();
     }
 
-    [Export(PropertyHint.File)] string combatScenePath;
+    [Export(PropertyHint.File)] string battleScenePath;
     [Export] NodePath namePath;
     [Export] NodePath difficultyPath;
     [Export] NodePath weaknessPath;
@@ -46,7 +46,7 @@ public class WantedTable : MarginContainer {
     public override void _Input (InputEvent _event) {
         if (GetFocusOwner() == this && InputHelper.IsClick(_event)) {
             GameData.Instance.yokai = yokai.Id;
-            GetTree().ChangeScene(combatScenePath);
+            GetTree().ChangeScene(battleScenePath);
         }
     }
 
