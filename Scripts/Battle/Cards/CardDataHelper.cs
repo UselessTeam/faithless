@@ -14,24 +14,25 @@ public enum CardId {
 
     Drought,
     Landslide,
-    Transport,
-    Volcano,
+    TradeRoute,
     Tectonic,
     Earthquake,
 
-    Armaments,
+    Volcano,
     Furnace,
     //Phoenix,
     Cooking,
     FireSpread,
     Incineration,
+    Smelt,
 
     Flood,
     //Watermill,
     Irrigation,
     HotSpring,
     Tsunami,
-    WashAway,
+    // WashAway,
+    Tides,
 
     PineCone,
     Abundance,
@@ -39,7 +40,7 @@ public enum CardId {
     Plantation,
     RiceField,
 
-    Smelt,
+    Armaments,
     Forge,
     SteelTools,
     Stronghold,
@@ -88,34 +89,45 @@ public static class CardEffectHelper {
         return count;
     }
 
-    public static Task Push (int useLocation, bool clockwise, bool forcePush) {
+    public static Task Push (int useLocation, bool clockwise, bool forcePush = false) {
         if (BattleScene.SealSlots[useLocation] == Element.None)
             return Task.Delay(0); //Nothing to push empty
 
         int pushUntil = AdjacentLocation(useLocation, clockwise);
         while (BattleScene.SealSlots[pushUntil] != Element.None && pushUntil != useLocation) {
-            pushUntil = AdjacentLocation(useLocation, clockwise);
+            pushUntil = AdjacentLocation(pushUntil, clockwise);
         }
 
         if (!forcePush && pushUntil == useLocation)
             return Task.Delay(0); //Don't push if the board is already full
+        else if (forcePush && pushUntil == useLocation)
+            return RotateCircle(clockwise);
 
         var selectedElement = BattleScene.SealSlots[useLocation];
         List<Task> tasks = new List<Task>();
         int i = pushUntil;
-        while (AdjacentLocation(i, !clockwise) != useLocation) {
+        while (i != useLocation) {
             int j = AdjacentLocation(i, !clockwise);
             tasks.Add(BattleScene.SealingCircle.MoveSeal(j, i, BattleScene.SealSlots[j]));
             BattleScene.SealSlots[i] = BattleScene.SealSlots[j];
             i = j;
         }
+        BattleScene.SealSlots[useLocation] = Element.None;
+        return Task.WhenAll(tasks);
+    }
 
-        var location = AdjacentLocation(useLocation, !clockwise);
-        tasks.Add(BattleScene.SealingCircle.MoveSeal(useLocation, location, selectedElement));
-        BattleScene.SealSlots[location] = selectedElement;
-        if (pushUntil != useLocation)
-            BattleScene.SealSlots[useLocation] = Element.None;
-
+    public static Task RotateCircle (bool clockwise) {
+        var lastElement = BattleScene.SealSlots[0];
+        List<Task> tasks = new List<Task>();
+        int i = 0;
+        while (AdjacentLocation(i, clockwise) != 0) {
+            int j = AdjacentLocation(i, !clockwise);
+            tasks.Add(BattleScene.SealingCircle.MoveSeal(j, i, BattleScene.SealSlots[j]));
+            BattleScene.SealSlots[i] = BattleScene.SealSlots[j];
+            i = j;
+        }
+        tasks.Add(BattleScene.SealingCircle.MoveSeal(0, i.AdjacentLocation(clockwise), lastElement));
+        BattleScene.SealSlots[i.AdjacentLocation(clockwise)] = lastElement;
         return Task.WhenAll(tasks);
     }
 }

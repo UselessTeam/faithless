@@ -6,12 +6,11 @@ using Godot;
 using Utils;
 
 public class HandHolder : Container {
-    static readonly object flowLock = new object();
-    public List<CardId> Deck;
-    public List<CardId> Discard;
+    static readonly object handFlowLock = new object();
     public IEnumerable<CardId> Cards => visuals.Select(visual => visual.Card);
-    private List<CardVisual> visuals = new List<CardVisual>();
     public CardVisual Selected;
+
+    List<CardVisual> visuals = new List<CardVisual>();
     HBoxContainer container;
     [Export] int minWidth;
     Tween tween;
@@ -21,66 +20,16 @@ public class HandHolder : Container {
     public override void _Ready () {
         container = GetNode<HBoxContainer>("Container");
 
-        Deck = GameData.Instance.Deck.RandomOrder().ToList();
-        Discard = new List<CardId>();
-
         tween = new Tween();
         AddChild(tween);
         Refresh();
     }
 
-    public async Task MakeCardVisual (CardVisual visualCard, CardId card) {
-        container.AddChild(visualCard);
-        visualCard.Modulate = new Color(1, 1, 1, 0);
-        visualCard.ShowCard(card.Data());
-        visualCard.MoveFrom(new Vector2(1000, 0));
-        await ToSignal(visualCard.MyTween, "tween_completed");
-        Refresh();
-        visualCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard), visualCard.InArray());
-        visualCard.Connect(nameof(CardVisual.FocusEntered), this, nameof(HoverCard));
-        visualCard.Connect(nameof(CardVisual.FocusExited), this, nameof(UnHoverCard));
-    }
-
-    public async Task<bool> DrawCard () {
-        CardId card;
-        CardVisual visualCard;
-        lock (flowLock) {
-            if (Deck.Count == 0) {
-                if (Discard.Count == 0) {
-                    BattleScene.Instance.LogPanel.Log("There is no more cards to draw");
-                    return false;
-                }
-                Deck = Discard.RandomOrder().ToList();
-                Discard = new List<CardId>();
-            }
-            card = Deck[0];
-            Deck.RemoveAt(0);
-            visualCard = CardVisual.Instance();
-            visuals.Add(visualCard);
-        }
-        await MakeCardVisual(visualCard, card);
-        return true;
-    }
+    public CardVisual VisualAt (int i) => visuals[i];
 
     public async Task AddCard (CardId card) {
         CardVisual visualCard;
-        lock (flowLock) {
-            visualCard = CardVisual.Instance();
-            visuals.Add(visualCard);
-        }
-        await MakeCardVisual(visualCard, card);
-
-    }
-
-    public async Task<bool> DrawLastDiscard () {
-        CardId card;
-        CardVisual visualCard;
-        lock (flowLock) {
-            if (Discard.Count == 0) {
-                return false;
-            }
-            card = Discard[Discard.Count - 1];
-            Discard.RemoveAt(Discard.Count - 1);
+        lock (handFlowLock) {
             visualCard = CardVisual.Instance();
             visuals.Add(visualCard);
         }
@@ -93,13 +42,6 @@ public class HandHolder : Container {
         visualCard.Connect(nameof(CardVisual.OnClick), this, nameof(SelectCard), visualCard.InArray());
         visualCard.Connect(nameof(CardVisual.FocusEntered), this, nameof(HoverCard));
         visualCard.Connect(nameof(CardVisual.FocusExited), this, nameof(UnHoverCard));
-        return true;
-    }
-
-    public void ShuffleDeck () {
-        lock (flowLock) {
-            Deck = Utils.RNG.RandomOrder(Deck).ToList();
-        }
     }
 
     public void DeselectCard () {
@@ -121,17 +63,23 @@ public class HandHolder : Container {
             BattleScene.Instance.DescribeCard(Selected.Card);
         }
     }
-    public Task DiscardCard (CardVisual visual, bool banish = false) {
+
+    public Task DiscardCardVisual (int visualId) {
+        if (visualId >= visuals.Count) {
+            GD.PrintErr("Trying to delete cardVisual {visualId}, which does not exist");
+            return Task.Delay(0);
+        }
+        return DiscardCardVisual(visuals[visualId]); //Santy  check
+    }
+    public Task DiscardCardVisual (CardVisual visual) {
+        //Sanity check
         if (visual == Selected) {
             DeselectCard();
             BattleScene.Instance.DescribeCard(CardId.None);
         }
         visual.IsDisabled = true;
         visual.Disappear(split);
-        lock (flowLock) {
-            if (!banish) {
-                Discard.Add(visual.Card);
-            }
+        lock (handFlowLock) {
             visuals.Remove(visual);
         }
         return DiscardInternal(visual);
@@ -142,18 +90,7 @@ public class HandHolder : Container {
         visual.QueueFree();
         BattleScene.Instance.DisplayDeckAndDiscard();
     }
-    public async Task DiscardAll (bool excludeSelected = false) {
-        List<Task> tasks = new List<Task>();
-        foreach (CardVisual card in visuals.ToList()) {
-            if (excludeSelected && card == Selected)
-                continue;
-            tasks.Add(DiscardCard(card));
-        }
-        foreach (Task task in tasks) {
-            await task;
-            BattleScene.Instance.DisplayDeckAndDiscard();
-        }
-    }
+
     public void SelectCard (byte _, CardVisual visual) {
         if (BattleScene.Instance.IsBusy()) {
             return;

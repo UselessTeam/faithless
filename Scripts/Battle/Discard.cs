@@ -12,7 +12,7 @@ public class Discard : Control {
     }
 
     public void UpdateDiscard () {
-        var discard = BattleScene.Hand.Discard;
+        var discard = BattleScene.Cards.Discard;
         for (int i = 0 ; i < 3 ; i++) {
             if (discard.Count <= i)
                 displayCards[i].Hide();

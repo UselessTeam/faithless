@@ -104,10 +104,10 @@ public class SealingCircle : Node2D {
     }
 
     public void UnHover (YokaiAction _) {
-        if (BattleScene.Hand.Selected == null) {
+        if (BattleScene.Cards.Selected == CardId.None) {
             BattleScene.Instance.DescribeCard(CardId.None);
         } else {
-            BattleScene.Instance.DescribeCard(BattleScene.Hand.Selected.Card);
+            BattleScene.Instance.DescribeCard(BattleScene.Cards.Selected);
         }
     }
 

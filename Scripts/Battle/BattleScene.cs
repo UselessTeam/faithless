@@ -39,8 +39,8 @@ public class BattleScene : CanvasLayer {
     Label deckField;
     Label discardField;
     Discard discardDisplay;
-    HandHolder hand;
-    public static HandHolder Hand { get => Instance.hand; }
+    CardsManager cardManager;
+    public static CardsManager Cards { get => Instance.cardManager; }
     public static SealingCircle SealingCircle { get; private set; }
     public LogPanel LogPanel { get; private set; }
 
@@ -51,8 +51,8 @@ public class BattleScene : CanvasLayer {
 
     ////// Cards
     ///
-    public static IEnumerable<CardId> Deck => Hand.Deck;
-    public static IEnumerable<CardId> Discard => Hand.Discard;
+    public static IEnumerable<CardId> Deck => Cards.Deck;
+    public static IEnumerable<CardId> Discard => Cards.Discard;
 
     ////// Health, Ki and Stats 
     short ki;
@@ -95,10 +95,11 @@ public class BattleScene : CanvasLayer {
     public enum State { PlayerTurn, CardSelected, SomethingHappening, EnemyTurn, SealingYokai }
     State currentState = State.EnemyTurn;
 
-    ///////Battle effects
+    ///////Card effects
     public Dictionary<Element, bool> NextCardFree = new List<Element>() { Element.Fire, Element.Water, Element.Wood, Element.Earth, Element.Metal, Element.None }
-                .ToDictionary(element => element, element => false);
+        .ToDictionary(element => element, element => false);
     public short HarvestBonus = 0;
+    public bool RetainHand = false;
 
     /////Initialization
     ///
@@ -119,7 +120,7 @@ public class BattleScene : CanvasLayer {
         discardField = GetNode<Label>(discardPath);
         discardDisplay = GetNode<Discard>(discardDisplayPath);
 
-        hand = GetNode<HandHolder>(handholderPath);
+        cardManager = new CardsManager(GetNode<HandHolder>(handholderPath));
         SealingCircle = GetNode<SealingCircle>(sealingCirclePath);
 
         Yokai = GetNode<YokaiHitBox>(yokaiHitBoxPath);
@@ -147,7 +148,7 @@ public class BattleScene : CanvasLayer {
 
     public static async Task DrawCards (int count) {
         for (int i = 0 ; i < count ; i++) {
-            if (!await Hand.DrawCard()) {
+            if (!await Cards.DrawCard()) {
                 break;
             }
             Instance.DisplayDeckAndDiscard();
@@ -165,7 +166,10 @@ public class BattleScene : CanvasLayer {
     async void EndPlayerTurn () {
         if (currentState != State.PlayerTurn) return;
         currentState = State.EnemyTurn;
-        await Hand.DiscardAll();
+        if (!RetainHand)
+            await Cards.DiscardHand(false);
+        else
+            RetainHand = false;
         await TriggerHarvest();
         await YokaiAI.PlayTurn();
         StartPlayerTurn();
@@ -221,14 +225,16 @@ public class BattleScene : CanvasLayer {
     //////
 
     async public void ClickOnTarget (int id) {
-        if (currentState != State.PlayerTurn || Hand.Selected == null) return;
+        if (currentState != State.PlayerTurn || Cards.Selected == CardId.None) return;
         currentState = State.SomethingHappening;
 
-        CardVisual visual = Hand.Selected;
-        CardData card = visual.Card.Data();
+        CardData card = cardManager.Selected.Data();
         //Use the card
-        if ((Ki >= card.Cost || NextCardFree[card.Element] || NextCardFree[Element.None]) &&
-                    CardData.CheckPlayable(card.Id, id)) { //Check if we can play the card
+        if (!(Ki >= card.Cost || NextCardFree[card.Element] || NextCardFree[Element.None]))
+            LogPanel.Log("You don't have enough [ki] to play this talisman");
+        else if (!CardData.CheckPlayable(card.Id, id))
+            LogPanel.Log("You cannot play this talisman here");
+        else { //Check if we can play the card
             if (NextCardFree[card.Element])
                 NextCardFree[card.Element] = false;
             else if (NextCardFree[Element.None])
@@ -237,12 +243,7 @@ public class BattleScene : CanvasLayer {
                 Ki -= (NextCardFree[card.Element]) ? (short) 0 : (short) card.Cost;
             SFXHandler.PlaySFX(card.SFX);
             await card.Use(id);
-            // Discard the Card
-            if (IsInstanceValid(visual) && !visual.IsDisabled) {
-                await Hand.DiscardCard(visual, card.BanishAfterUse);
-            }
-        } else {
-            LogPanel.Log("You don't have enough [ki] to play this talisman");
+            await Cards.DiscardSelected(card.BanishAfterUse);
         }
         if (currentState != State.SealingYokai)
             currentState = State.PlayerTurn;
@@ -271,7 +272,7 @@ public class BattleScene : CanvasLayer {
     public async Task RemoveSeal (int location) {
         SealSlots[location] = Element.None;
         await SealingCircle.DisappearSeal(location);
-        if (Seeds == MaxSeeds) {//If there was a tree ready to bloom
+        if (Seeds == MaxSeeds) { //If there was a tree ready to bloom
             await PlaceSeal(Element.Wood, location);
         }
     }
@@ -312,7 +313,7 @@ public class BattleScene : CanvasLayer {
         List<int> BurnSeals = new List<int>();
         for (int i = 0 ; i < SealSlots.Count ; i++) {
             if (SealSlots[i] == Element.Wood &&
-                 (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire ||
+                (SealSlots[(i + 1) % SealSlots.Count] == Element.Fire ||
                     SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Fire)) { // If there is a fire after or before
                 BurnSeals.Add(i);
             }
@@ -330,7 +331,7 @@ public class BattleScene : CanvasLayer {
             if (SealSlots[i] == Element.Wood) {
                 if (SealSlots[(i + 1) % SealSlots.Count] == Element.Water ||
                     SealSlots[(i + SealSlots.Count - 1) % SealSlots.Count] == Element.Water) { // If there is a water after or before
-                                                                                               // TODO: show a cute water effect on the wood
+                    // TODO: show a cute water effect on the wood
                     LogPanel.Log($"Your [wood-seal] [?harvest]harversts[/?], you draw {Utils.SmartText.Concatenate(1 + HarvestBonus, "card")}");
                     await DrawCards((1 + HarvestBonus));
                 }
@@ -341,7 +342,7 @@ public class BattleScene : CanvasLayer {
     async public static Task AddSeeds (int count) {
         Seeds += count;
         //TODO Display new value
-        if (Seeds >= MaxSeeds) {
+        while (Seeds >= MaxSeeds) {
             List<int> emptyLocations = new List<int>();
             for (int i = 0 ; i < SealCount ; i++)
                 if (SealSlots[i] == Element.None) emptyLocations.Add(i);
@@ -349,8 +350,11 @@ public class BattleScene : CanvasLayer {
                 Seeds -= MaxSeeds;
                 var makeWoodLoc = emptyLocations[RNG.rng.Next(0, emptyLocations.Count)];
                 Instance.LogPanel.Log($"You have gathered {MaxSeeds} seeds. A [wood-seal] appears");
+                SFXHandler.PlaySFX(CardId.BasicWood.Data().SFX);
                 await Instance.PlaceSeal(Element.Wood, makeWoodLoc);
-            } else Seeds = MaxSeeds;
+            } else {
+                Seeds = MaxSeeds;
+            }
         }
     }
 
@@ -375,7 +379,7 @@ public class BattleScene : CanvasLayer {
             if (_event.IsActionPressed("debug_draw"))
                 DrawCards(1);
             if (_event.IsActionPressed("debug_ki"))
-                Ki += 1;
+                Ki += 5;
         }
     }
 }

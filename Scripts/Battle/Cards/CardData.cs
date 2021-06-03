@@ -128,18 +128,30 @@ public class CardData : Resource {
                     foreach(var task in tasks) await task;
                 }
             },
-            new CardData {Id = CardId.WashAway,
-                Name = "Wash Away",
-                Kanji = "流",
+            // new CardData {Id = CardId.WashAway,
+            //     Name = "Wash Away",
+            //     Kanji = "流",
+            //     Element = Element.Water,
+            //     Cost = 1,
+            //     Target = CardTarget.Yokai,
+            //     SFX = "GenericEffect",
+            //     Description = "Discard all your talismans\nDraw as many talismans",
+            //     Use = async (useLocation) => {
+            //         int cardCount =  BattleScene.Cards.Hand.Count();
+            //         await BattleScene.Hand.DiscardHand(true);
+            //         await BattleScene.DrawCards(cardCount);
+            //     }
+            // },
+            new CardData {Id = CardId.Tides,
+                Name = "Tides",
+                Kanji = "潮",
                 Element = Element.Water,
-                Cost = 1,
+                Cost = 2,
                 Target = CardTarget.Yokai,
                 SFX = "GenericEffect",
-                Description = "Discard all your talismans\nDraw as many talismans",
+                Description = "Do not discard your hand at the end of this turn",
                 Use = async (useLocation) => {
-                    int cardCount =  BattleScene.Hand.Cards.Count();
-                    await BattleScene.Hand.DiscardAll(true);
-                    await BattleScene.DrawCards(cardCount);
+                    BattleScene.Instance.RetainHand = true;
                 }
             },
             new CardData {Id = CardId.Tsunami,
@@ -154,8 +166,8 @@ public class CardData : Resource {
                 Use = async (useLocation) => {
                      List<Task> tasks = new List<Task>();
                     var area = CardEffectHelper.GetArea(useLocation, Element.None);
-                    var cardCount = BattleScene.Hand.Cards.Count();
-                    tasks.Add(BattleScene.Hand.DiscardAll(true));
+                    var cardCount = BattleScene.Cards.Hand.Count();
+                    tasks.Add(BattleScene.Cards.DiscardHand(true));
 
                     List<int> possibleLocations = new List<int>();
                     {   int i = area.Item1;
@@ -172,28 +184,28 @@ public class CardData : Resource {
                     foreach(var task in tasks) await task;
                 }
             },
-            // new CardData {Id = CardId.Watermill,
-            //     Name = "Watermill",
-            //     Kanji = "津",
-            //     Element = Element.Water,
-            //     Cost = 0,
-            //     Target = CardTarget.WaterSeal,
-            //     SFX = "Wow",
-            //     Description = "Replace a [water-seal] by a random other element\nGain 1 [ki]",
-            //     Use = async (useLocation) => {
-            //          var elmIdx = Utils.RNG.rng.Next(0,4);
-            //         await BattleScene.Instance.SwitchSeal(elmIdx switch {
-            //                 0 => Element.Fire,
-            //                 1 => Element.Wood,
-            //                 2 => Element.Earth,
-            //                 _ => Element.Metal,
-            //             }, useLocation
-            //         );
-            //         //if (BattleScene.SealSlots[useLocation] == Element.Earth) 
-            //         BattleScene.Ki +=1;
+            /* new CardData {Id = CardId.Watermill,
+                Name = "Watermill",
+                Kanji = "津",
+                Element = Element.Water,
+                Cost = 0,
+                Target = CardTarget.WaterSeal,
+                SFX = "Wow",
+                Description = "Replace a [water-seal] by a random other element\nGain 1 [ki]",
+                Use = async (useLocation) => {
+                     var elmIdx = Utils.RNG.rng.Next(0,4);
+                    await BattleScene.Instance.SwitchSeal(elmIdx switch {
+                            0 => Element.Fire,
+                            1 => Element.Wood,
+                            2 => Element.Earth,
+                            _ => Element.Metal,
+                        }, useLocation
+                    );
+                    //if (BattleScene.SealSlots[useLocation] == Element.Earth) 
+                    BattleScene.Ki +=1;
 
-            //     }
-            // },
+                }
+            }, */
             new CardData {Id = CardId.Irrigation,
                 Name = "Irrigation",
                 Kanji = "灌",
@@ -243,7 +255,7 @@ public class CardData : Resource {
                 Element = Element.Metal,
                 Cost = 3,
                 SFX = "TaikoSmall",
-                Description = "Place a [metal-seal] on the selected slot, and another one on the opposite side of the circle",
+                Description = "Place a [metal-seal] on the selected slot, and another one on the opposite side of the board",
                 Use = async (useLocation) => {
                      Task task = BattleScene.Instance.PlaceSeal(Element.Metal, useLocation);
                     await BattleScene.Instance.PlaceSeal(Element.Metal, ((useLocation + BattleScene.SealSlots.Count/2) % BattleScene.SealSlots.Count));
@@ -316,8 +328,8 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Discard all talismans in your hand\nGain 1 [seed] per talisman discarded",
                 Use = async (useLocation) => {
-                     int cardCount =  BattleScene.Hand.Cards.Count();
-                    await BattleScene.Hand.DiscardAll(true);
+                     int cardCount =  BattleScene.Cards.Hand.Count();
+                    await BattleScene.Cards.DiscardHand(true);
                     await BattleScene.AddSeeds(cardCount);
                 }
             },
@@ -330,10 +342,10 @@ public class CardData : Resource {
                 Target = CardTarget.Yokai,
                 Description = "Draw the last talisman you discarded (if the discard is empty, draw a talisman form your deck instead)\nIf you drew a Water or Earth talisman, gain one [seed]",
                 Use = async (useLocation) => {
-                     if(!await BattleScene.Hand.DrawLastDiscard()) {
-                        await BattleScene.Hand.DrawCard();
+                     if(!await BattleScene.Cards.DrawLastDiscard()) {
+                        await BattleScene.Cards.DrawCard();
                     }
-                    var lastDrawn = BattleScene.Hand.Cards.ToList()[BattleScene.Hand.Cards.Count() -1].Data();
+                    var lastDrawn = BattleScene.Cards.HandAt(BattleScene.Cards.Hand.Count() -1).Data();
                     if (lastDrawn.Element == Element.Water || lastDrawn.Element == Element.Earth){
                         await BattleScene.AddSeeds(1);
                     }
@@ -374,6 +386,7 @@ public class CardData : Resource {
                     await BattleScene.Instance.PlaceSeal(Element.Wood, useLocation);
                 }
             },
+
 
             new CardData {Id = CardId.Smelt,
                 Name = "Smelt",
@@ -418,28 +431,28 @@ public class CardData : Resource {
                     await t;
                 }
             },
-            // new CardData {Id = CardId.Phoenix,
-            //     Name = "Phoenix",
-            //     Kanji = "鵬",
-            //     Element = Element.Fire,
-            //     Cost = 4,
-            //     Target = CardTarget.Yokai,
-            //     SFX = "SuspensePercussion",
-            //     Description = "Destroy all Seals\nGain 2 [ki] for each Seal destroyed\nDiscard all talismans\nDraw talismans (as a new turn)\nHeal to full health",
-            //     Use = async (useLocation) => {
-            //          List<Task> tasks = new List<Task>();
-            //         for (int i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
-            //             if(BattleScene.SealSlots[i] != Element.None){
-            //                 tasks.Add(BattleScene.Instance.RemoveSeal(i));
-            //                 BattleScene.Ki += 2;
-            //             }
-            //         }
-            //         await BattleScene.Hand.DiscardAll();
-            //         foreach(var task in tasks) await task;
-            //         await BattleScene.DrawCards(GameData.Instance.CardsPerTurn);
-            //         BattleScene.Health = GameData.Instance.MaxHealth;
-            //     }
-            // },
+            /* new CardData {Id = CardId.Phoenix,
+                Name = "Phoenix",
+                Kanji = "鵬",
+                Element = Element.Fire,
+                Cost = 4,
+                Target = CardTarget.Yokai,
+                SFX = "SuspensePercussion",
+                Description = "Destroy all Seals\nGain 2 [ki] for each Seal destroyed\nDiscard all talismans\nDraw talismans (as a new turn)\nHeal to full health",
+                Use = async (useLocation) => {
+                     List<Task> tasks = new List<Task>();
+                    for (int i = 0 ; i < BattleScene.SealSlots.Count ; i++) {
+                        if(BattleScene.SealSlots[i] != Element.None){
+                            tasks.Add(BattleScene.Instance.RemoveSeal(i));
+                            BattleScene.Ki += 2;
+                        }
+                    }
+                    await BattleScene.Hand.DiscardHand(true);
+                    foreach(var task in tasks) await task;
+                    await BattleScene.DrawCards(GameData.Instance.CardsPerTurn);
+                    BattleScene.Health = GameData.Instance.MaxHealth;
+                }
+            }, */
             new CardData {Id = CardId.Cooking,
                 Name = "Cooking",
                 Kanji = "料",
@@ -463,6 +476,31 @@ public class CardData : Resource {
                 Description = "On his next turn, each time the Yokai attacks or removes a [fire-seal], he will get staggered",
                 Use = async (useLocation) => {
                     BattleScene.YokaiAI.Incinerate = true;
+                }
+            },
+            new CardData {Id = CardId.Volcano,
+                Name = "Volcano",
+                Kanji = "噴",
+                Element = Element.Fire,
+                Cost = 3,
+                SFX = "SuspensePercussion",
+                Target = CardTarget.EarthSeal,
+                Description = "Select an [earth-seal] and replace it with a [fire-seal]\n[?push]Push[/?] adjacent seals and place 2 [earth-seals] around the selected location",
+                Use = async (useLocation) => {
+                    List<Task> tasks= new List<Task>();
+                    tasks.Add( CardEffectHelper.Push(useLocation.NextLocation(), true, false));
+                    tasks.Add( CardEffectHelper.Push(useLocation.PrevLocation(), false, false));
+                    tasks.Add( BattleScene.Instance.PlaceSeal(Element.Fire, useLocation));
+                    await Task.WhenAll(tasks);
+                    BattleScene.SealingCircle.DisplaySeals();
+
+                    tasks= new List<Task>();
+                    if( BattleScene.SealSlots[ useLocation.NextLocation()] == Element.None)
+                        tasks.Add(BattleScene.Instance.PlaceSeal(Element.Earth, useLocation.NextLocation()));
+                    if( BattleScene.SealSlots[ useLocation.PrevLocation()] == Element.None)
+                        tasks.Add( BattleScene.Instance.PlaceSeal(Element.Earth, useLocation.PrevLocation()));
+                    await Task.WhenAll(tasks);
+
                 }
             },
 
@@ -496,17 +534,6 @@ public class CardData : Resource {
                     if (useLocation == -1)
                         await CardEffectHelper.Push(useLocation, false, true);
                     else{
-                        var lastElement = BattleScene.SealSlots[0];
-                        List<Task> tasks = new List<Task>();
-                        for (int i = 0 ; i < BattleScene.SealCount - 1; i++) {
-                            tasks.Add(BattleScene.SealingCircle.MoveSeal(i+1, i, BattleScene.SealSlots[i+1]));
-                            BattleScene.SealSlots[i]= BattleScene.SealSlots[i+1];
-                        }
-                        tasks.Add( BattleScene.SealingCircle.MoveSeal(0, BattleScene.SealSlots.Count -1, lastElement));
-                        foreach (Task task in tasks) {
-                            await task;
-                        }
-                        BattleScene.SealSlots[BattleScene.SealSlots.Count -1] = lastElement;
                     }
                     BattleScene.SealingCircle.DisplaySeals(); //Sanity check
                 }
@@ -532,14 +559,14 @@ public class CardData : Resource {
                     await BattleScene.Instance.PlaceSeal(Element.Earth, useLocation);
                 }
             },
-            new CardData {Id = CardId.Transport,
-                Name = "Transport",
-                Kanji = "運",
+            new CardData {Id = CardId.TradeRoute,
+                Name = "Trade Route",
+                Kanji = "輸",
                 Element = Element.Earth,
-                Cost = 0,
+                Cost = 2,
                 SFX = "GenericEffect",
-                Target = CardTarget.NonEmptySeal,
-                Description = "Remove a Seal and turn it into a one-time use talisman that costs 0 [ki]",
+                Target = CardTarget.AnySeal,
+                Description = "Place an [earth-seal]\nIf the target location already contains Seal, turn it into a one-time-use free talisman",
                 Use = async (useLocation) => {
                      var getCard = BattleScene.SealSlots[useLocation] switch {
                             Element.Fire => CardId.FreeFire,
@@ -547,36 +574,12 @@ public class CardData : Resource {
                             Element.Wood => CardId.FreeWood,
                             Element.Earth => CardId.FreeEarth,
                             Element.Metal => CardId.FreeMetal,
-                            _ => CardId.Tectonic,
+                            _ => CardId.None,
                         };
-                    Task task = BattleScene.Instance.RemoveSeal(useLocation);
-                    await BattleScene.Hand.AddCard(getCard);
+                    Task task = BattleScene.Instance.PlaceSeal(Element.Earth, useLocation);
+                    if(getCard != CardId.None)
+                        await BattleScene.Cards.GetCard(getCard);
                     await task;
-                }
-            },
-            new CardData {Id = CardId.Volcano,
-                Name = "Volcano",
-                Kanji = "噴",
-                Element = Element.Fire,
-                Cost = 3,
-                SFX = "SuspensePercussion",
-                Target = CardTarget.EarthSeal,
-                Description = "Select an [earth-seal] and replace it with a [fire-seal]\n[?push]Push[/?] adjacent seals and place 2 [earth-seals] around the selected location",
-                Use = async (useLocation) => {
-                    List<Task> tasks= new List<Task>();
-                    tasks.Add( CardEffectHelper.Push(useLocation.NextLocation(), true, false));
-                    tasks.Add( CardEffectHelper.Push(useLocation.PrevLocation(), false, false));
-                    tasks.Add( BattleScene.Instance.PlaceSeal(Element.Fire, useLocation));
-                    await Task.WhenAll(tasks);
-                    BattleScene.SealingCircle.DisplaySeals();
-
-                    tasks= new List<Task>();
-                    if( BattleScene.SealSlots[ useLocation.NextLocation()] == Element.None)
-                        tasks.Add(BattleScene.Instance.PlaceSeal(Element.Earth, useLocation.NextLocation()));
-                    if( BattleScene.SealSlots[ useLocation.PrevLocation()] == Element.None)
-                        tasks.Add( BattleScene.Instance.PlaceSeal(Element.Earth, useLocation.PrevLocation()));
-                    await Task.WhenAll(tasks);
-
                 }
             },
             new CardData {Id = CardId.Earthquake,

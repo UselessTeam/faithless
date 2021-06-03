@@ -157,6 +157,7 @@ __meta__ = {
 }
 
 [node name="Settings" type="TabContainer" parent="Menu"]
+visible = false
 anchor_left = 0.1
 anchor_top = 0.35
 anchor_right = 0.5
@@ -167,7 +168,91 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Display" type="Control" parent="Menu/Settings"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 49.0
+margin_right = -5.0
+margin_bottom = -5.0
+script = ExtResource( 7 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/Settings/Display"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fullscreen" type="HBoxContainer" parent="Menu/Settings/Display/VBoxContainer"]
+margin_right = 630.0
+margin_bottom = 42.0
+rect_pivot_offset = Vector2( -62.1368, 156.675 )
+
+[node name="Label" type="Label" parent="Menu/Settings/Display/VBoxContainer/Fullscreen"]
+margin_right = 313.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+text = "Fullscreen"
+align = 1
+
+[node name="CheckBox" type="CheckBox" parent="Menu/Settings/Display/VBoxContainer/Fullscreen"]
+margin_left = 317.0
+margin_right = 630.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+align = 1
+expand_icon = true
+
+[node name="Borderless" type="HBoxContainer" parent="Menu/Settings/Display/VBoxContainer"]
+visible = false
+margin_top = 34.0
+margin_right = 632.0
+margin_bottom = 58.0
+rect_pivot_offset = Vector2( -62.1368, 156.675 )
+
+[node name="Label" type="Label" parent="Menu/Settings/Display/VBoxContainer/Borderless"]
+margin_top = 5.0
+margin_right = 314.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Borderless"
+align = 1
+
+[node name="CheckBox" type="CheckBox" parent="Menu/Settings/Display/VBoxContainer/Borderless"]
+margin_left = 318.0
+margin_right = 632.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+align = 1
+expand_icon = true
+
+[node name="Resolution" type="HBoxContainer" parent="Menu/Settings/Display/VBoxContainer"]
+margin_top = 52.0
+margin_right = 630.0
+margin_bottom = 94.0
+rect_pivot_offset = Vector2( -62.1368, 156.675 )
+
+[node name="Label" type="Label" parent="Menu/Settings/Display/VBoxContainer/Resolution"]
+margin_right = 313.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+text = "Resolution"
+align = 1
+
+[node name="OptionButton" type="OptionButton" parent="Menu/Settings/Display/VBoxContainer/Resolution"]
+margin_left = 317.0
+margin_right = 630.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+align = 1
+script = ExtResource( 2 )
+ItemList = PoolStringArray( "1024 x 768 (4:3)", "1280 x 1024 (5:4)", "1366 x 768 (16:9)", "1440 x 900 (16:10)", "1600 x 900 (16:9)", "1680 x 1050 (16:10)", "1920 x 1080 (16:9)", "1920 x 1200 (16:10)", "2560 x 1440 (16:9)", "3840 x 2160 (16:9)" )
+DefaultItem = 2
+
 [node name="Keybindings" type="Control" parent="Menu/Settings"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -199,8 +284,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="Menu/Settings/Keybindings"]
-margin_right = 632.0
-margin_bottom = 50.0
+anchor_right = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 text = "Coming soon"
@@ -210,105 +294,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Display" type="Control" parent="Menu/Settings"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 49.0
-margin_right = -5.0
-margin_bottom = -5.0
-script = ExtResource( 7 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Menu/Settings/Display"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_constants/separation = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Fullscreen" type="HBoxContainer" parent="Menu/Settings/Display/VBoxContainer"]
-margin_right = 632.0
-margin_bottom = 24.0
-rect_pivot_offset = Vector2( -62.1368, 156.675 )
-
-[node name="Label" type="Label" parent="Menu/Settings/Display/VBoxContainer/Fullscreen"]
-margin_top = 5.0
-margin_right = 314.0
-margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Fullscreen"
-align = 1
-
-[node name="CheckBox" type="CheckBox" parent="Menu/Settings/Display/VBoxContainer/Fullscreen"]
-margin_left = 318.0
-margin_right = 632.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-align = 1
-expand_icon = true
-
-[node name="Borderless" type="HBoxContainer" parent="Menu/Settings/Display/VBoxContainer"]
-visible = false
-margin_top = 34.0
-margin_right = 632.0
-margin_bottom = 58.0
-rect_pivot_offset = Vector2( -62.1368, 156.675 )
-
-[node name="Label" type="Label" parent="Menu/Settings/Display/VBoxContainer/Borderless"]
-margin_top = 5.0
-margin_right = 314.0
-margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Borderless"
-align = 1
-
-[node name="CheckBox" type="CheckBox" parent="Menu/Settings/Display/VBoxContainer/Borderless"]
-margin_left = 318.0
-margin_right = 632.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-align = 1
-expand_icon = true
-
-[node name="Resolution" type="HBoxContainer" parent="Menu/Settings/Display/VBoxContainer"]
-margin_top = 34.0
-margin_right = 632.0
-margin_bottom = 54.0
-rect_pivot_offset = Vector2( -62.1368, 156.675 )
-
-[node name="Label" type="Label" parent="Menu/Settings/Display/VBoxContainer/Resolution"]
-margin_top = 3.0
-margin_right = 314.0
-margin_bottom = 17.0
-size_flags_horizontal = 3
-text = "Resolution"
-align = 1
-
-[node name="OptionButton" type="OptionButton" parent="Menu/Settings/Display/VBoxContainer/Resolution"]
-margin_left = 318.0
-margin_right = 632.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-align = 1
-script = ExtResource( 2 )
-ItemList = PoolStringArray( "1024 x 768 (4:3)", "1280 x 1024 (5:4)", "1366 x 768 (16:9)", "1440 x 900 (16:10)", "1600 x 900 (16:9)", "1680 x 1050 (16:10)", "1920 x 1080 (16:9)", "1920 x 1200 (16:10)", "2560 x 1440 (16:9)", "3840 x 2160 (16:9)" )
-DefaultItem = 2
-
 [node name="Audio" type="Control" parent="Menu/Settings"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 49.0
-margin_right = -5.0
-margin_bottom = -5.0
+margin_top = 50.0
 
 [node name="Label" type="Label" parent="Menu/Settings/Audio"]
-margin_top = 21.0
-margin_right = 616.0
-margin_bottom = 40.0
+anchor_right = 1.0
 size_flags_horizontal = 3
 text = "Coming soon"
 align = 1
