@@ -31,7 +31,7 @@ public enum CardId {
     Irrigation,
     HotSpring,
     Tsunami,
-    // WashAway,
+    WashAway,
     Tides,
 
     PineCone,

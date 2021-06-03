@@ -128,20 +128,20 @@ public class CardData : Resource {
                     foreach(var task in tasks) await task;
                 }
             },
-            // new CardData {Id = CardId.WashAway,
-            //     Name = "Wash Away",
-            //     Kanji = "流",
-            //     Element = Element.Water,
-            //     Cost = 1,
-            //     Target = CardTarget.Yokai,
-            //     SFX = "GenericEffect",
-            //     Description = "Discard all your talismans\nDraw as many talismans",
-            //     Use = async (useLocation) => {
-            //         int cardCount =  BattleScene.Cards.Hand.Count();
-            //         await BattleScene.Hand.DiscardHand(true);
-            //         await BattleScene.DrawCards(cardCount);
-            //     }
-            // },
+            new CardData {Id = CardId.WashAway,
+                Name = "Wash Away",
+                Kanji = "流",
+                Element = Element.Water,
+                Cost = 1,
+                Target = CardTarget.Yokai,
+                SFX = "GenericEffect",
+                Description = "Discard all your talismans\nDraw as many talismans + 1",
+                Use = async (useLocation) => {
+                    int cardCount =  BattleScene.Cards.Hand.Count() + 1;
+                    await BattleScene.Cards.DiscardHand(true);
+                    await BattleScene.DrawCards(cardCount);
+                }
+            },
             new CardData {Id = CardId.Tides,
                 Name = "Tides",
                 Kanji = "潮",
@@ -158,7 +158,7 @@ public class CardData : Resource {
                 Name = "Tsunami",
                 Kanji = "波",
                 Element = Element.Water,
-                Cost = 2,
+                Cost = 3,
                 SFX = "YoLong",
                 BanishAfterUse = true,
                 Target = CardTarget.EmptySeal,
@@ -517,7 +517,7 @@ public class CardData : Resource {
                 Name = "Drought",
                 Kanji = "旱",
                 Element = Element.Earth,
-                Cost = 1,
+                Cost = 2,
                 Target  = CardTarget.Yokai,
                 SFX= "PlaceSeal",
                 Description = "Replace all [water-seal] and [wood-seal] by [earth-seal]\nGain 1 [ki] for each [water-seal] replaced\nDraw 1 talisman for each [wood-seal] replaced\nOne use per turn",
@@ -542,6 +542,7 @@ public class CardData : Resource {
                     if (useLocation == -1)
                         await CardEffectHelper.Push(useLocation, false, true);
                     else{
+                        await CardEffectHelper.RotateCircle(false);
                     }
                     BattleScene.SealingCircle.DisplaySeals(); //Sanity check
                 }
