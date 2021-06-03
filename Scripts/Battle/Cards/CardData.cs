@@ -326,11 +326,19 @@ public class CardData : Resource {
                 Cost = 1,
                 SFX="SuspensePercussion",
                 Target = CardTarget.Yokai,
-                Description = "Discard all talismans in your hand\nGain 1 [seed] per talisman discarded",
+                Description = "Discard as many talismans from your hand as you want\nGain 1 [seed] for each talisman discarded\nOnce you are done, you can discard this talisman and gain 1 [seed]",
                 Use = async (useLocation) => {
-                     int cardCount =  BattleScene.Cards.Hand.Count();
-                    await BattleScene.Cards.DiscardHand(true);
-                    await BattleScene.AddSeeds(cardCount);
+                    while (true){
+                        BattleMessages.OpenDiscardMessage();
+                        int discard = await BattleScene.Cards.StartCardInput();;
+                        await BattleScene.AddSeeds(1);
+                        if(BattleScene.Cards.IsSelected(discard))
+                            break;
+                        else
+                            await BattleScene.Cards.DiscardCard(discard);
+                    }
+                    BattleMessages.CloseDiscardMessage();
+                    // await BattleScene.Cards.DiscardHand(true);
                 }
             },
             new CardData {Id = CardId.Roots,

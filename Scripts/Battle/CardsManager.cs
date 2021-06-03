@@ -12,8 +12,6 @@ public class CardsManager {
     public IEnumerable<CardId> Hand => handHolder.Cards;
     public CardId Selected => (handHolder.Selected == null) ? CardId.None : handHolder.Selected.Card;
 
-    // bool AwaitingSelection = true;
-
     HandHolder handHolder;
 
     public CardsManager (HandHolder hand) {
@@ -63,6 +61,16 @@ public class CardsManager {
     }
     public Task DiscardCard (int card, bool banish = false) {
         return DiscardCard(handHolder.VisualAt(card), banish);
+    }
+
+    public async Task<int> StartCardInput () {
+        handHolder.CardInputMode = true;
+        await handHolder.ToSignal(handHolder, nameof(HandHolder.CardInput));
+        return handHolder.InputIndex;
+    }
+
+    public bool IsSelected (int index) {
+        return handHolder.VisualAt(index) == handHolder.Selected;
     }
 
     Task DiscardCard (CardVisual card, bool banish = false) {

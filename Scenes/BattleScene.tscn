@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Nodes/Battle/Circle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Theme/Fonts/andika_16.tres" type="DynamicFont" id=2]
@@ -23,10 +23,11 @@
 [ext_resource path="res://Scripts/Battle/Discard.cs" type="Script" id=21]
 [ext_resource path="res://Nodes/Battle/CardVisual.tscn" type="PackedScene" id=22]
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=23]
+[ext_resource path="res://Scenes/BattleMessages.cs" type="Script" id=24]
 
-[sub_resource type="StyleBoxLine" id=9]
+[sub_resource type="StyleBoxLine" id=1]
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=2]
 size = 26
 outline_size = 4
 outline_color = Color( 0.0666667, 0.282353, 0.270588, 0.74902 )
@@ -35,7 +36,7 @@ extra_spacing_top = 1
 extra_spacing_bottom = -1
 font_data = ExtResource( 5 )
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=3]
 size = 26
 outline_size = 4
 outline_color = Color( 0.332031, 0.146561, 0.156865, 0.74902 )
@@ -44,22 +45,22 @@ extra_spacing_top = 1
 extra_spacing_bottom = -1
 font_data = ExtResource( 5 )
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 8 )
 region = Rect2( 156, 146, 156, 146 )
 
-[sub_resource type="StreamTexture" id=13]
+[sub_resource type="StreamTexture" id=5]
 resource_local_to_scene = true
 flags = 4
 load_path = "res://.import/seeds.png-0ceff784682f2b7f50b3b3ab25206153.stex"
 
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=6]
 flags = 4
-atlas = SubResource( 13 )
+atlas = SubResource( 5 )
 region = Rect2( 0, 146, 156, 146 )
 
-[sub_resource type="Shader" id=8]
+[sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
 
 void fragment(){
@@ -67,8 +68,8 @@ void fragment(){
 	
 }"
 
-[sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 8 )
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
 
 [node name="BattelScene" type="CanvasLayer"]
 script = ExtResource( 11 )
@@ -168,7 +169,7 @@ __meta__ = {
 }
 
 [node name="LogPanel" type="VBoxContainer" parent="Holder/Top/Left/ColorRect/Margin/Scroll"]
-margin_top = 345.0
+margin_top = 337.0
 margin_right = 238.0
 margin_bottom = 369.0
 grow_vertical = 0
@@ -186,7 +187,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 0.0
 margin_right = 238.0
-margin_bottom = 24.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 0, 24 )
 mouse_filter = 0
 custom_fonts/normal_font = ExtResource( 2 )
@@ -202,7 +203,7 @@ visible = false
 margin_top = 32.0
 margin_right = 238.0
 margin_bottom = 36.0
-custom_styles/separator = SubResource( 9 )
+custom_styles/separator = SubResource( 1 )
 
 [node name="Circle" type="Container" parent="Holder/Top"]
 margin_left = 322.0
@@ -280,6 +281,12 @@ position = Vector2( 0, 151 )
 
 [node name="YokaiSprites" parent="Holder/Top/Circle/Center/Ping" instance=ExtResource( 18 )]
 
+[node name="Hitotsumekozo" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="0"]
+frame = 14
+
+[node name="Chochi-No-Bake" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="2"]
+frame = 0
+
 [node name="Debug" type="ColorRect" parent="Holder/Top/Circle"]
 visible = false
 margin_right = 40.0
@@ -318,7 +325,7 @@ margin_top = 12.0
 margin_right = 219.0
 margin_bottom = 51.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "5 / 5"
 align = 2
@@ -351,7 +358,7 @@ margin_top = 12.0
 margin_right = 219.0
 margin_bottom = 51.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 11 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "3 / 3"
 align = 2
@@ -392,7 +399,7 @@ script = ExtResource( 10 )
 modulate = Color( 0.415686, 0.415686, 0.415686, 1 )
 margin_right = 156.0
 margin_bottom = 146.0
-texture = SubResource( 12 )
+texture = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -400,7 +407,7 @@ __meta__ = {
 [node name="Texture" type="TextureRect" parent="Holder/Top/Right/VBox/Others/Seeds"]
 margin_right = 156.0
 margin_bottom = 146.0
-texture = SubResource( 14 )
+texture = SubResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -515,7 +522,7 @@ margin_bottom = 266.0
 script = ExtResource( 21 )
 
 [node name="Card2" parent="Holder/Bottom/HBox/BottomLeft/Discard" instance=ExtResource( 22 )]
-material = SubResource( 15 )
+material = SubResource( 8 )
 margin_left = 43.9096
 margin_top = 29.5149
 margin_right = 406.91
@@ -524,7 +531,7 @@ rect_rotation = -5.0
 rect_scale = Vector2( 0.6, 0.6 )
 
 [node name="Card1" parent="Holder/Bottom/HBox/BottomLeft/Discard" instance=ExtResource( 22 )]
-material = SubResource( 15 )
+material = SubResource( 8 )
 margin_left = 79.375
 margin_top = 13.8591
 margin_right = 442.375
@@ -533,7 +540,7 @@ rect_rotation = -10.0
 rect_scale = Vector2( 0.6, 0.6 )
 
 [node name="Card0" parent="Holder/Bottom/HBox/BottomLeft/Discard" instance=ExtResource( 22 )]
-material = SubResource( 15 )
+material = SubResource( 8 )
 margin_left = 194.028
 margin_top = -10.0793
 margin_right = 557.028
@@ -629,9 +636,9 @@ margin_top = 12.0
 margin_right = 335.0
 margin_bottom = 270.0
 
-[node name="Hand" type="Container" parent="Holder/Bottom/HBox"]
+[node name="Hand" type="Control" parent="Holder/Bottom/HBox"]
 margin_left = 367.0
-margin_right = 1584.0
+margin_right = 1550.0
 margin_bottom = 266.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -645,7 +652,58 @@ anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="Holder/Bottom/HBox"]
+margin_left = 1554.0
+margin_right = 1584.0
+margin_bottom = 266.0
+rect_min_size = Vector2( 30, 0 )
+
+[node name="MessageLayer" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource( 24 )
+
+[node name="DiscardMessage" parent="MessageLayer" instance=ExtResource( 20 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 627.864
+margin_top = 517.921
+margin_right = 1007.86
+margin_bottom = 587.921
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = -24
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="ThoughtText" parent="MessageLayer/DiscardMessage" index="0"]
+margin_left = 8.0
+margin_top = -24.0
+margin_right = 372.0
+margin_bottom = 62.0
+
+[node name="ShadowContainer" parent="MessageLayer/DiscardMessage/ThoughtText" index="0"]
+margin_right = 364.0
+margin_bottom = 86.0
+
+[node name="Margin" parent="MessageLayer/DiscardMessage/ThoughtText" index="1"]
+margin_right = 364.0
+margin_bottom = 86.0
+
+[node name="Text" parent="MessageLayer/DiscardMessage/ThoughtText/Margin" index="0"]
+margin_right = 340.0
+margin_bottom = 62.0
+bbcode_text = "Choose a talisman to discard"
+text = "Choose a talisman to discard"
 
 [editable path="Holder/Top/Circle/Center/Ping/YokaiSprites"]
 [editable path="Holder/Bottom/HBox/BottomLeft/CombatThoughts"]
 [editable path="Holder/Bottom/HBox/BottomLeft/CombatThoughts/ThoughtText"]
+[editable path="MessageLayer/DiscardMessage"]
+[editable path="MessageLayer/DiscardMessage/ThoughtText"]

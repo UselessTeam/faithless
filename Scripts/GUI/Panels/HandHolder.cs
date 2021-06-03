@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 using Godot;
 using Utils;
 
-public class HandHolder : Container {
+public class HandHolder : Control {
     static readonly object handFlowLock = new object();
     public IEnumerable<CardId> Cards => visuals.Select(visual => visual.Card);
     public CardVisual Selected;
+
+    public bool CardInputMode = false;
+    public int InputIndex;
+    [Signal] public delegate int CardInput ();
 
     List<CardVisual> visuals = new List<CardVisual>();
     HBoxContainer container;
@@ -91,8 +95,12 @@ public class HandHolder : Container {
         BattleScene.Instance.DisplayDeckAndDiscard();
     }
 
-    public void SelectCard (byte _, CardVisual visual) {
+    public void SelectCard (byte index, CardVisual visual) {
         if (BattleScene.Instance.IsBusy()) {
+            if (CardInputMode) {
+                InputIndex = index;
+                EmitSignal(nameof(CardInput), index);
+            }
             return;
         }
 

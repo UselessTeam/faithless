@@ -71,7 +71,7 @@ public class BattleScene : CanvasLayer {
             Instance.hpField.Text = $"{value} / {GameData.Instance.MaxHealth}";
             if (Health <= 0) {
                 SealingCircle.ZIndex = 0;
-                LostScene.Lose(Instance);
+                Instance.Lose();
             }
         }
     }
@@ -364,11 +364,17 @@ public class BattleScene : CanvasLayer {
             if (OS.IsDebugBuild()) GD.Print("Win already called");
             return;
         }
+        BattleMessages.EndOfBattle();
         WinCalled = true;
         currentState = State.SealingYokai;
         await SealingCircle.RayCircle.Seal();
         SealingCircle.ZIndex = 0;
         SealedScene.Win(this);
+    }
+
+    public void Lose () {
+        BattleMessages.EndOfBattle();
+        LostScene.Lose(Instance);
     }
 
     //Debug
