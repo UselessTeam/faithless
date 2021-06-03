@@ -186,9 +186,9 @@ public class BattleScene : CanvasLayer {
             thought.BbcodeText = BB.Format(card.Data().Description);
         }
     }
-    public void DescribeAction (YokaiAction action) {
+    public void DescribeAction (string actionDescription) {
         thoughtBubble.Show();
-        thought.BbcodeText = BB.Format(action.Description());
+        thought.BbcodeText = BB.Format(actionDescription);
     }
     public void DescribeSeal (Element element) {
         thoughtBubble.Show();

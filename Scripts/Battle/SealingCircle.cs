@@ -86,24 +86,24 @@ public class SealingCircle : Node2D {
     public void DisplayActionPlan (List<YokaiAction> actionPlan) {
         ArrowDisplays.QueueFreeChildren();
         for (int i = 0 ; i < SlotCount ; i++) {
-            if (actionPlan[i] != YokaiAction.None) {
+            if (actionPlan[i].Type != YokaiActionType.None) {
                 var arrow = GD.Load<PackedScene>(arrowPath).Instance().GetNode<IntentArrow>("./");
                 arrow.GlobalPosition = CenterPosition + CenterToSlot / 2;
                 arrow.Rotate(2 * Mathf.Pi * i / SlotCount);
-                arrow.ShowArrow(actionPlan[i]);
-                arrow.Connect(nameof(IntentArrow.FocusEntered), this, nameof(Hover));
-                arrow.Connect(nameof(IntentArrow.FocusExited), this, nameof(UnHover));
                 ArrowDisplays.AddChild(arrow);
+                arrow.ShowArrow(actionPlan[i]);
+                arrow.Connect(nameof(IntentArrow.FocusEntered), BattleScene.Instance, nameof(BattleScene.DescribeAction));
+                arrow.Connect(nameof(IntentArrow.FocusExited), this, nameof(UnHover));
             }
             CenterToSlot = CenterToSlot.Rotated(2 * Mathf.Pi / SlotCount);
         }
     }
 
-    public void Hover (YokaiAction action) {
-        BattleScene.Instance.DescribeAction(action);
-    }
+    // public void Hover (string actionDescription) {
+    //     BattleScene.Instance.DescribeAction(actionDescription);
+    // }
 
-    public void UnHover (YokaiAction _) {
+    public void UnHover (string _) {
         if (BattleScene.Cards.Selected == CardId.None) {
             BattleScene.Instance.DescribeCard(CardId.None);
         } else {

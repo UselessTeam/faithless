@@ -36,11 +36,11 @@ public class YokaiAI {
     }
 
     public void PlanNextTurn () {
-        ActionPlan = Enumerable.Repeat(YokaiAction.None, BattleScene.SealCount).ToList();
+        ActionPlan = Enumerable.Repeat(new YokaiAction(YokaiActionType.None), BattleScene.SealCount).ToList();
         int level;
         int actionCount;
         int location;
-        YokaiAction action;
+        YokaiActionType action;
         switch (Yokai) {
             case YokaiId.Hitotsumekozo:
             case YokaiId.Chochinobake:
@@ -57,22 +57,22 @@ public class YokaiAI {
                 };
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) actionCount += 1;
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 2) actionCount += 1;
-                actionCount -= StaggerLevel;
 
-                if (actionCount < 0) level = Mathf.Max(0, level + actionCount);
-                ActionPlan[0] = level switch {
-                    0 => YokaiAction.None,
-                    1 => YokaiAction.Attack,
-                    _ => YokaiAction.AttackOrRemove,
-                };
+                ActionPlan[0] = new YokaiAction(level switch {
+                    0 => YokaiActionType.None,
+                    1 => YokaiActionType.Attack,
+                    _ => YokaiActionType.AttackOrRemove,
+                }, (StaggerLevel > 0));
+                StaggerLevel -= 1;
 
-                actionCount = Math.Min(actionCount,
-                                          CardEffectHelper.NonEmptySealsCount(1, BattleScene.SealCount)); //Prevent infinite loop
-                var nonempty = CardEffectHelper.GetNonEmptySeals();
+                actionCount = Math.Min(actionCount, BattleScene.SealCount - 1); //Prevent infinite loop
+
+                var slots = Enumerable.Range(1, BattleScene.SealCount - 1).ToList();
                 for (int i = 0 ; i < actionCount ; i++) {
-                    location = nonempty.Random();
-                    while (ActionPlan[location] != YokaiAction.None) location = nonempty.Random();
-                    ActionPlan[location] = YokaiAction.Remove;
+                    location = slots.Random();
+                    while (ActionPlan[location].Type != YokaiActionType.None) location = slots.Random();
+                    ActionPlan[location] = new YokaiAction((BattleScene.SealSlots[location] == Element.None) ? YokaiActionType.Attack : YokaiActionType.Remove, (StaggerLevel > 0));
+                    StaggerLevel -= 1;
                 }
                 break;
 
@@ -96,7 +96,7 @@ public class YokaiAI {
                     4 => 6,
                     _ => 6,
                 };
-                int nAttackRemove = level switch {
+                int nSuperAttacks = level switch {
                     0 => 1,
                     1 => 1,
                     2 => 2,
@@ -104,13 +104,21 @@ public class YokaiAI {
                     4 => 3,
                     _ => 4,
                 };
-                nAttackRemove -= staggerLevel;
-                action = (TurnCount % 2 == 0) ? YokaiAction.Attack : YokaiAction.Remove;
-                location = RNG.rng.Next(0, BattleScene.SealCount / actionCount);
-                for (int i = 0 ; i < actionCount - staggerLevel ; i++)
-                    ActionPlan[location + i * BattleScene.SealCount / actionCount] = action;
-                for (int i = 0 ; i < nAttackRemove ; i++) // Upgrade some of the previous actions into AttackAndRemove
-                    ActionPlan[location + RNG.rng.Next(0, actionCount) * BattleScene.SealCount / actionCount] = YokaiAction.AttackOrRemove;
+                nSuperAttacks -= staggerLevel;
+
+                action = (TurnCount % 2 == 0) ? YokaiActionType.Attack : YokaiActionType.Remove;
+
+                int distanceBetweenActions = BattleScene.SealCount / actionCount;
+                location = RNG.rng.Next(0, distanceBetweenActions);
+
+                for (int i = 0 ; i < actionCount ; i++) {
+                    bool isBlocked = (StaggerLevel > 0);
+                    StaggerLevel--;
+                    bool isSupperAttack = (RNG.rng.Next(0, actionCount - i) < nSuperAttacks);
+                    if (isSupperAttack) nSuperAttacks--;
+                    ActionPlan[location + i * BattleScene.SealCount / actionCount]
+                            = new YokaiAction(isSupperAttack ? YokaiActionType.AttackOrRemove : action, isBlocked);
+                }
                 break;
 
         }

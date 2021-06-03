@@ -21,6 +21,7 @@ namespace Utils {
                     } else if (metaTag.key == "title") {
                         Global.SaveGame();
                         GetTree().ChangeScene("res://Scenes/TitleScreen.tscn");
+                        Global.ResetGame(GetTree());
                     } else {
                         GD.PrintErr("Unknown scene");
                     }
