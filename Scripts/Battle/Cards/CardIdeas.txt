@@ -8,3 +8,13 @@ A water card to keep your hand for next turn
 
 Have more water cards based on discarding
 
+Extract ore: Earth -> metal seal or card?
+
+Fertilize soils: "Earth Seal", "Root" and "Plantation" card grant double seeds
+
+Stone age: Select an "Earth seal" next to a water seal, add a "Build village card to your hand"
+Build village: Remove a Wood, + cards + ki, add a "DEvelop civilization?"
+Dev Civ: Discard a fire and a metal talisman. Place one Seal of each type at random empty locations on the board
+
+Increase fire spread range for 1 turn
+Increase range of harvest for 1 turn

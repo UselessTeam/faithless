@@ -67,6 +67,14 @@ If so, they will attack less on their next turn
 @"Push a Seal
 
 When a Seal is pushed, it pushes all subsequent Seals in the same direction.  
-"}
+"},
+{"trigger-effect",
+@"Trigger their effect
+
+A [wood-seal] will grant a seed
+A [water-seal] will start a [?harvest]harvest[/?] on adjacent [wood-seals]
+A [fire-seal] will [?ignite]ignite[/?] adjacent [wood-seals]
+A [metal-seal] does nothing
+"},
 };
 }

@@ -69,6 +69,8 @@ public static class CardEffectHelper {
         return new Tuple<int, int>(i, j);
     }
 
+    public static Element GetSeal (this int loc) { return BattleScene.SealSlots[loc]; }
+
     public static int NextLocation (this int loc) { return (loc + 1) % BattleScene.SealCount; }
     public static int PrevLocation (this int loc) { return (loc + BattleScene.SealCount - 1) % BattleScene.SealCount; }
     public static int AdjacentLocation (this int loc, bool clockwise) { return (clockwise) ? NextLocation(loc) : PrevLocation(loc); }
@@ -129,6 +131,27 @@ public static class CardEffectHelper {
         tasks.Add(BattleScene.SealingCircle.MoveSeal(0, i.AdjacentLocation(clockwise), lastElement));
         BattleScene.SealSlots[i.AdjacentLocation(clockwise)] = lastElement;
         return Task.WhenAll(tasks);
+    }
+
+    public static async Task TriggerEffect (int location) {
+        switch (location.GetSeal()) {
+            case Element.Fire:
+                foreach (var adjLoc in new int[2] { location.NextLocation(), location.PrevLocation() })
+                    if (adjLoc.GetSeal() == Element.Wood) {
+                        await BattleScene.Instance.PlaceSeal(Element.Fire, adjLoc);
+                        BattleScene.Ki += 1;
+                    }
+                break;
+            case Element.Wood:
+                await BattleScene.AddSeeds(1);
+                break;
+            case Element.Water:
+                foreach (var adjLoc in new int[2] { location.NextLocation(), location.PrevLocation() })
+                    if (adjLoc.GetSeal() == Element.Wood) {
+                        await BattleScene.DrawCards(1);
+                    }
+                break;
+        }
     }
 }
 
