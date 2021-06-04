@@ -50,7 +50,7 @@ public class CardData : Resource {
                 Element = Element.Fire,
                 Cost = 2,
                 SFX = "TaikoLarge",
-                Description = "Place a [fire-seal] on the selected slot \nAt the start of your turn, a [fire-seal] burns any surrounding [wood-seal], turning them into [fire-seals] and producing 1 [ki]",
+                Description = "Place a [fire-seal] on the selected slot \nAt the start of your turn, a [fire-seal] [?ignite]ignites[/?] any surrounding [wood-seal], turning them into [fire-seals] and producing 1 [ki]",
                 Use =  async (useLocation) => {
                     await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation); }
             },

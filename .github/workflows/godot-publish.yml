@@ -65,7 +65,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
           CHANNEL: ${{ matrix.platform }}
-          ITCH_GAME: test-godot-ci
+          ITCH_GAME: faithless-land
           ITCH_USER: swynfel
           PACKAGE: build/${{ matrix.platform }}
           VERSION: ${{ env.TAG_VERSION }}
