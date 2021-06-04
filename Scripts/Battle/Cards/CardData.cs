@@ -61,7 +61,7 @@ public class CardData : Resource {
                 Element = Element.Water,
                 Cost = 2,
                 SFX = "TaikoFunky",
-                Description = "Place a [water-seal] on the selected slot. \nIf a Yokai tries to remove this Seal, it turns into an [earth-seal] instead. \nAt the end of your turn, adjacent [wood-seals] can [?harvest]harvest[/?]",
+                Description = "Place a [water-seal] on the selected slot. \nIf a Yokai tries to remove a [water-seal], it turns into an [earth-seal] instead.",
                 Use =  async (useLocation) => {
                      await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
             },
@@ -72,7 +72,7 @@ public class CardData : Resource {
                 Element = Element.Wood,
                 Cost = 2,
                 SFX = "TaikoMedium",
-                Description = "Place a [wood-seal] on the selected slot. \nGain one [seed]",
+                Description = "Place a [wood-seal] on the selected slot. \nGain one [seed]. \nAt the end of your turn, a [wood-seal] will [?harvest]harvest[/?] if it adjacent to a [water-seal].",
                 Use = async (useLocation) => {
                     await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation);
                     await BattleScene.AddSeeds(1);}
