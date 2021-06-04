@@ -1,0 +1,37 @@
+name: "godot test build"
+on:
+  push:
+    branches:
+      - master
+
+env:
+  GODOT_VERSION: 3.3.2
+  EXPORT_NAME: faithless-land
+
+jobs:
+  test-build-linux:
+    name: Test Linux Build
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:mono-3.3.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Setup templates and exports
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable.mono ~/.local/share/godot/templates/${GODOT_VERSION}.stable.mono
+          cp export_presets.template.cfg export_presets.cfg
+      - name: Linux Build
+        run: |
+          mkdir -v -p build/linux
+          godot -v --export "linux-64" ./build/linux/$EXPORT_NAME.x86_64
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux
+          path: build/linux
+          retention-days: 7

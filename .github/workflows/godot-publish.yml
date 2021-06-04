@@ -1,0 +1,71 @@
+name: "godot publish"
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  GODOT_VERSION: 3.3.2
+  EXPORT_NAME: faithless-land
+
+jobs:
+  publish-all:
+    name: Publish All
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:mono-3.3.2
+    strategy:
+      matrix:
+        include:
+          - platform: windows
+            export: windows-64
+            extension: exe
+          - platform: mac
+            export: mac
+            extension: zip
+          - platform: linux
+            export: linux-64
+            extension: x86_64
+    steps:
+      - name: Set tag version
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Setup exports
+        uses: bluwy/substitute-string-action@v1
+        with:
+          _input-file: export_presets.template.cfg
+          _output-file: export_presets.cfg
+          _format-key: "{{key}}"
+          version: ${{ env.TAG_VERSION }}
+          short-version: ${{ env.TAG_VERSION }}
+      - name: Setup templates
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable.mono ~/.local/share/godot/templates/${GODOT_VERSION}.stable.mono
+      - name: Build
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          EXPORT: ${{ matrix.export }}
+          EXTENSION: ${{ matrix.extension }}
+        run: |
+          mkdir -v -p build/$PLATFORM
+          godot -v --export $EXPORT ./build/$PLATFORM/$EXPORT_NAME.$EXTENSION
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.platform }}-v${{ env.TAG_VERSION }}
+          path: build/${{ matrix.platform }}
+          retention-days: 30
+      - name: Publish itch.io
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
+          CHANNEL: ${{ matrix.platform }}
+          ITCH_GAME: test-godot-ci
+          ITCH_USER: swynfel
+          PACKAGE: build/${{ matrix.platform }}
+          VERSION: ${{ env.TAG_VERSION }}
