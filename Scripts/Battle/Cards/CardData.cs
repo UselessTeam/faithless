@@ -43,8 +43,7 @@ public class CardData : Resource {
 
     private static Dictionary<CardId, CardData> list = (new CardData[] {
             null,
-            new CardData {
-                Id = CardId.BasicFire,
+            new CardData {Id = CardId.BasicFire,
                 Name = "Fire Seal",
                 Kanji = "火",
                 Element = Element.Fire,
@@ -54,8 +53,7 @@ public class CardData : Resource {
                 Use =  async (useLocation) => {
                     await BattleScene.Instance.PlaceSeal(Element.Fire, useLocation); }
             },
-            new CardData {
-                Id = CardId.BasicWater,
+            new CardData {Id = CardId.BasicWater,
                 Name = "Water Seal",
                 Kanji = "水",
                 Element = Element.Water,
@@ -65,8 +63,7 @@ public class CardData : Resource {
                 Use =  async (useLocation) => {
                      await BattleScene.Instance.PlaceSeal(Element.Water, useLocation); }
             },
-            new CardData {
-                Id = CardId.BasicWood,
+            new CardData {Id = CardId.BasicWood,
                 Name = "Wood Seal",
                 Kanji = "木",
                 Element = Element.Wood,
@@ -77,7 +74,7 @@ public class CardData : Resource {
                     await BattleScene.Instance.PlaceSeal (Element.Wood, useLocation);
                     await BattleScene.AddSeeds(1);}
             },
-            new CardData {                Id = CardId.BasicEarth,
+            new CardData {Id = CardId.BasicEarth,
                 Name = "Earth Seal",
                 Kanji = "土",
                 Element = Element.Earth,

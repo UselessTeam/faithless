@@ -1,0 +1,15 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+path="res://.import/seal_mask.png-8aee9caf73ced49b45a837b1fbcf41e8.res"
+
+[deps]
+
+source_file="res://Assets/Sprites/GUI/icons/seal_mask.png"
+dest_files=[ "res://.import/seal_mask.png-8aee9caf73ced49b45a837b1fbcf41e8.res" ]
+
+[params]
+
+create_from=1
+threshold=0.49

@@ -1,9 +1,14 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Assets/Sprites/Oni/jorogumo.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/Oni/chochinobake.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sprites/Oni/kasaobake.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Sprites/Oni/hitotsumekozo.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sprites/Oni/sadako2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Sprites/Oni/sadako3.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Sprites/Oni/bakezori2.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Sprites/Oni/sadako.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Sprites/Oni/bakezori.png" type="Texture" id=9]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -30,7 +35,15 @@ animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 2 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 4 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ), SubResource( 1 ) ],
 "loop": true,
 "name": "default",
-"speed": 7.0
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 2.0
 } ]
 
 [sub_resource type="AtlasTexture" id=6]
@@ -71,7 +84,15 @@ animations = [ {
 "frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 9 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 11 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ) ],
 "loop": true,
 "name": "default",
-"speed": 7.0
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=15]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 1.0
 } ]
 
 [sub_resource type="SpriteFrames" id=13]
@@ -88,22 +109,36 @@ animations = [ {
 visible = false
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 4
+frame = 6
 playing = true
 
-[node name="Kasa-Obake" type="AnimatedSprite" parent="."]
+[node name="Bakezori" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 0.17, 0.17 )
+frames = SubResource( 14 )
+frame = 3
+playing = true
+
+[node name="Kasaobake" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 7 )
 
-[node name="Chochi-No-Bake" type="AnimatedSprite" parent="."]
+[node name="Chochinobake" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 12 )
-frame = 12
+frame = 7
 playing = true
 
-[node name="Joro-Gumo" type="AnimatedSprite" parent="."]
+[node name="Sadako" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 0.17, 0.17 )
+frames = SubResource( 15 )
+frame = 4
+playing = true
+
+[node name="Jorogumo" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 13 )

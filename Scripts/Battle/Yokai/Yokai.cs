@@ -24,6 +24,13 @@ public class YokaiData {
             SealSlots = 6,
         },
         new YokaiData(){
+            Id = YokaiId.Bakezori,
+            Name = "Bakezori",
+            Difficulty  = "EASY",
+            Reward = 150,
+            SealSlots = 8,
+        },
+        new YokaiData(){
             Id = YokaiId.Kasaobake,
             Name = "Kasa-Obake",
             Difficulty  = "MEDIUM",
@@ -35,6 +42,14 @@ public class YokaiData {
             Name = "Chochi-No-Bake",
             Difficulty  = "HARD",
             Reward = 500,
+            SealSlots = 10,
+
+        },
+        new YokaiData(){
+            Id = YokaiId.Sadako,
+            Name = "Sadako-Chan",
+            Difficulty  = "HARD",
+            Reward = 650,
             SealSlots = 10,
 
         },

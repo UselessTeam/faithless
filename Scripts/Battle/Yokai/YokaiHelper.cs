@@ -8,8 +8,10 @@ using Utils;
 public enum YokaiId {
     None,
     Hitotsumekozo,
+    Bakezori,
     Kasaobake,
     Chochinobake,
+    Sadako,
     Jorogumo,
     TOTAL,
 }

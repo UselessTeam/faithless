@@ -399,7 +399,7 @@ anchor_right = 0.6
 anchor_bottom = 0.6
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Useless Team
-present"
+presents"
 align = 1
 valign = 1
 __meta__ = {

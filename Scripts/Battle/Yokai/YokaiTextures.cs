@@ -11,6 +11,6 @@ public class YokaiTextures : Node {
     }
 
     public Texture GetTexture (YokaiId yokai) {
-        return GetNode<Sprite>(yokai.ToString()).Texture;
+        return GetNode<AnimatedSprite>(yokai.ToString()).Frames.GetFrame("default", 0);
     }
 }

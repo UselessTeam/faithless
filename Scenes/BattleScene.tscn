@@ -85,7 +85,7 @@ discardPath = NodePath("Holder/Bottom/HBox/BottomLeft/Discard/Margin/Margin/Grid
 discardDisplayPath = NodePath("Holder/Bottom/HBox/BottomLeft/Discard")
 handholderPath = NodePath("Holder/Bottom/HBox/Hand")
 sealingCirclePath = NodePath("Holder/Top/Circle/Center/Ping/SealingCircle")
-yokaiSpritePath = NodePath("Holder/Top/Circle/Center/Ping/YokaiSprites")
+yokaiAnimationPath = NodePath("Holder/Top/Circle/Center/Ping/YokaiAnimation")
 
 [node name="Background" type="Control" parent="."]
 anchor_right = 1.0
@@ -169,7 +169,7 @@ __meta__ = {
 }
 
 [node name="LogPanel" type="VBoxContainer" parent="Holder/Top/Left/ColorRect/Margin/Scroll"]
-margin_top = 337.0
+margin_top = 345.0
 margin_right = 238.0
 margin_bottom = 369.0
 grow_vertical = 0
@@ -187,7 +187,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 0.0
 margin_right = 238.0
-margin_bottom = 32.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 mouse_filter = 0
 custom_fonts/normal_font = ExtResource( 2 )
@@ -279,13 +279,7 @@ position = Vector2( 0, 151 )
 
 [node name="ArrowDisplays" type="Node2D" parent="Holder/Top/Circle/Center/Ping/SealingCircle"]
 
-[node name="YokaiSprites" parent="Holder/Top/Circle/Center/Ping" instance=ExtResource( 18 )]
-
-[node name="Hitotsumekozo" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="0"]
-frame = 5
-
-[node name="Chochi-No-Bake" parent="Holder/Top/Circle/Center/Ping/YokaiSprites" index="2"]
-frame = 10
+[node name="YokaiAnimation" parent="Holder/Top/Circle/Center/Ping" instance=ExtResource( 18 )]
 
 [node name="Debug" type="ColorRect" parent="Holder/Top/Circle"]
 visible = false
@@ -685,24 +679,23 @@ custom_constants/margin_bottom = 8
 [node name="ThoughtText" parent="MessageLayer/DiscardMessage" index="0"]
 margin_left = 8.0
 margin_top = -24.0
-margin_right = 372.0
+margin_right = 371.0
 margin_bottom = 62.0
 
 [node name="ShadowContainer" parent="MessageLayer/DiscardMessage/ThoughtText" index="0"]
-margin_right = 364.0
+margin_right = 363.0
 margin_bottom = 86.0
 
 [node name="Margin" parent="MessageLayer/DiscardMessage/ThoughtText" index="1"]
-margin_right = 364.0
+margin_right = 363.0
 margin_bottom = 86.0
 
 [node name="Text" parent="MessageLayer/DiscardMessage/ThoughtText/Margin" index="0"]
-margin_right = 340.0
+margin_right = 339.0
 margin_bottom = 62.0
 bbcode_text = "Choose a talisman to discard"
 text = "Choose a talisman to discard"
 
-[editable path="Holder/Top/Circle/Center/Ping/YokaiSprites"]
 [editable path="Holder/Bottom/HBox/BottomLeft/CombatThoughts"]
 [editable path="Holder/Bottom/HBox/BottomLeft/CombatThoughts/ThoughtText"]
 [editable path="MessageLayer/DiscardMessage"]

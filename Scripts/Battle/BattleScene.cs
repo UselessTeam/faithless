@@ -27,7 +27,7 @@ public class BattleScene : CanvasLayer {
     [Export] NodePath discardDisplayPath;
     [Export] NodePath handholderPath;
     [Export] NodePath sealingCirclePath;
-    [Export] NodePath yokaiSpritePath;
+    [Export] NodePath yokaiAnimationPath;
     public static NodePath yokaiHitBoxPath;
     public YokaiHitBox Yokai;
 
@@ -129,7 +129,7 @@ public class BattleScene : CanvasLayer {
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
         var yokai = GameData.Instance.yokai.Data();
-        GetNode<Node2D>(yokaiSpritePath).GetNode<AnimatedSprite>(yokai.Name).Visible = true;
+        GetNode<Node2D>(yokaiAnimationPath).GetNode<AnimatedSprite>(yokai.Id.ToString()).Visible = true;
 
         SealingCircle.InitializeSlots(yokai.SealSlots);
         Health = GameData.Instance.MaxHealth;
