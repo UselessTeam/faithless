@@ -4,10 +4,6 @@ using Utils;
 
 public class SealedScene : ColorRect {
 
-    public static void Win (Node sceneNode) {
-        SealedScene instance = (SealedScene) ResourceLoader.Load<PackedScene>("res://Scenes/SealedScene.tscn").Instance();
-        sceneNode.AddChild(instance);
-    }
     [Export] NodePath moneyPath;
     [Export] NodePath cardPath;
     [Export] NodePath descriptionPath;

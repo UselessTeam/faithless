@@ -61,11 +61,7 @@ public class HandHolder : Control {
     }
 
     public void UnHoverCard (CardId card) {
-        if (Selected == null) {
-            BattleScene.Instance.DescribeCard(CardId.None);
-        } else {
-            BattleScene.Instance.DescribeCard(Selected.Card);
-        }
+        BattleScene.Instance.DescribeDefault();
     }
 
     public Task DiscardCardVisual (int visualId) {

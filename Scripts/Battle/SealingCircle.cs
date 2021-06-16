@@ -104,11 +104,7 @@ public class SealingCircle : Node2D {
     // }
 
     public void UnHover (string _) {
-        if (BattleScene.Cards.Selected == CardId.None) {
-            BattleScene.Instance.DescribeCard(CardId.None);
-        } else {
-            BattleScene.Instance.DescribeCard(BattleScene.Cards.Selected);
-        }
+        BattleScene.Instance.DescribeDefault();
     }
 
 }

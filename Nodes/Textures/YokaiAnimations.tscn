@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Assets/Sprites/Oni/jorogumo.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/Oni/chochinobake.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Sprites/Oni/bakezori2.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Sprites/Oni/sadako.png" type="Texture" id=8]
 [ext_resource path="res://Assets/Sprites/Oni/bakezori.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/Battle/Yokai/YokaiTextures.cs" type="Script" id=10]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -104,19 +105,19 @@ animations = [ {
 } ]
 
 [node name="Yokai" type="Node2D"]
+script = ExtResource( 10 )
 
 [node name="Hitotsumekozo" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 6
+frame = 15
 playing = true
 
 [node name="Bakezori" type="AnimatedSprite" parent="."]
 visible = false
-scale = Vector2( 0.17, 0.17 )
+scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 14 )
-frame = 3
 playing = true
 
 [node name="Kasaobake" type="AnimatedSprite" parent="."]
@@ -126,9 +127,9 @@ frames = SubResource( 7 )
 
 [node name="Chochinobake" type="AnimatedSprite" parent="."]
 visible = false
-scale = Vector2( 0.2, 0.2 )
+scale = Vector2( 0.17, 0.17 )
 frames = SubResource( 12 )
-frame = 7
+frame = 9
 playing = true
 
 [node name="Sadako" type="AnimatedSprite" parent="."]

@@ -158,6 +158,7 @@ public class CardData : Resource {
                 Description = "Do not discard your hand at the end of this turn",
                 Use = async (useLocation) => {
                     BattleScene.Instance.RetainHand = true;
+                    await Task.Delay(0);
                 }
             },
             new CardData {Id = CardId.Tsunami,
@@ -279,6 +280,7 @@ public class CardData : Resource {
                 Description = "The [?harvest]harvest[/?] effect of [wood-seals] grants one more card. \nBanish this talisman until the end of the combat",
                 Use = async (useLocation) => {
                      BattleScene.Instance.HarvestBonus +=1;
+                     await Task.Delay(0);
                 }
             },
             new CardData {Id = CardId.Stronghold,
@@ -490,6 +492,7 @@ public class CardData : Resource {
                 Description = "On his next turn, each time the Yokai attacks or removes a [fire-seal], he will get staggered",
                 Use = async (useLocation) => {
                     BattleScene.YokaiAI.Incinerate = true;
+                    await Task.Delay(0);
                 }
             },
             new CardData {Id = CardId.Volcano,

@@ -14,10 +14,14 @@ namespace Utils {
                     ThoughtPopup.Instance.Open(metaTag.key);
                     break;
                 case '~':
+                    ThoughtPopup.Instance.Hide();
                     if (metaTag.key == "village") {
                         GetTree().ChangeScene("res://Scenes/VillageScene.tscn");
                     } else if (metaTag.key == "combat") {
                         GetTree().ChangeScene("res://Scenes/BattleScene.tscn");
+                    } else if (metaTag.key == "save") {
+                        Global.SaveGame();
+                        ThoughtPopup.Instance.Open("saved");
                     } else if (metaTag.key == "title") {
                         Global.SaveGame();
                         GetTree().ChangeScene("res://Scenes/TitleScreen.tscn");
@@ -25,7 +29,6 @@ namespace Utils {
                     } else {
                         GD.PrintErr("Unknown scene");
                     }
-                    ThoughtPopup.Instance.Hide();
                     break;
             }
         }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Sprites/Talismans/card_earth.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/Talismans/card_fire.png" type="Texture" id=2]
@@ -7,12 +7,10 @@
 [ext_resource path="res://Assets/Sprites/Talismans/card_metal.png" type="Texture" id=8]
 [ext_resource path="res://Assets/Sprites/Talismans/card_water.png" type="Texture" id=9]
 [ext_resource path="res://Assets/Sprites/Talismans/card_wood.png" type="Texture" id=10]
-[ext_resource path="res://Scripts/Battle/Yokai/YokaiTextures.cs" type="Script" id=11]
 
 [node name="TextureHolder" type="Node"]
 
 [node name="YokaiTextures" parent="." instance=ExtResource( 4 )]
-script = ExtResource( 11 )
 
 [node name="CardTextures" type="Node" parent="."]
 script = ExtResource( 3 )

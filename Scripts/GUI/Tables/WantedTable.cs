@@ -11,13 +11,13 @@ public class WantedTable : MarginContainer {
     [Export(PropertyHint.File)] string battleScenePath;
     [Export] NodePath namePath;
     [Export] NodePath difficultyPath;
-    [Export] NodePath weaknessPath;
+    [Export] NodePath elementPath;
     [Export] NodePath rewardPath;
     [Export] NodePath huntPath;
-    [Export] NodePath imagePath;
+    [Export] NodePath yokaiAnimationPath;
     Label nameField;
     Label difficultyField;
-    Label weaknessField;
+    Label elementField;
     RichTextLabel rewardField;
     Label huntField;
 
@@ -25,7 +25,7 @@ public class WantedTable : MarginContainer {
     public override void _Ready () {
         nameField = GetNode<Label>(namePath);
         difficultyField = GetNode<Label>(difficultyPath);
-        weaknessField = GetNode<Label>(weaknessPath);
+        elementField = GetNode<Label>(elementPath);
         rewardField = GetNode<RichTextLabel>(rewardPath);
         huntField = GetNode<Label>(huntPath);
         Connect("mouse_entered", this, nameof(MouseEntered));
@@ -38,8 +38,8 @@ public class WantedTable : MarginContainer {
         yokai = _yokai;
         nameField.Text = yokai.Name;
         difficultyField.Text = yokai.Difficulty;
-        weaknessField.Text = yokai.Weaknesses;
-        GetNode<TextureRect>(imagePath).Texture = YokaiTextures.Instance.GetTexture(yokai.Id);
+        elementField.Text = yokai.Element.ToString();
+        GetNode<YokaiTextures>(yokaiAnimationPath).ShowYokai(yokai.Id, false);
         rewardField.BbcodeText = $"[right]{yokai.Reward} {BB.Mon}[/right]  ";
     }
 

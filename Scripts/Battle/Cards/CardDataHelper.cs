@@ -73,6 +73,7 @@ public static class CardEffectHelper {
 
     public static int NextLocation (this int loc) { return (loc + 1) % BattleScene.SealCount; }
     public static int PrevLocation (this int loc) { return (loc + BattleScene.SealCount - 1) % BattleScene.SealCount; }
+    public static int OppositeLocation (this int loc) { return (loc + BattleScene.SealCount / 2) % BattleScene.SealCount; }
     public static int AdjacentLocation (this int loc, bool clockwise) { return (clockwise) ? NextLocation(loc) : PrevLocation(loc); }
 
     public static List<int> GetNonEmptySeals () {
@@ -161,10 +162,11 @@ public static class CardIdExtensions {
     }
 }
 
-public enum Element { None, Fire, Water, Wood, Earth, Metal }
+public enum Element { None, Fire, Water = 2, Wood = 4, Earth = 8, Metal = 16 }
 
 public static class ElementExtensions {
-    public static string Description (this Element element) => element switch {
+    public static string Description (this Element element) => element
+    switch {
         Element.Fire => "[fire-seal]\n\nAt the start of your turn, a [fire-seal] [?ignite]ignites[/?] any surrounding [wood-seal], turning them into [fire-seals], and producing 1 [ki]",
         Element.Wood => "[wood-seal]\n\nAt the end of your turn, a [wood-seal] next to at least one [water-seal] [?harvest]harvests[/?] (draws 1 card)",
         Element.Water => "[water-seal]\n\nIf an enemy tries to remove this Seal, it will turn into an [earth-seal] instead",
@@ -172,4 +174,42 @@ public static class ElementExtensions {
         Element.Earth => "[earth-seal]\n\nThis has no particular effect by itself",
         _ => "",
     };
+
+    public static Element Destroys (this Element element) => element
+    switch {
+        Element.Fire => Element.Metal,
+        Element.Metal => Element.Wood,
+        Element.Wood => Element.Earth,
+        Element.Earth => Element.Water,
+        Element.Water => Element.Fire,
+        _ => Element.None,
+    };
+    public static Element BlockedBy (this Element element) => element
+    switch {
+        Element.Fire => Element.Earth,
+        Element.Metal => Element.Water,
+        Element.Wood => Element.Fire,
+        Element.Earth => Element.Metal,
+        Element.Water => Element.Wood,
+        _ => Element.None,
+    };
+
+    public static string ToSealString (this Element element) => $"[{element.ToString().ToLower()}-seal]";
+
+    // static IEnumerable<Element> GetElements (this Element element) {
+    //     foreach (Element value in Enum.GetValues(element.GetType())) {
+    //         if (value == Element.None) continue;
+    //         if (element.HasFlag(value))
+    //             yield return value;
+    //     }
+    // }
+    // public static string ToMultiString (this Element element) {
+    //     int elVal = (int) element;
+    //     if ((elVal & (elVal - 1)) == 0)
+    //         return element.ToString();
+    //     string multiStr = "";
+    //     foreach (var elmnt in element.GetElements())
+    //         multiStr += elmnt.ToString() + " & ";
+    //     return multiStr.Remove(multiStr.Length - 3);
+    // }
 }

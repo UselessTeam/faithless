@@ -17,9 +17,11 @@ public class YokaiAI {
     public int StaggerLevel {
         get { return staggerLevel; }
         set {
-            staggerLevel = value;  //Cool Staggered effect}
+            staggerLevel = value; //Cool Staggered effect}
         }
     }
+
+    int attackLocation = 0;
 
     //Card effects
     public bool Incinerate = false;
@@ -37,87 +39,66 @@ public class YokaiAI {
 
     public void PlanNextTurn () {
         ActionPlan = Enumerable.Repeat(new YokaiAction(YokaiActionType.None), BattleScene.SealCount).ToList();
-        int level;
-        int actionCount;
-        int location;
-        YokaiActionType action;
-        switch (Yokai) {
-            case YokaiId.Hitotsumekozo:
-            case YokaiId.Chochinobake:
-                // Attacks the bottom seal, and remove some other seals
-                level = Yokai switch {
-                    YokaiId.Hitotsumekozo => 1,
-                    YokaiId.Chochinobake => 2,
-                    _ => 0
-                };
-                actionCount = level switch {
-                    0 => 0,
-                    1 => 0,
-                    _ => 1,
-                };
-                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) actionCount += 1;
-                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 2) actionCount += 1;
+        YokaiData data = Yokai.Data();
+        int level = data.Level;
+        switch (data.Pattern) {
+            case Pattern.Default:
+            case Pattern.Vertical:
+                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) level += 1;
+                if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 2) level += 1;
 
-                ActionPlan[0] = new YokaiAction(level switch {
-                    0 => YokaiActionType.None,
-                    1 => YokaiActionType.Attack,
-                    _ => YokaiActionType.AttackOrRemove,
-                }, (StaggerLevel > 0));
+                // Attacks the bottom seal, and remove some other seals
+                int sideActionCount =
+                    (level < 2) ? 0 : (level < 4) ? 1 : (level < 6) ? 2 : (level < 8) ? 3 : 4;
+
+                if (StaggerLevel > 0) attackLocation = attackLocation.NextLocation();
+
+                ActionPlan[attackLocation] = new YokaiAction(
+                    (level < 1) ? YokaiActionType.None : (level < 3) ? YokaiActionType.Attack : YokaiActionType.ElementalAttack,
+                    data.Element, (StaggerLevel > 0));
                 StaggerLevel -= 1;
 
-                actionCount = Math.Min(actionCount, BattleScene.SealCount - 1); //Prevent infinite loop
+                sideActionCount = Math.Min(sideActionCount, BattleScene.SealCount - 2); //Prevent infinite loop
 
-                var slots = Enumerable.Range(1, BattleScene.SealCount - 1).ToList();
-                for (int i = 0 ; i < actionCount ; i++) {
-                    location = slots.Random();
+                var slots = Enumerable.Range(1, BattleScene.SealCount / 2 - 1).Concat(Enumerable.Range(BattleScene.SealCount / 2 + 1, BattleScene.SealCount / 2 - 1)).ToList();
+                for (int i = 0 ; i < sideActionCount ; i++) {
+                    int location = slots.Random();
                     while (ActionPlan[location].Type != YokaiActionType.None) location = slots.Random();
                     ActionPlan[location] = new YokaiAction((BattleScene.SealSlots[location] == Element.None) ? YokaiActionType.Attack : YokaiActionType.Remove, (StaggerLevel > 0));
                     StaggerLevel -= 1;
                 }
+
+                ActionPlan[attackLocation.OppositeLocation()] = new YokaiAction(
+                    (level < 1) ? YokaiActionType.None : (level < 5) ? YokaiActionType.Attack : YokaiActionType.ElementalAttack,
+                    data.Element, (StaggerLevel > 0));
+
                 break;
 
-            case YokaiId.Kasaobake:
-            case YokaiId.Jorogumo:
+            case Pattern.Rotary:
                 // Alternatively attacks and removes seals
                 // Evenly distribute the actions around the yokai
-                level = Yokai switch {
-                    YokaiId.Kasaobake => 1,
-                    YokaiId.Jorogumo => 2,
-                    _ => 0
-                };
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 4) level += 1;
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 3) level += 1;
                 if (CardEffectHelper.NonEmptySealsCount() > BattleScene.SealCount / 2) level += 1;
-                actionCount = level switch {
-                    0 => 1,
-                    1 => 2,
-                    2 => (Yokai == YokaiId.Kasaobake) ? 2 : 3,
-                    3 => 4,
-                    4 => 6,
-                    _ => 6,
-                };
-                int nSuperAttacks = level switch {
-                    0 => 1,
-                    1 => 1,
-                    2 => 2,
-                    3 => 2,
-                    4 => 3,
-                    _ => 4,
-                };
+
+                int rotaryActionCount = level
+                switch { 0 => 1, 1 => 2, 2 => 2, 3 => 3, 4 => 3, 5 => 4, 6 => 4, 7 => 6, _ => 6, };
+                int nSuperAttacks = level
+                switch { 0 => 0, 1 => 0, 2 => 1, 3 => 1, 4 => 2, 5 => 2, 6 => 3, 7 => 3, 8 => 4, 9 => 5, _ => 6 };
                 nSuperAttacks -= staggerLevel;
 
-                action = (TurnCount % 2 == 0) ? YokaiActionType.Attack : YokaiActionType.Remove;
+                YokaiActionType action = (TurnCount % 2 == 0) ? YokaiActionType.Attack : YokaiActionType.Remove;
 
-                int distanceBetweenActions = BattleScene.SealCount / actionCount;
-                location = RNG.rng.Next(0, distanceBetweenActions);
+                int distanceBetweenActions = BattleScene.SealCount / rotaryActionCount;
 
-                for (int i = 0 ; i < actionCount ; i++) {
+                attackLocation = RNG.rng.Next(0, distanceBetweenActions);
+
+                for (int i = 0 ; i < rotaryActionCount ; i++) {
                     bool isBlocked = (StaggerLevel > 0);
                     StaggerLevel--;
-                    bool isSupperAttack = (RNG.rng.Next(0, actionCount - i) < nSuperAttacks);
+                    bool isSupperAttack = (RNG.rng.Next(0, rotaryActionCount - i) < nSuperAttacks);
                     if (isSupperAttack) nSuperAttacks--;
-                    ActionPlan[location + i * BattleScene.SealCount / actionCount]
-                            = new YokaiAction(isSupperAttack ? YokaiActionType.AttackOrRemove : action, isBlocked);
+                    ActionPlan[attackLocation + i * BattleScene.SealCount / rotaryActionCount] = new YokaiAction(isSupperAttack ? YokaiActionType.ElementalAttack : action, data.Element, isBlocked);
                 }
                 break;
 

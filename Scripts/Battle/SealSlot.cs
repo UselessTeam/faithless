@@ -93,7 +93,7 @@ public class SealSlot : Control {
     }
     private void FocusExit () {
         Modulate = keptColor;
-        BattleScene.Instance.DescribeCard();
+        BattleScene.Instance.DescribeDefault();
     }
 
 }

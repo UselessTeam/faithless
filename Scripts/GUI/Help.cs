@@ -16,6 +16,7 @@ public static class Help {
 
 Seal the Yokai, earn Mon ([mon] coins), acquire new Talismans, and bright back peace
 
+[url=~save]Save[/url]
 [?save-quit]Save and quit[/?]
 "},
 {"retry",
@@ -38,6 +39,9 @@ Select a talisman and a seal-slot to activate the effect.
 
 [url=~title]Save and quit[/url]
 [?help-village]Cancel[/?]
+"},
+{"saved",
+@"Game saved
 "},
 {"ignite",
 @"Ignition

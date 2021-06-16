@@ -129,7 +129,7 @@ public class BattleScene : CanvasLayer {
         GetNode<Button>(endTurnPath).Connect("button_down", this, nameof(EndPlayerTurn));
 
         var yokai = GameData.Instance.yokai.Data();
-        GetNode<Node2D>(yokaiAnimationPath).GetNode<AnimatedSprite>(yokai.Id.ToString()).Visible = true;
+        GetNode<YokaiTextures>(yokaiAnimationPath).GetNode<AnimatedSprite>(yokai.Id.ToString()).Visible = true;
 
         SealingCircle.InitializeSlots(yokai.SealSlots);
         Health = GameData.Instance.MaxHealth;
@@ -178,6 +178,14 @@ public class BattleScene : CanvasLayer {
     public bool IsBusy () {
         return currentState == State.SomethingHappening;
     }
+
+    public void DescribeDefault () {
+        if (Cards.Selected == CardId.None) {
+            BattleScene.Instance.DescribeCard(CardId.None);
+        } else {
+            BattleScene.Instance.DescribeCard(Cards.Selected);
+        }
+    }
     public void DescribeCard (CardId card = CardId.None) {
         if (card == CardId.None) {
             thoughtBubble.Hide();
@@ -192,7 +200,7 @@ public class BattleScene : CanvasLayer {
     }
     public void DescribeSeal (Element element) {
         thoughtBubble.Show();
-        if (element == Element.None) DescribeCard();
+        if (element == Element.None) DescribeDefault();
         else
             thought.BbcodeText = BB.Format(element.Description());
     }
@@ -201,17 +209,6 @@ public class BattleScene : CanvasLayer {
     ////////  Display
     ///////////////
     //////////
-
-    // private string DebugCards (IEnumerable<CardId> cards) {
-    //     string s = "";
-    //     foreach (CardId card in cards) {
-    //         if (s != "") {
-    //             s += ", ";
-    //         }
-    //         s += $"<{card.Data().Name}>";
-    //     }
-    //     return s;
-    // }
 
     public void DisplayDeckAndDiscard () {
         deckField.Text = Deck.Count().ToString();
@@ -369,12 +366,15 @@ public class BattleScene : CanvasLayer {
         currentState = State.SealingYokai;
         await SealingCircle.RayCircle.Seal();
         SealingCircle.ZIndex = 0;
-        SealedScene.Win(this);
+
+        SealedScene instance = (SealedScene) ResourceLoader.Load<PackedScene>("res://Scenes/SealedScene.tscn").Instance();
+        AddChild(instance);
     }
 
     public void Lose () {
         BattleMessages.EndOfBattle();
-        LostScene.Lose(Instance);
+        LostScene instance = (LostScene) ResourceLoader.Load<PackedScene>("res://Scenes/LostScene.tscn").Instance();
+        AddChild(instance);
     }
 
     //Debug

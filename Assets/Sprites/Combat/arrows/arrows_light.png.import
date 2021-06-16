@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrows_light.png-2aaf7b8c40a1b967724fc041cfa0a6d9.stex"
+path="res://.import/arrows_light.png-57254817434b7c71b7a1c6a24fce935a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Talismans/arrows_light.png"
-dest_files=[ "res://.import/arrows_light.png-2aaf7b8c40a1b967724fc041cfa0a6d9.stex" ]
+source_file="res://Assets/Sprites/Combat/arrows/arrows_light.png"
+dest_files=[ "res://.import/arrows_light.png-57254817434b7c71b7a1c6a24fce935a.stex" ]
 
 [params]
 

@@ -3,10 +3,10 @@ using Godot;
 using Utils;
 
 public static class Global {
-    public const string GameVersion = "1.1.3";
+    public const string GameVersion = "1.1.4";
 
     public static void SaveGame () {
-        string save = Utils.Saver.SaveSingle(GameData.Instance);
+        string save = Saver.Save(GameData.Instance);
         FileEncoder.Write(save);
     }
 
@@ -18,12 +18,10 @@ public static class Global {
             save = FileEncoder.Read();
         } catch (Utils.WrongVersionException e) {
             ThoughtPopup.Instance.OpenCustomMessage(e.GetMessage() + "\n\n[url=~title]Back to the title screen[/url]");
-            var callback = Callback.Connect(ThoughtPopup.Instance, "popup_hide", () => tree.ChangeScene("res://Scenes/TitleScreen.tscn"));
-            callback.CallOnce = true;
+            var callback = Callback.ConnectOnce(ThoughtPopup.Instance, "popup_hide", () => tree.ChangeScene("res://Scenes/TitleScreen.tscn"));
             return;
         }
-        Loader load = new Loader();
-        GameData.Instance = (GameData) load.FromData(save);
+        GameData.Instance = (GameData) Loader.Load(save);
     }
 
     public static void ResetGame (SceneTree tree) {
