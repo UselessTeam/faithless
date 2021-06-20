@@ -6,7 +6,11 @@ public static class Global {
     public const string GameVersion = "1.1.4";
 
     public static void SaveGame () {
+        int seed = RNG.Get.Next();
+        RNG.Seed = seed;
+
         string save = Saver.Save(GameData.Instance);
+        save += "\n" + Saver.Save(seed);
         FileEncoder.Write(save);
     }
 
@@ -21,7 +25,9 @@ public static class Global {
             var callback = Callback.ConnectOnce(ThoughtPopup.Instance, "popup_hide", () => tree.ChangeScene("res://Scenes/TitleScreen.tscn"));
             return;
         }
-        GameData.Instance = (GameData) Loader.Load(save);
+        var saveItems = Loader.LoadMany(save);
+        GameData.Instance = (GameData) saveItems[0];
+        RNG.Seed = (saveItems.Count <= 1) ? RNG.Seed : (int) saveItems[1];
     }
 
     public static void ResetGame (SceneTree tree) {

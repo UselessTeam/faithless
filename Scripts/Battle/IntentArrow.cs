@@ -23,27 +23,25 @@ public class IntentArrow : Node2D {
         Spatial S = new Spatial();
         var a = S.Transform.basis.x;
         Intent = action;
-        if (action.Element == Element.None) {
-            Modulate = yellowishModulate;
-            switch (action.Type) {
-                case YokaiActionType.Attack:
-                case YokaiActionType.AttackPierce:
-                    (Sprite.Texture as AtlasTexture).Region = new Rect2(new Vector2(0, 0), new Vector2(120, 120));
-                    break;
-                case YokaiActionType.AttackAndRemove:
-                    (Sprite.Texture as AtlasTexture).Region = new Rect2(new Vector2(240, 0), new Vector2(120, 120));
-                    break;
-                case YokaiActionType.Remove:
-                    (Sprite.Texture as AtlasTexture).Region = new Rect2(new Vector2(120, 0), new Vector2(120, 120));
-                    break;
-                default:
-                    GD.PrintErr($"{action} : This action's display has not been set");
-                    break;
-            }
-        } else {
-            Sprite.Texture = Arrows[(int) action.Element - 1];
+        Modulate = yellowishModulate;
+        switch (action.Type) {
+            case YokaiActionType.Attack:
+                (Sprite.Texture as AtlasTexture).Region = new Rect2(new Vector2(0, 0), new Vector2(120, 120));
+                break;
+            case YokaiActionType.AttackAndRemove:
+                (Sprite.Texture as AtlasTexture).Region = new Rect2(new Vector2(240, 0), new Vector2(120, 120));
+                break;
+            case YokaiActionType.Remove:
+                (Sprite.Texture as AtlasTexture).Region = new Rect2(new Vector2(120, 0), new Vector2(120, 120));
+                break;
+            case YokaiActionType.ElementalAttack:
+                Modulate = Colors.White;
+                Sprite.Texture = Arrows[(int) action.Element - 1];
+                break;
+            default:
+                GD.PrintErr($"{action} : This action's display has not been set");
+                break;
         }
-        GD.Print(action.IsBlocked);
         if (action.IsBlocked) {
             Modulate = Colors.White;
             ((ShaderMaterial) Sprite.Material).SetShaderParam("blockAction", true);

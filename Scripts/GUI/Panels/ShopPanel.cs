@@ -40,7 +40,7 @@ public class ShopPanel : ScaleContainer {
         foodField.Connect(nameof(FoodVisual.OnClick), this, nameof(OpenFood));
         buyButton.Connect("pressed", this, nameof(Buy));
 
-        Init();
+        CallDeferred(nameof(Init));
     }
 
     private readonly string[] WELCOME_MESSAGES = new string[] {

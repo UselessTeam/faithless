@@ -91,12 +91,12 @@ public class YokaiAI {
 
                 int distanceBetweenActions = BattleScene.SealCount / rotaryActionCount;
 
-                attackLocation = RNG.rng.Next(0, distanceBetweenActions);
+                attackLocation = RNG.Get.Next(0, distanceBetweenActions);
 
                 for (int i = 0 ; i < rotaryActionCount ; i++) {
                     bool isBlocked = (StaggerLevel > 0);
                     StaggerLevel--;
-                    bool isSupperAttack = (RNG.rng.Next(0, rotaryActionCount - i) < nSuperAttacks);
+                    bool isSupperAttack = (RNG.Get.Next(0, rotaryActionCount - i) < nSuperAttacks);
                     if (isSupperAttack) nSuperAttacks--;
                     ActionPlan[attackLocation + i * BattleScene.SealCount / rotaryActionCount] = new YokaiAction(isSupperAttack ? YokaiActionType.ElementalAttack : action, data.Element, isBlocked);
                 }

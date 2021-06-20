@@ -162,7 +162,7 @@ public static class CardIdExtensions {
     }
 }
 
-public enum Element { None, Fire, Water = 2, Wood = 4, Earth = 8, Metal = 16 }
+public enum Element { None, Fire, Water = 2, Wood = 3, Earth = 4, Metal = 5 }
 
 public static class ElementExtensions {
     public static string Description (this Element element) => element

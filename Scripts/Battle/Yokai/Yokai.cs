@@ -81,7 +81,7 @@ public class YokaiData {
                 Element = Element.Water,
                 Reward = 650,
                 SealSlots = 10,
-                Pattern = Pattern.Vertical,
+                Pattern = Pattern.Rotary,
         },
         new YokaiData () {
             Id = YokaiId.Jorogumo,

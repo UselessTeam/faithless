@@ -345,7 +345,7 @@ public class BattleScene : CanvasLayer {
                 if (SealSlots[i] == Element.None) emptyLocations.Add(i);
             if (emptyLocations.Count > 0) {
                 Seeds -= MaxSeeds;
-                var makeWoodLoc = emptyLocations[RNG.rng.Next(0, emptyLocations.Count)];
+                var makeWoodLoc = emptyLocations[RNG.Get.Next(0, emptyLocations.Count)];
                 Instance.LogPanel.Log($"You have gathered {MaxSeeds} seeds. A [wood-seal] appears");
                 SFXHandler.PlaySFX(CardId.BasicWood.Data().SFX);
                 await Instance.PlaceSeal(Element.Wood, makeWoodLoc);

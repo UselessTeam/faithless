@@ -8,7 +8,7 @@
 [ext_resource path="res://Assets/Sprites/Combat/arrows/water.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Sprites/Combat/arrows/fire.png" type="Texture" id=7]
 
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform bool blockAction = true;
@@ -21,12 +21,12 @@ void fragment(){
 	}
 }"
 
-[sub_resource type="ShaderMaterial" id=5]
+[sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
-shader = SubResource( 4 )
+shader = SubResource( 1 )
 shader_param/blockAction = true
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=3]
 resource_local_to_scene = true
 flags = 4
 atlas = ExtResource( 1 )
@@ -49,6 +49,6 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 5 )
-texture = SubResource( 6 )
+material = SubResource( 2 )
+texture = SubResource( 3 )
 flip_v = true

@@ -567,7 +567,7 @@ public class CardData : Resource {
                 Use = async (useLocation) => {
                     Element element = BattleScene.SealSlots[useLocation];
                     if(element!= Element.None){
-                        bool clockwise = (Utils.RNG.rng.Next()%2 == 0);
+                        bool clockwise = (Utils.RNG.Get.Next()%2 == 0);
 
                         if( BattleScene.SealSlots[ useLocation.AdjacentLocation(clockwise) ] != Element.Earth){
                             await CardEffectHelper.Push(useLocation, clockwise, false);
@@ -615,10 +615,10 @@ public class CardData : Resource {
                         int firstSeal= 0;
                         int secondSeal= 0;
                         while(chosenSeals[firstSeal])
-                            firstSeal = Utils.RNG.rng.Next(0, BattleScene.SealCount);
+                            firstSeal = Utils.RNG.Get.Next(0, BattleScene.SealCount);
                         chosenSeals[firstSeal] = true;
                         while(chosenSeals[secondSeal])
-                            secondSeal = Utils.RNG.rng.Next(0, BattleScene.SealCount);
+                            secondSeal = Utils.RNG.Get.Next(0, BattleScene.SealCount);
                         chosenSeals[secondSeal] = true;
                         tasks.Add(BattleScene.Instance.SwapSeals(firstSeal, secondSeal));
                     }

@@ -9,7 +9,6 @@ public enum YokaiActionType {
     None,
     Attack,
     Remove,
-    AttackPierce,
     AttackAndRemove,
     ElementalAttack, //Like an attack and remove, but with element
 }
@@ -51,7 +50,6 @@ public static class YokaiActionExtention {
         switch {
             YokaiActionType.Attack => "Attack\n\nThe Yokai will attack this location and remove 1 health.\nYou can defend yourself by placing a Seal of any type",
             YokaiActionType.AttackAndRemove => "Attack and Remove\n\nThe Yokai will attack, then remove the seal in this location",
-            YokaiActionType.AttackPierce => "Pierce Attack\n\nRemove one health",
             YokaiActionType.Remove => "Remove\n\nThe Yokai will remove the seal in this location",
             YokaiActionType.ElementalAttack => $"{action.Element} attack\n\nThe Yokai will attack this location with {action.Element}.\n{action.Element.Destroys()} will not offer any protection, but {action.Element.BlockedBy()} will stagger the Yokai.\nAny other element will be removed",
             _ => "ERROR"
@@ -82,7 +80,6 @@ public static class YokaiActionExtention {
                 await yokai.Remove(i, true);
                 break;
             case YokaiActionType.Attack:
-            case YokaiActionType.AttackPierce:
                 await yokai.AttackOn(i);
                 break;
             case YokaiActionType.AttackAndRemove:
