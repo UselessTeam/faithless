@@ -20,9 +20,7 @@ public class ShopPanel : ScaleContainer {
 
     // Variables
 
-    CardId left;
-    CardId middle;
-    CardId right;
+    CardId[] cardsForSale = new CardId[3];
     Food food;
 
     public override void _Ready () {
@@ -51,7 +49,7 @@ public class ShopPanel : ScaleContainer {
     public void Init () {
         bubbleText.Text = WELCOME_MESSAGES.Random();
         buyButton.Hide();
-        List<CardId> all = CardData.AllSpecial;
+        List<CardId> all = CardData.AllSpecial();
         Load(all.PopRandom(), all.PopRandom(), all.PopRandom(), GameData.Instance.LeftInShop.Count == 0 ? null : GameData.Instance.LeftInShop.Random());
     }
 
@@ -70,55 +68,34 @@ public class ShopPanel : ScaleContainer {
         SetCard(middle, 1);
         SetCard(right, 2);
         SetFood(food);
+
     }
 
     int selected = -2;
 
     private CardId GetCard (int index) {
-        return index switch {
-            0 => left,
-            1 => middle,
-            2 => right,
-            _ => throw new Exception($"No card at index {index}"),
-        };
+        return cardsForSale[index];
     }
+
     public void SetCard (CardId card, int index) {
-        switch (index) {
-            case 0:
-                left = card;
-                if (left == CardId.None) {
-                    leftCard.Hide();
-                } else {
-                    leftCard.ShowCard(left.Data());
-                    leftCard.Show();
-                }
-                return;
-            case 1:
-                middle = card;
-                if (middle == CardId.None) {
-                    middleCard.Hide();
-                } else {
-                    middleCard.ShowCard(middle.Data());
-                    middleCard.Show();
-                }
-                return;
-            case 2:
-                right = card;
-                if (right == CardId.None) {
-                    rightCard.Hide();
-                } else {
-                    rightCard.ShowCard(right.Data());
-                    rightCard.Show();
-                }
-                return;
-            default:
-                throw new Exception($"No card at index {index}");
-        };
+        CardVisual cardVisual = index switch { 0 => leftCard, 1 => middleCard, 2 => rightCard, _ => null };
+
+        cardsForSale[index] = card;
+        if (card == CardId.None) {
+            cardVisual.Hide();
+        } else {
+            cardVisual.ShowCard(card.Data());
+            cardVisual.Show();
+        }
+
+        cardVisual.GetNode<SmartText>("Text").BbcodeText = $"[center]{card.Data().MonPrice} [img]res://Assets/Sprites/GUI/mon_icon.png[/img][/center]";
+
     }
 
     public void SetFood (Food food) {
         this.food = food;
         foodField.SetFood(food);
+        foodField.GetNode<SmartText>("Text").BbcodeText = $"[center]{food.Price} [img]res://Assets/Sprites/GUI/mon_icon.png[/img][/center]";
     }
 
     public void OpenCard (int _, int index) {

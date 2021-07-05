@@ -20,19 +20,20 @@ public class SealedScene : ColorRect {
         GetNode<Label>(moneyPath).Text = $"+{money}";
         GameData.Instance.Money += money;
 
-        Global.SaveGame();
-
-        CardId card = CardData.AllSpecial.Random();
+        CardId card = CardData.AllSpecial().Random();
         GetNode<CardVisual>(cardPath).ShowCard(card.Data());
         GetNode<CardVisual>(cardPath).IsDisabled = true;
         GetNode<RichTextLabel>(descriptionPath).BbcodeText = BB.Format(card.Data().Description);
         GetNode<Button>(addCardbuttonPath).Connect("pressed", this, nameof(AddToDeck), new Godot.Collections.Array() { card });
         GetNode<Button>(continuePath).Connect("pressed", this, nameof(Continue));
+
+
+        RNG.StartCycle();
+        Global.SaveGame();
     }
 
     public void Continue () {
         GetTree().ChangeScene("res://Scenes/VillageScene.tscn");
-
         this.QueueFree();
     }
 

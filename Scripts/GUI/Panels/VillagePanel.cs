@@ -13,7 +13,7 @@ public class VillagePanel : CanvasLayer {
     TabContainer board;
     Label money;
     public override void _Ready () {
-        // Global.LoadGame(GetTree());
+        // RNG.StartCycle();
 
         var deckPanel = GetNode<DeckPanel>(deckPanelPath);
         GameData.Instance.Connect(nameof(GameData.DeckChanged), deckPanel, nameof(DeckPanel.ShowDeck));

@@ -8,7 +8,7 @@
 [ext_resource path="res://Assets/Theme/theme.tres" type="Theme" id=6]
 [ext_resource path="res://Nodes/GUI/Buttons/RichButton.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Assets/Sprites/GUI/cart.png" type="Texture" id=8]
-[ext_resource path="res://Scripts/GUI/SmartText/SmartText.cs" type="Script" id=9]
+[ext_resource path="res://Nodes/GUI/RichText.tscn" type="PackedScene" id=9]
 
 [node name="Shop" type="Container"]
 anchor_right = 1.0
@@ -68,6 +68,16 @@ __meta__ = {
 
 [node name="Card" parent="Objects/LeftCardHolder" instance=ExtResource( 2 )]
 
+[node name="Text" parent="Objects/LeftCardHolder/Card" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.623169
+margin_top = -32.4574
+margin_right = 180.623
+margin_bottom = 367.543
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 1
+
 [node name="MiddleCardHolder" type="MarginContainer" parent="Objects"]
 margin_left = 545.362
 margin_top = 194.606
@@ -84,6 +94,17 @@ backgroundPath = NodePath("../../MiddleCardHolder/Card/Holder/Background")
 namePath = NodePath("../../MiddleCardHolder/Card/Holder/Name")
 kanjiPath = NodePath("../../MiddleCardHolder/Card/Holder/Kanji")
 
+[node name="Text" parent="Objects/MiddleCardHolder/Card" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 4.52686
+margin_top = -30.0403
+margin_right = 184.527
+margin_bottom = 369.96
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+
 [node name="RightCardHolder" type="MarginContainer" parent="Objects"]
 margin_left = 686.923
 margin_top = 189.451
@@ -96,6 +117,19 @@ __meta__ = {
 }
 
 [node name="Card" parent="Objects/RightCardHolder" instance=ExtResource( 2 )]
+
+[node name="Text" parent="Objects/RightCardHolder/Card" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 12.168
+margin_top = -28.8413
+margin_right = 192.168
+margin_bottom = 371.159
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+bbcode_text = "[center]200 [img]res://Assets/Sprites/GUI/mon_icon.png[/img][/center]"
+text = "200 "
 
 [node name="ItemHolder" type="MarginContainer" parent="Objects"]
 margin_left = 191.965
@@ -112,6 +146,17 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 80.0
 margin_bottom = 80.0
+
+[node name="Text" parent="Objects/ItemHolder/Food" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 21.7255
+margin_top = -11.2373
+margin_right = 101.725
+margin_bottom = 68.7627
+rect_scale = Vector2( 0.7, 0.7 )
+bbcode_text = "[center]200 [img]res://Assets/Sprites/GUI/mon_icon.png[/img][/center]"
+text = "200 "
 
 [node name="Speech" type="MarginContainer" parent="Objects"]
 margin_top = 256.0
@@ -132,7 +177,6 @@ margin_bottom = 247.0
 bbcode_enabled = true
 bbcode_text = "Hello, what do you want to buy?"
 text = "Hello, what do you want to buy?"
-script = ExtResource( 9 )
 
 [node name="Buy" parent="Objects/Speech/VBox" instance=ExtResource( 7 )]
 anchor_right = 0.0

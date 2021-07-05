@@ -6,11 +6,8 @@ public static class Global {
     public const string GameVersion = "1.1.4";
 
     public static void SaveGame () {
-        int seed = RNG.Get.Next();
-        RNG.Seed = seed;
-
-        string save = Saver.Save(GameData.Instance);
-        save += "\n" + Saver.Save(seed);
+        string save = Saver.Save(GameData.Instance); // The rest of the code has to ensure that 
+        save += "\n" + Saver.Save(RNG.Seed);
         FileEncoder.Write(save);
     }
 
@@ -27,7 +24,7 @@ public static class Global {
         }
         var saveItems = Loader.LoadMany(save);
         GameData.Instance = (GameData) saveItems[0];
-        RNG.Seed = (saveItems.Count <= 1) ? RNG.Seed : (int) saveItems[1];
+        RNG.StartCycle((int) saveItems[1]);
     }
 
     public static void ResetGame (SceneTree tree) {

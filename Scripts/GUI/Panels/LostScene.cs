@@ -8,6 +8,7 @@ public class LostScene : ColorRect {
         GetNode<Button>(buttonPath).Connect("pressed", this, nameof(Continue));
     }
     public void Continue () {
+        Utils.RNG.StartCycle();
         GetTree().ChangeScene("res://Scenes/VillageScene.tscn");
     }
 }

@@ -16,6 +16,7 @@ namespace Utils {
                 case '~':
                     ThoughtPopup.Instance.Hide();
                     if (metaTag.key == "village") {
+                        RNG.ResetCycle();
                         GetTree().ChangeScene("res://Scenes/VillageScene.tscn");
                     } else if (metaTag.key == "combat") {
                         GetTree().ChangeScene("res://Scenes/BattleScene.tscn");

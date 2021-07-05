@@ -6,22 +6,20 @@ using Godot;
 
 public class CardData : Resource {
     // [Export] readonly ushort Id = ushort.MaxValue;
-    private static List<CardId> GenerateAll () {
+    public static List<CardId> All () {
         List<CardId> all = new List<CardId>();
         for (int i = 1 ; i < (int) CardId.TOTAL ; i++) {
             all.Add((CardId) i);
         }
         return all;
     }
-    private static List<CardId> GenerateAllSpecial () {
+    public static List<CardId> AllSpecial () {
         List<CardId> all = new List<CardId>();
         for (int i = 6 ; i < (int) CardId.TOTAL ; i++) {
             all.Add((CardId) i);
         }
         return all;
     }
-    public static List<CardId> All { get; } = GenerateAll();
-    public static List<CardId> AllSpecial { get; } = GenerateAllSpecial();
 
     /*** Fields ***/
     public CardId Id = CardId.None;
