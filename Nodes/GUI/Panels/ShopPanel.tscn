@@ -76,7 +76,8 @@ margin_top = -32.4574
 margin_right = 180.623
 margin_bottom = 367.543
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/shadow_as_outline = 1
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
 
 [node name="MiddleCardHolder" type="MarginContainer" parent="Objects"]
 margin_left = 545.362
@@ -126,8 +127,8 @@ margin_top = -28.8413
 margin_right = 192.168
 margin_bottom = 371.159
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/shadow_offset_x = 1
-custom_constants/shadow_offset_y = 1
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
 bbcode_text = "[center]200 [img]res://Assets/Sprites/GUI/mon_icon.png[/img][/center]"
 text = "200 "
 
@@ -155,6 +156,9 @@ margin_top = -11.2373
 margin_right = 101.725
 margin_bottom = 68.7627
 rect_scale = Vector2( 0.7, 0.7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
 bbcode_text = "[center]200 [img]res://Assets/Sprites/GUI/mon_icon.png[/img][/center]"
 text = "200 "
 

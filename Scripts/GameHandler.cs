@@ -10,7 +10,14 @@ public class GameHandler : Node {
     [Signal] public delegate void InstanceLoaded (int value);
 
     public override void _Ready () {
-        FileEncoder.Version = Global.GameVersion;
+        FileEncoder.CurrentVersion = Global.GameVersion;
+        FileEncoder.IsSaveCompatible = (Version v) => {
+            GD.Print($"Found: {v}, Current {FileEncoder.CurrentVersion}, Game {Global.GameVersion}, OldestCompatible {Global.OldestSaveCompatibleVersion}, Result : {v >= Global.OldestSaveCompatibleVersion}");
+            return v >= Global.OldestSaveCompatibleVersion;
+        };
+
+        GD.Print("Handler Done");
+
         if (Instance != null)
             GD.PrintErr("Error: GameHandler already has an instance");
         else

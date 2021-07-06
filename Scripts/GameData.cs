@@ -64,7 +64,6 @@ public class GameData : Node2D, ISaveable {
     [Save] private int _money = 300;
 
     public override void _Ready () {
-        FileEncoder.Version = Global.GameVersion;
         Instance = this;
     }
 }

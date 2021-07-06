@@ -3,7 +3,9 @@ using Godot;
 using Utils;
 
 public static class Global {
-    public const string GameVersion = "1.1.4";
+    public static readonly Version GameVersion = new Version("1.1.5");
+
+    public static readonly Version OldestSaveCompatibleVersion = new Version("1.1.4");
 
     public static void SaveGame () {
         string save = Saver.Save(GameData.Instance); // The rest of the code has to ensure that 
@@ -34,4 +36,5 @@ public static class Global {
         GameData newData = (GameData) ((PackedScene) GD.Load("res://Nodes/GameData.tscn")).Instance();
         tree.Root.AddChild(newData);
     }
+
 }

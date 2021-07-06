@@ -19,6 +19,7 @@ config/windows_native_icon="res://Assets/Meta/icon.ico"
 
 [autoload]
 
+GameHandler="*res://Nodes/GameHandler.tscn"
 GameData="*res://Nodes/GameData.tscn"
 TextureHolder="*res://Nodes/Textures/TextureHolder.tscn"
 ThoughtPopup="*res://Nodes/GUI/Thoughts/ThoughtPopup.tscn"
