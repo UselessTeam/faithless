@@ -59,7 +59,11 @@ margin_right = 300.0
 margin_bottom = 900.0
 alignment = 2
 
+[node name="Control" type="Control" parent="VBox/HBox/Inspect/VBox"]
+margin_right = 300.0
+
 [node name="Text" parent="VBox/HBox/Inspect/VBox" instance=ExtResource( 5 )]
+margin_top = 4.0
 margin_bottom = 854.0
 bbcode_enabled = true
 

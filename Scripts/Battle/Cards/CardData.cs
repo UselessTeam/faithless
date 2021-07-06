@@ -20,6 +20,13 @@ public class CardData : Resource {
         }
         return all;
     }
+    public static List<CardId> DefaultDeck () => new List<CardId>() {
+        CardId.BasicEarth, CardId.BasicEarth,
+        CardId.BasicFire, CardId.BasicFire,
+        CardId.BasicMetal, CardId.BasicMetal,
+        CardId.BasicWater, CardId.BasicWater,
+        CardId.BasicWood, CardId.BasicWood,
+    };
 
     /*** Fields ***/
     public CardId Id = CardId.None;

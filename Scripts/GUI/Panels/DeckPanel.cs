@@ -21,9 +21,11 @@ public class DeckPanel : MarginContainer {
         banishField.Connect("pressed", this, nameof(Banish));
         priceField = GetNode<SmartText>(pricePath);
         ShowDeck();
+        Callback.Connect(this, "draw", ShowDeck);
     }
 
     public void ShowDeck () {
+        GD.Print("Draw");
         CloseCard();
         GameData.Instance.Deck = GameData.Instance.Deck.OrderBy(card => (int) card).ToList();
         gridField.QueueFreeChildren();

@@ -33,13 +33,7 @@ public class GameData : Node2D, ISaveable {
         EmitSignal(nameof(DeckChanged));
     }
     [Save]
-    public List<CardId> Deck = new List<CardId>() {
-        CardId.BasicEarth, CardId.BasicEarth,
-        CardId.BasicFire, CardId.BasicFire,
-        CardId.BasicMetal, CardId.BasicMetal,
-        CardId.BasicWater, CardId.BasicWater,
-        CardId.BasicWood, CardId.BasicWood,
-    };
+    public List<CardId> Deck = CardData.DefaultDeck();
     public YokaiId yokai = YokaiId.Hitotsumekozo;
 
     [Signal] public delegate void MoneyChanged (int value);
