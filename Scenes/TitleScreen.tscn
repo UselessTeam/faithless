@@ -455,6 +455,17 @@ Art: Pompomporin"
 align = 1
 valign = 1
 
+[node name="Confirmation" type="AcceptDialog" parent="Menu"]
+margin_left = 586.419
+margin_top = 459.699
+margin_right = 1045.42
+margin_bottom = 603.699
+popup_exclusive = true
+window_title = ""
+dialog_text = "Are you sure you want to start a new game?
+This action will overwrite your current progress"
+dialog_autowrap = true
+
 [node name="SplashScreen" type="Control" parent="."]
 visible = false
 modulate = Color( 1, 1, 1, 0 )

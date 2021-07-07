@@ -236,7 +236,7 @@ public class CardData : Resource {
                 Element = Element.Water,
                 Cost = 2,
                 SFX = "TaikoFunky",
-                Description = "Place a [water-seal]. \nGain 1 health if the target location contained a [fire-seal]. \nGain 1 health for each [fire-seal] adjacent to the target location",
+                Description = "Place a [water-seal] and gain 1 health for each [fire-seal] adjacent to the location",
                 Use = async (useLocation) => {
                     if (BattleScene.SealSlots[useLocation] == Element.Fire) BattleScene.Health += 1;
                     int sealCount =  BattleScene.SealSlots.Count;
@@ -295,7 +295,7 @@ public class CardData : Resource {
                 Cost = 2,
                 SFX = "TaikoSmall",
                 Target = CardTarget.MetalSeal,
-                Description = "Place [metal-seals] on the 2 locations surrounding the selected [metal-seal]",
+                Description = "Place 2 [metal-seals] around a [metal-seal]",
                 Use = async (useLocation) => {
                      int sealCount =  BattleScene.SealSlots.Count;
                     Task task = BattleScene.Instance.PlaceSeal(Element.Metal, ((useLocation+1)%sealCount));
@@ -310,7 +310,7 @@ public class CardData : Resource {
                 Cost = 2,
                 SFX = "TaikoFunky",
                 Target = CardTarget.MetalSeal,
-                Description = "Surround a [metal-seal] by 2 [water-seal]",
+                Description = "Place 2 [water-seals] around a [metal-seal]",
                 Use = async (useLocation) => {
                      int sealCount =  BattleScene.SealSlots.Count;
                     Task task = BattleScene.Instance.PlaceSeal(Element.Water, (useLocation+1)%sealCount);
@@ -430,7 +430,7 @@ public class CardData : Resource {
                 Cost = 0,
                 Target = new TargetOr( CardTarget.WoodSeal, CardTarget.FireSeal),
                 SFX = "Wow",
-                Description = "Remove a [wood-seal] or [fire-seal]. \nDraw 1 talisman and gain 2 [ki]",
+                Description = "Remove a [wood-seal] or a [fire-seal]. \nDraw 1 talisman and gain 2 [ki]",
                 Use = async (useLocation) => {
                      Task task = BattleScene.Instance.RemoveSeal(useLocation);
                     BattleScene.Ki += 2;
