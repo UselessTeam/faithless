@@ -21,7 +21,7 @@ public class ShopPanel : ScaleContainer {
     // Variables
 
     CardId[] cardsForSale = new CardId[3];
-    Food food;
+    FoodData food;
 
     public override void _Ready () {
         leftCard = GetNode<CardVisual>(leftCardPath);
@@ -50,7 +50,7 @@ public class ShopPanel : ScaleContainer {
         bubbleText.Text = WELCOME_MESSAGES.Random();
         buyButton.Hide();
         List<CardId> all = CardData.AllSpecial();
-        Load(all.PopRandom(), all.PopRandom(), all.PopRandom(), GameData.Instance.LeftInShop.Count == 0 ? null : GameData.Instance.LeftInShop.Random());
+        Load(all.PopRandom(), all.PopRandom(), all.PopRandom(), GameData.Instance.LeftInShop.Count == 0 ? FoodId.None : GameData.Instance.LeftInShop.Random());
     }
 
     private readonly string[] AGAIN_MESSAGES = new string[] {
@@ -63,7 +63,7 @@ public class ShopPanel : ScaleContainer {
         bubbleText.Text = AGAIN_MESSAGES.Random();
         buyButton.Hide();
     }
-    public void Load (CardId left, CardId middle, CardId right, Food food) {
+    public void Load (CardId left, CardId middle, CardId right, FoodId food) {
         SetCard(left, 0);
         SetCard(middle, 1);
         SetCard(right, 2);
@@ -92,10 +92,9 @@ public class ShopPanel : ScaleContainer {
 
     }
 
-    public void SetFood (Food food) {
-        this.food = food;
-        foodField.SetFood(food);
-        foodField.GetNode<SmartText>("Text").BbcodeText = $"[center]{food.Price} [img]res://Assets/Sprites/GUI/mon_icon.png[/img][/center]";
+    public void SetFood (FoodId food) {
+        this.food = FoodData.Find(food);
+        foodField.SetFood(this.food);
     }
 
     public void OpenCard (int _, int index) {
@@ -120,9 +119,9 @@ public class ShopPanel : ScaleContainer {
             buyButton.Hide();
             // Buy food
             food.Effect();
-            GameData.Instance.LeftInShop.Remove(food);
+            GameData.Instance.LeftInShop.Remove(food.Id);
             GameData.Instance.Money -= food.Price;
-            SetFood(null);
+            SetFood(FoodId.None);
         } else {
             CardData card = GetCard(selected).Data();
             bubbleText.Text = $"Here is your {card.Name}.\nIt's a pleasure doing business with you.";

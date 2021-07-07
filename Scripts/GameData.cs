@@ -38,11 +38,12 @@ public class GameData : Node2D, ISaveable {
 
     [Signal] public delegate void MoneyChanged (int value);
 
-    public List<Food> LeftInShop = new List<Food> {
-        Food.ONIGIRI,
-        Food.SUSHI,
-        Food.DANGO,
-        Food.JAGAIMO
+    [Save]
+    public List<FoodId> LeftInShop = new List<FoodId> {
+        FoodId.Onigiri,
+        FoodId.Sushi,
+        FoodId.Dango,
+        FoodId.Jagaimo
     };
     [Save] public short MaxHealth = 3;
     [Save] public int CardsPerTurn = 4;

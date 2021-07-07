@@ -18,7 +18,6 @@ public class LogPanel : VBoxContainer {
         SmartText label = (SmartText) smartTextTemplate.Duplicate();
         label.BbcodeText = BB.Format(logText);
         AddChild(label);
-        // GD.Print("Logging :\n" + logText);
     }
 
     public void Separate () {

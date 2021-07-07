@@ -13,7 +13,6 @@ public class BattleMessages : CanvasLayer {
     }
 
     public static void OpenDiscardMessage () {
-        GD.Print("now");
         instance.discardMessage.Show();
     }
     public static void CloseDiscardMessage () {

@@ -6,10 +6,8 @@ public class YokaiHitBox : Control {
     private TextureRect glow;
 
     public override void _Ready () {
-        // Connect(nameof(OnClick), BattleScene.Instance, nameof(BattleScene.ClickOnTarget));
         glow = GetNode<TextureRect>("Glow");
         BattleScene.yokaiHitBoxPath = GetPath();
-        // GD.Print(this.GetPath());
     }
 
     public void StartGlow () {

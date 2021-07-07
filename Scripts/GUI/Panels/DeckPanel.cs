@@ -25,7 +25,6 @@ public class DeckPanel : MarginContainer {
     }
 
     public void ShowDeck () {
-        GD.Print("Draw");
         CloseCard();
         GameData.Instance.Deck = GameData.Instance.Deck.OrderBy(card => (int) card).ToList();
         gridField.QueueFreeChildren();
@@ -33,7 +32,6 @@ public class DeckPanel : MarginContainer {
         foreach (CardId id in GameData.Instance.Deck) {
             CardVisual visual = CardVisual.Instance();
             gridField.AddChild(visual);
-            // GD.Print($"card {id}");
             visual.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard));
             visual.ShowCard(id.Data());
             index++;
@@ -46,7 +44,6 @@ public class DeckPanel : MarginContainer {
         foreach (CardId id in GameData.Instance.Deck) {
             CardVisual visual = CardVisual.Instance();
             gridField.AddChild(visual);
-            // GD.Print($"card {id}");
             visual.Connect(nameof(CardVisual.OnClick), this, nameof(OpenCard));
             visual.ShowCard(id.Data());
             index++;
